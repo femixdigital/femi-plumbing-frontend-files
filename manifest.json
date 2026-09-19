@@ -1,39 +1,51 @@
 {
   "id": "/",
   "name": "FEMIX PLUMBING SERVICES",
-  "short_name": "FPS",
+  "short_name": "Femix",
   "description": "Premium plumbing services in Ile Ife, Osun State, Nigeria. Licensed & certified since 2019.",
+  "lang": "en-NG",
   "start_url": "/index.html?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#060B10",
-  "theme_color": "#C8A44A",
+  "background_color": "#070A14",
+  "theme_color": "#070A14",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "images/femix-plumbing-logo.webp",
+      "src": "images/branding/femix-plumbing-logo.webp",
       "sizes": "192x192",
       "type": "image/webp",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "images/femix-plumbing-logo.webp",
+      "src": "images/branding/femix-plumbing-logo.webp",
       "sizes": "512x512",
       "type": "image/webp",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
-  "categories": ["business", "utilities"],
+  "categories": [
+    "business",
+    "utilities"
+  ],
   "shortcuts": [
     {
-      "name": "Call Us",
-      "url": "tel:+2349060708332",
-      "description": "Call FEMIX PLUMBING SERVICES directly"
+      "name": "Request a Quote",
+      "short_name": "Quote",
+      "url": "/index.html?source=shortcut#contact",
+      "description": "Book a plumber or request a quote"
     },
     {
-      "name": "WhatsApp",
-      "url": "https://wa.me/2349060708332",
-      "description": "Chat with us on WhatsApp"
+      "name": "Our Services",
+      "short_name": "Services",
+      "url": "/index.html?source=shortcut#services",
+      "description": "See what Femix Plumbing does"
+    },
+    {
+      "name": "Our Work",
+      "short_name": "Gallery",
+      "url": "/index.html?source=shortcut#gallery",
+      "description": "Browse completed projects"
     }
   ]
 }

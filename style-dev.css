@@ -2400,37 +2400,45 @@ animation: menuItemIn 0.4s cubic-bezier(0.22,1,0.36,1) backwards;
    Founder's Profile lives in its own standalone spotlight
    card below the grid, not as a numbered accordion item.
 ═══════════════════════════════════════════════════════ */
-/* Founder spotlight — small standalone card, aligned to the far
-   right on desktop. */
+/* Founder spotlight — compact premium card (same footprint as the original,
+   slightly larger). Right-aligned on desktop, full width on phones. */
 .ftr-founder-spotlight {
-  display: flex; gap: 14px; align-items: center;
-  max-width: 340px;
-  margin: 0 0 1rem auto; /* pushes it to the right on desktop */
-  padding: 0.9rem 1.1rem;
-  border-radius: var(--radius-lg);
+  display: flex; gap: 15px; align-items: center;
+  max-width: 400px;
+  margin: 0 0 1rem auto;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-lg); border-color: var(--gold-ring);
   position: relative; overflow: hidden;
+  background: radial-gradient(120% 100% at 100% 0%, var(--gold-glow), transparent 60%), var(--glass-bg);
   transition: border-color var(--t2), box-shadow var(--t2);
 }
 .ftr-founder-spotlight::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: var(--grad-gold);
 }
 .ftr-founder-spotlight:hover { border-color: var(--gold); box-shadow: var(--sh-sm), 0 0 0 1px var(--gold-ring); }
+.ftr-founder-frame {
+  flex-shrink: 0; padding: 2px; border-radius: 13px; background: var(--grad-gold);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
 .ftr-founder-spotlight-photo {
-  width: 52px; height: 78px; object-fit: cover; flex-shrink: 0;
-  border-radius: var(--radius); border: 1px solid var(--glass-border2);
+  display: block; width: 64px; height: 96px; object-fit: cover; object-position: center top;
+  border-radius: 11px; background: var(--bg-raised);
 }
 .ftr-founder-spotlight-text { min-width: 0; }
 .ftr-founder-spotlight-name {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.82rem;
-  color: var(--text-primary); white-space: nowrap;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; line-height: 1.15;
+  color: var(--text-primary);
 }
 .ftr-founder-spotlight-role {
-  font-family: 'Space Mono', monospace; font-size: 0.54rem;
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;
-  margin-top: 2px;
+  font-family: 'Space Mono', monospace; font-size: 0.56rem; margin-top: 4px;
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em;
 }
+.ftr-founder-note {
+  margin-top: 0.55rem; padding-top: 0.5rem; border-top: 1px solid var(--gold-ring);
+  font-size: 0.74rem; line-height: 1.5; color: var(--text-secondary);
+}
+.ftr-founder-note strong { color: var(--text-primary); font-weight: 700; }
 
 /* Newsletter — standalone centered bar */
 .ftr-newsletter-bar { display: flex; justify-content: center; margin-bottom: 1.1rem; }
@@ -3465,4 +3473,94 @@ overflow-x: auto;
   .svc-item-grid { grid-auto-columns: 178px; gap: 10px; }
   .svc-item-btn { min-height: 160px; padding: 15px 13px 12px; border-radius: 14px; }
   .svc-item-text { font-size: 0.78rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FEMIX WEB DEV — endless promo slider  (.wd-ads)
+   Occupies exactly the band the home view reserves under the fixed
+   header (padding-top: --nav-total): negative margin pulls it into
+   that padding, height = --nav-total, so nothing below it moves.
+   Cards keep their own dark/gold look in BOTH themes (like exchange
+   promo banners). Motion is transform-only; pauses on hover/touch and
+   when the tab is hidden; static + swipe-scrollable for reduced motion.
+   To remove: delete this block, the <aside id="wdAds"> and its <script>.
+══════════════════════════════════════════════════════════════════ */
+.wd-ads {
+  position: relative; z-index: 6;
+  height: var(--nav-total); margin-top: calc(-1 * var(--nav-total));
+  display: flex; align-items: center;
+}
+.wd-ads-viewport {
+  width: 100%; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+}
+.wd-ads-track {
+  display: flex; width: max-content; will-change: transform;
+  animation: wdSlide 48s linear infinite;
+}
+@keyframes wdSlide { to { transform: translateX(-50%); } }
+.wd-ads:hover .wd-ads-track,
+.wd-ads:focus-within .wd-ads-track,
+.wd-ads:active .wd-ads-track,
+body.is-tab-hidden .wd-ads-track { animation-play-state: paused; }
+
+.wd-card {
+  --wd-glow: rgba(75,123,255,0.55);
+  position: relative; overflow: hidden; flex: 0 0 auto;
+  width: 430px; height: calc(var(--nav-total) - 20px); margin-right: 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 12px 0 18px; border-radius: 16px; color: #fff; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: var(--wd-bg, linear-gradient(120deg, #0B1A3F, #1B3A8C));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform var(--t2), box-shadow var(--t2);
+}
+.wd-card:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.45); }
+.wd-card:focus-visible { outline: 2px solid var(--gold-lt); outline-offset: 2px; }
+.wd-card::before {            /* glow orb, top-right */
+  content: ''; position: absolute; right: -36px; top: -50px; width: 190px; height: 190px;
+  background: radial-gradient(circle, var(--wd-glow), transparent 66%); pointer-events: none;
+}
+.wd-card::after {             /* "</>" watermark */
+  content: '</>'; position: absolute; right: 112px; bottom: -14px;
+  font: 700 3.9rem/1 'Space Mono', monospace; letter-spacing: -0.08em;
+  color: #fff; opacity: 0.08; pointer-events: none;
+}
+.wd-card--1 { --wd-bg: linear-gradient(120deg, #0B1A3F 0%, #1B3A8C 100%); --wd-glow: rgba(122,159,255,0.6); }
+.wd-card--2 { --wd-bg: linear-gradient(120deg, #17110A 0%, #4A3510 100%); --wd-glow: rgba(232,200,110,0.55); }
+.wd-card--3 { --wd-bg: linear-gradient(120deg, #06231D 0%, #0B5A45 100%); --wd-glow: rgba(31,200,116,0.5); }
+
+.wd-card-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.wd-card-brand {
+  display: flex; align-items: center; gap: 7px;
+  font: 400 0.52rem/1 'Space Mono', monospace; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-lt);
+}
+.wd-card-brand::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold-lt); box-shadow: 0 0 8px var(--gold-lt); }
+.wd-card-head { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.98rem; line-height: 1.16; color: #fff; }
+.wd-card-head em { font-style: normal; color: #F5D990; }
+
+.wd-card-btn {
+  position: relative; z-index: 1; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px;
+  padding: 0.55rem 0.85rem; border-radius: var(--radius-pill);
+  background: var(--grad-gold); color: #0E111E; white-space: nowrap;
+  font: 700 0.6rem/1 'Syne', sans-serif; letter-spacing: 0.05em; text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(201,168,76,0.35);
+}
+
+@media (max-width: 640px) {
+  .wd-card { width: 82vw; max-width: 340px; padding: 0 10px 0 14px; gap: 10px; }
+  .wd-card-head { font-size: 0.86rem; }
+  .wd-card::after { right: 96px; font-size: 3.2rem; }
+}
+@media (max-width: 380px) {
+  .wd-card { width: 86vw; }
+  .wd-card-btn { padding: 0.5rem 0.65rem; font-size: 0.55rem; }
+  .wd-card-btn svg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wd-ads-viewport { overflow-x: auto; -webkit-mask-image: none; mask-image: none; scrollbar-width: none; }
+  .wd-ads-viewport::-webkit-scrollbar { display: none; }
+  .wd-ads-track { animation: none !important; transform: none !important; }
 }

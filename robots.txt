@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://femixplumbing.name.ng/sitemap.xml

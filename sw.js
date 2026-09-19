@@ -1,100 +1,116 @@
-/* FEMIX Plumbing Services — Service Worker
+/* FEMIX Plumbing Services — Service Worker (v2)
    Strategy:
-   - App shell (HTML/CSS/JS/logo): cache-first, falls back to network, then updates cache
-   - Images: stale-while-revalidate (show cached instantly, refresh in background)
-   - Everything else: network-first, falls back to cache when offline
-*/
+   - Pages, CSS, JS ("shell"): NETWORK-FIRST with a 3 s timeout, then cache.
+     Visitors always get the newest deploy (no more "I pushed but nothing
+     changed"), and the site still opens offline / on very slow networks.
+   - Images: stale-while-revalidate (instant from cache, refreshed quietly),
+     capped so the cache can't grow forever.
+   - Any other same-origin GET: network-first, cache fallback.
+   To force every visitor onto a clean cache after a big change, bump
+   CACHE_VERSION below. */
 
-const CACHE_VERSION = 'femix-v1';
+const CACHE_VERSION = 'femix-v2';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
+const NETWORK_TIMEOUT_MS = 3000;
+const MAX_IMAGE_ENTRIES = 80;
 
 const SHELL_ASSETS = [
   './',
   './index.html',
-  './style.css',
+  './style-dev.css',
   './script.js',
-  './images/femix-plumbing-logo.webp',
-  './images/femix-logo.webp'
+  './manifest.json',
+  './images/branding/femix-plumbing-logo.webp',
+  './images/branding/femix-logo.webp'
 ];
+const SHELL_PATHS = new Set(SHELL_ASSETS.map((a) => new URL(a, self.location).pathname));
 
-// Install: pre-cache the app shell
+// Install: pre-cache the shell. One missing file must not block the whole install.
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(SHELL_ASSETS))
+      .then((cache) => Promise.allSettled(
+        SHELL_ASSETS.map((a) => cache.add(new Request(a, { cache: 'reload' })))
+      ))
       .then(() => self.skipWaiting())
-      .catch((err) => console.warn('[SW] Shell cache failed:', err))
   );
 });
 
-// Activate: clean up old cache versions
+// Activate: remove caches from older versions
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key.startsWith('femix-') && key !== SHELL_CACHE && key !== RUNTIME_CACHE)
-          .map((key) => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys.filter((k) => k.startsWith('femix-') && k !== SHELL_CACHE && k !== RUNTIME_CACHE)
+            .map((k) => caches.delete(k))
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
-// Fetch: route by request type
+function fetchWithTimeout(request, ms) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('timeout')), ms);
+    fetch(request).then(
+      (r) => { clearTimeout(t); resolve(r); },
+      (e) => { clearTimeout(t); reject(e); }
+    );
+  });
+}
+
+async function networkFirst(event, cacheName, isNavigation) {
+  const request = event.request;
+  try {
+    const response = await fetchWithTimeout(request, NETWORK_TIMEOUT_MS);
+    if (response && response.status === 200) {
+      const clone = response.clone();
+      event.waitUntil(caches.open(cacheName).then((c) => c.put(request, clone)));
+    }
+    return response;
+  } catch (err) {
+    const cached = await caches.match(request, { ignoreSearch: true });
+    if (cached) return cached;
+    if (isNavigation) {
+      const page = (await caches.match('./index.html')) || (await caches.match('./'));
+      if (page) return page;
+    }
+    return Response.error();
+  }
+}
+
+async function staleWhileRevalidate(event) {
+  const request = event.request;
+  const cache = await caches.open(RUNTIME_CACHE);
+  const cached = await cache.match(request);
+  const refresh = fetch(request).then(async (response) => {
+    if (response && response.status === 200) {
+      await cache.put(request, response.clone());
+      const keys = await cache.keys();
+      if (keys.length > MAX_IMAGE_ENTRIES) await cache.delete(keys[0]);
+    }
+    return response;
+  }).catch(() => cached);
+  if (cached) { event.waitUntil(refresh); return cached; }
+  return refresh;
+}
+
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
+  const request = event.request;
   if (request.method !== 'GET') return;
+  if (request.headers.has('range')) return;              // let the browser stream video/audio itself
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return; // don't intercept third-party (GTM, fonts CDN, etc.)
+  if (url.origin !== self.location.origin) return;       // never touch third-party (GA, fonts, API on Render)
 
-  const isImage = request.destination === 'image';
-  const isShellAsset = SHELL_ASSETS.some((asset) => url.pathname.endsWith(asset.replace('./', '/')) || url.pathname === '/');
-
-  if (isShellAsset) {
-    // Cache-first for the app shell — instant load, refresh cache in background
-    event.respondWith(
-      caches.match(request).then((cached) => {
-        const networkFetch = fetch(request).then((response) => {
-          if (response && response.ok) {
-            const clone = response.clone();
-            caches.open(SHELL_CACHE).then((cache) => cache.put(request, clone));
-          }
-          return response;
-        }).catch(() => cached);
-        return cached || networkFetch;
-      })
-    );
+  const isNavigation = request.mode === 'navigate';
+  if (isNavigation || SHELL_PATHS.has(url.pathname)) {
+    event.respondWith(networkFirst(event, SHELL_CACHE, isNavigation));
     return;
   }
-
-  if (isImage) {
-    // Stale-while-revalidate for images
-    event.respondWith(
-      caches.open(RUNTIME_CACHE).then((cache) =>
-        cache.match(request).then((cached) => {
-          const networkFetch = fetch(request).then((response) => {
-            if (response && response.ok) cache.put(request, response.clone());
-            return response;
-          }).catch(() => cached);
-          return cached || networkFetch;
-        })
-      )
-    );
+  if (request.destination === 'image') {
+    event.respondWith(staleWhileRevalidate(event));
     return;
   }
-
-  // Network-first for everything else, fall back to cache when offline
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (response && response.ok) {
-          const clone = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, clone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(request))
-  );
+  event.respondWith(networkFirst(event, RUNTIME_CACHE, false));
 });
