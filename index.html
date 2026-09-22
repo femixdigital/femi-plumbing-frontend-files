@@ -1,1991 +1,697 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Femix Plumbing Services delivers professional residential and commercial building plumbing and water engineering services in Ile-Ife, Osun State. Leak detection, borehole pumps, installations and maintenance." />
-  <meta name="theme-color" content="#070A14" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="canonical" href="https://femixplumbing.name.ng/" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Femix Plumbing Services" />
-  <meta property="og:locale" content="en_NG" />
-  <meta property="og:title" content="Femix Plumbing Services — Plumber in Ile-Ife, Osun State" />
-  <meta property="og:description" content="Femix Plumbing Services delivers professional residential and commercial building plumbing and water engineering services in Ile-Ife, Osun State. Leak detection, borehole pumps, installations and maintenance." />
-  <meta property="og:url" content="https://femixplumbing.name.ng/" />
-  <meta property="og:image" content="https://femixplumbing.name.ng/images/branding/femix-plumbing-logo.webp" />
-  <meta property="og:image:alt" content="Femix Plumbing Services logo" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Femix Plumbing Services — Plumber in Ile-Ife, Osun State" />
-  <meta name="twitter:description" content="Femix Plumbing Services delivers professional residential and commercial building plumbing and water engineering services in Ile-Ife, Osun State. Leak detection, borehole pumps, installations and maintenance." />
-  <meta name="twitter:image" content="https://femixplumbing.name.ng/images/branding/femix-plumbing-logo.webp" />
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Plumber",
-  "@id": "https://femixplumbing.name.ng/#business",
-  "name": "Femix Plumbing Services",
-  "url": "https://femixplumbing.name.ng/",
-  "image": "https://femixplumbing.name.ng/images/branding/femix-plumbing-logo.webp",
-  "logo": "https://femixplumbing.name.ng/images/branding/femix-plumbing-logo.webp",
-  "description": "Femix Plumbing Services delivers professional residential and commercial building plumbing and water engineering services in Ile-Ife, Osun State. Leak detection, borehole pumps, installations and maintenance. 24/7 emergency response.",
-  "telephone": "+2349060708332",
-  "email": "femixplumbingservices931@gmail.com",
-  "foundingDate": "2019",
-  "founder": {
-    "@type": "Person",
-    "name": "Nuhn Wasiu Femi"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Ile-Ife",
-    "addressRegion": "Osun State",
-    "addressCountry": "NG"
-  },
-  "areaServed": [
-    {
-      "@type": "City",
-      "name": "Ile-Ife"
-    },
-    {
-      "@type": "AdministrativeArea",
-      "name": "Osun State"
-    }
-  ],
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ],
-      "opens": "07:00",
-      "closes": "19:00"
-    }
-  ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Plumbing services",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Residential plumbing"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Commercial and estate plumbing"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Borehole, pump and water systems"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Leak detection and diagnostics"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Water heater installation and repair"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Drain cleaning and unclogging"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "24/7 emergency plumbing"
-        }
-      }
-    ]
+<title>Femix Plumbing Services Admin — Bookings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #E7C86E;
+    --gold-dark: #C9A94E;
+    --gold-light: #F0DC9C;
+    --slate: #8891B0;
+    --bg: #070915;
+    --bg-alt: #0B0E1C;
+    --surface: #10131F;
+    --surface-2: #161A29;
+    --ink: #ECEEF2;
+    --muted: #9098B5;
+    --border: #1F222B;
+    --border-strong: #2A2E3D;
+    --pending: #E7C86E;
+    --confirmed: #5B8DEF;
+    --completed: #3FCF7F;
+    --cancelled: #EF5B5B;
   }
-}
-  </script>
-  <link rel="manifest" href="manifest.json" />
-  <title>Femix Plumbing Services — Professional Plumbing & Water Engineering Solutions · Ile Ife</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QE96GSZ39D"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-QE96GSZ39D');
-  </script>
-  <link rel="icon" type="image/webp" href="images/branding/femix-logo.webp">
-  <link rel="apple-touch-icon" href="images/branding/femix-logo.webp">
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" href="style-dev.css?v=20260919">
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2 { font-family: 'Syne', 'Outfit', sans-serif; }
+  .mono { font-family: 'Space Mono', monospace; }
+
+  /* Gold hairline that brands every screen */
+  .topline {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold-light) 50%, var(--gold) 80%, transparent);
+  }
+
+  /* ---------- Login screen ---------- */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(231,200,110,0.08), transparent 55%),
+      var(--bg);
+    padding: 24px;
+  }
+  .brand-mark {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid var(--border-strong);
+    background: linear-gradient(160deg, var(--surface), var(--surface-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    box-shadow: 0 0 0 1px rgba(231,200,110,0.08), 0 12px 30px -12px rgba(0,0,0,0.6);
+  }
+  .brand-mark svg { width: 26px; height: 26px; }
+  #loginScreen h1 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    margin: 0 0 6px;
+    text-align: center;
+  }
+  #loginScreen h1 .slate { color: var(--slate); }
+  #loginScreen h1 .gold { color: var(--gold); }
+  #loginScreen p.sub {
+    color: var(--muted);
+    margin-top: 0;
+    margin-bottom: 28px;
+    font-size: 0.88rem;
+    text-align: center;
+  }
+  #loginForm {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .passwordRow {
+    position: relative;
+    width: 100%;
+  }
+  .passwordRow input[type="password"],
+  .passwordRow input[type="text"] {
+    width: 100%;
+    padding: 14px 48px 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .passwordRow input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(231,200,110,0.15);
+  }
+  #togglePassword {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    color: var(--muted);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  #togglePassword:active,
+  #togglePassword.on { color: var(--gold); background: rgba(231,200,110,0.1); }
+  #togglePassword svg { width: 19px; height: 19px; display: block; }
+  #loginForm button[type="submit"] {
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold) 60%, var(--gold-dark));
+    color: #14161B;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 20px -8px rgba(231,200,110,0.5);
+  }
+  #loginForm button[type="submit"]:active { filter: brightness(0.95); }
+  #loginError {
+    color: #f87171;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    text-align: center;
+  }
+  .rememberRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 2px 2px;
+  }
+  .rememberRow input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+  }
+
+  /* ---------- App screen ---------- */
+  #app { display: none; padding-bottom: 40px; min-height: 100vh; background: var(--bg); }
+  header {
+    background: var(--bg-alt);
+    color: #fff;
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-title h1 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+  .header-title .eyebrow {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  header h1 .slate { color: var(--slate); }
+  header h1 .gold { color: var(--gold); }
+  header button#refreshBtn, header button#logoutBtn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--slate);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  header button#refreshBtn:active, header button#logoutBtn:active {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  header .actions { display: flex; gap: 8px; }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+  }
+  .filters button {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .filters button .count {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: inherit;
+    opacity: 0.7;
+  }
+  .filters button.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #14161B;
+    font-weight: 600;
+  }
+
+  #status {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 24px;
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Table ---------- */
+  .table-wrap {
+    margin: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: 0 20px 40px -24px rgba(0,0,0,0.6);
+  }
+  .table-scroll {
+    overflow-x: auto;
+  }
+  table.bookings-table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .bookings-table thead th {
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 400;
+    padding: 14px 16px;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+  }
+  .bookings-table tbody td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    font-size: 0.88rem;
+    color: var(--ink);
+  }
+  .bookings-table tbody tr:last-child td { border-bottom: none; }
+  .bookings-table tbody tr {
+    transition: background 0.15s ease;
+  }
+  .bookings-table tbody tr:hover { background: rgba(231,200,110,0.03); }
+
+  /* sticky customer column so identity stays visible while scrolling */
+  .col-customer {
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    box-shadow: 3px 0 8px -4px rgba(0,0,0,0.5);
+    min-width: 168px;
+  }
+  .bookings-table tbody tr:hover .col-customer { background: #14182a; }
+
+  .status-bar {
+    width: 4px;
+    align-self: stretch;
+  }
+  .customer-name { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+  .customer-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gold-light);
+    letter-spacing: 0.03em;
+    margin-top: 3px;
+  }
+  .cell-muted { color: var(--muted); }
+  .cell-label { color: var(--slate); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 2px; }
+  .cell-note {
+    max-width: 220px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  td a.phone-link { color: var(--gold-light); text-decoration: none; }
+  td a.phone-link:active { color: var(--gold); }
+
+  .status-pill-select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 7px 30px 7px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239098B5' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+  .status-pill-select.s-pending    { background-color: rgba(231,200,110,0.12); color: var(--pending);   border: 1px solid rgba(231,200,110,0.35); }
+  .status-pill-select.s-confirmed  { background-color: rgba(91,141,239,0.12);  color: var(--confirmed); border: 1px solid rgba(91,141,239,0.35); }
+  .status-pill-select.s-completed  { background-color: rgba(63,207,127,0.12);  color: var(--completed); border: 1px solid rgba(63,207,127,0.35); }
+  .status-pill-select.s-cancelled  { background-color: rgba(239,91,91,0.12);   color: var(--cancelled); border: 1px solid rgba(239,91,91,0.35); }
+  .status-pill-select option { background: var(--surface-2); color: var(--ink); }
+
+  .update-cell { display: flex; align-items: center; gap: 8px; }
+  .saveIndicator {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gold);
+    min-width: 44px;
+  }
+
+  .hint-scroll {
+    padding: 8px 16px 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: right;
+  }
+</style>
 </head>
 <body>
 
-<!-- ─── SCROLL PROGRESS ─── -->
-<div id="scrollProgress" class="scroll-progress" aria-hidden="true">
-  <div class="scroll-progress-fill"></div>
+<div class="topline"></div>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="brand-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#E7C86E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"></path>
+      <path d="M9 12l2 2 4-4"></path>
+    </svg>
+  </div>
+  <h1><span class="slate">FEMIX</span> <span class="gold">PLUMBING</span> <span class="slate">ADMIN</span></h1>
+  <p class="sub">Enter your admin password to view bookings</p>
+  <form id="loginForm">
+    <div class="passwordRow">
+      <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password" required />
+      <button type="button" id="togglePassword" aria-label="Show password">
+        <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+    </div>
+    <label class="rememberRow">
+      <input type="checkbox" id="rememberCheckbox" />
+      Remember me on this device
+    </label>
+    <button type="submit">Log In</button>
+    <div id="loginError"></div>
+  </form>
 </div>
 
-<!-- ─── LOADER ─── -->
-<div id="loader" class="loader" aria-hidden="true">
-  <div class="loader-content">
-    <div class="loader-emblem">
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-        <defs>
-          <linearGradient id="lg1" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#C8A44A"/>
-            <stop offset="100%" stop-color="#F5D990"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <div class="loader-drop">
-        <img src="images/branding/femix-plumbing-logo.webp" alt="Femix Logo" class="logo-img" aria-hidden="true"/>
-      </div>
+<!-- ================= APP ================= -->
+<div id="app">
+  <header>
+    <div class="header-title">
+      <span class="eyebrow">FEMIX PLUMBING SERVICES</span>
+      <h1><span class="slate">BOOKINGS</span> <span class="gold">ADMIN</span></h1>
     </div>
-    <div class="loader-wordmark">FE<span>MIX</span> PLUM<span>BING</span> SER<span>VICES</span></div>
-    <div class="loader-tagline">Professional Plumbing & Water Engineering Solutions · Est. 2019</div>
-    <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
-  </div>
-</div>
-
-<!-- ─── TOAST SYSTEM ─── -->
-<div id="toastContainer" class="toast-container" role="alert" aria-live="assertive" aria-atomic="true"></div>
-
-<!-- ─── CANVAS ─── -->
-<canvas id="bgCanvas" aria-hidden="true"></canvas>
-
-<!-- ─── GALLERY STRIP (persistent) ─── -->
-<div class="gallery-strip" aria-label="Our recent work">
-  <div class="gallery-strip-galaxy-bg" aria-hidden="true"></div>
-  <div class="gallery-strip-galaxy-stars" aria-hidden="true"></div>
-  <div class="gallery-strip-galaxy-stars gallery-strip-galaxy-stars--far" aria-hidden="true"></div>
-  <div class="gallery-strip-galaxy-comet" aria-hidden="true"></div>
-  <div class="slider-track" id="sliderTrack">
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="Luxury jacuzzi bathtub shower installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="Marble bathroom sanitary installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-kitchen-island-drainage-piping.webp" alt="Luxury kitchen island drainage piping" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-terrazzo-bathroom-mep-engineering.webp" alt="Terrazzo bathroom MEP engineering" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-glass-shower-enclosure-modern-tower-panel.webp" alt="Glass shower enclosure installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-double-vanity-sink-black-marble-bathroom.webp" alt="Double vanity sink black marble bathroom" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="Commercial bathroom plumbing layout" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="Luxury freestanding bathtub leak testing" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-modern-countertop-basin-installation.webp" alt="Modern countertop basin installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-wall-hung-smart-toilet-installation-ikoyi.webp" alt="Wall-hung smart toilet installation" loading="lazy" decoding="async"></div>
-    <!-- duplicate set for seamless infinite loop -->
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="Luxury jacuzzi bathtub shower installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="Marble bathroom sanitary installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-kitchen-island-drainage-piping.webp" alt="Luxury kitchen island drainage piping" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-terrazzo-bathroom-mep-engineering.webp" alt="Terrazzo bathroom MEP engineering" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-glass-shower-enclosure-modern-tower-panel.webp" alt="Glass shower enclosure installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-double-vanity-sink-black-marble-bathroom.webp" alt="Double vanity sink black marble bathroom" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="Commercial bathroom plumbing layout" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="Luxury freestanding bathtub leak testing" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-modern-countertop-basin-installation.webp" alt="Modern countertop basin installation" loading="lazy" decoding="async"></div>
-    <div class="slide"><img src="images/gallery/femix-plumbing-wall-hung-smart-toilet-installation-ikoyi.webp" alt="Wall-hung smart toilet installation" loading="lazy" decoding="async"></div>
-  </div>
-</div>
-
-<!-- ─── HEADER (persistent) ─── -->
-<header id="header">
-  <div class="nav-bar">
-
-    <a href="#home" class="logo-wrap" aria-label="FEMIX Plumbing — Home" data-view="home">
-      <div class="logo-mark">
-        <img src="images/branding/femix-plumbing-logo.webp" alt="" class="logo-img" aria-hidden="true" />
-        <div class="logo-mark-glow" aria-hidden="true"></div>
-      </div>
-      <div class="logo-text-wrap">
-        <span class="logo-name">FE<em>MIX</em> PLUM<em>BING</em> SER<em>VICES</em></span>
-        <span class="logo-sub"><strong>Professional Plumbing & Water Engineering Solutions Est. 2019</strong></span>
-      </div>
-    </a>
-
-    <nav class="desk-nav" aria-label="Main navigation">
-      <a href="#home"     class="nav-link active" data-view="home">Home</a>
-      <a href="#services" class="nav-link"         data-view="services">Services</a>
-      <a href="#gallery"  class="nav-link"          data-view="gallery">Gallery</a>
-      <a href="#about"    class="nav-link"          data-view="about">About</a>
-      <a href="#reviews"  class="nav-link"          data-view="reviews">Reviews</a>
-
-      <div class="nav-dd" id="workDropdown">
-        <button class="nav-dd-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="workMenu">
-          Our Work <span class="chevron" aria-hidden="true"></span>
-        </button>
-        <div class="nav-dd-menu" id="workMenu" role="menu">
-          <button class="dd-item" role="menuitem" data-view="services" data-tab="residential">
-            <div class="dd-item-icon" aria-hidden="true">🏠</div>
-            <div class="dd-item-text">
-              <strong>Residential Plumbing</strong>
-              <span>Homes, flats & apartments</span>
-            </div>
-          </button>
-          <button class="dd-item" role="menuitem" data-view="services" data-tab="commercial">
-            <div class="dd-item-icon" aria-hidden="true">🏢</div>
-            <div class="dd-item-text">
-              <strong>Commercial & Estate</strong>
-              <span>Hotels, offices, campuses</span>
-            </div>
-          </button>
-          <button class="dd-item" role="menuitem" data-view="services" data-tab="water">
-            <div class="dd-item-icon" aria-hidden="true">💧</div>
-            <div class="dd-item-text">
-              <strong>Borehole & Water Systems</strong>
-              <span>Full water infrastructure</span>
-            </div>
-          </button>
-          <div class="dd-divider" role="separator"></div>
-          <button class="dd-item dd-emergency" role="menuitem" data-view="services" data-tab="emergency">
-            <div class="dd-item-icon" aria-hidden="true">🚨</div>
-            <div class="dd-item-text">
-              <strong>24/7 Emergency</strong>
-              <span>Rapid response, any hour</span>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <button class="nav-cta" id="openContactModal" aria-haspopup="dialog" data-view="services">
-        Get a Quote <span class="nav-cta-arrow" aria-hidden="true">→</span>
-      </button>
-    </nav>
-
-    <div class="nav-right">
-      <div class="status-pill" aria-label="Service status: available">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span>Available</span>
-      </div>
-
-      <!-- ─── SITE SEARCH — pure client-side: searches page/view names
-           and footer accordion topics, then navigates or scrolls-and-
-           opens the matching destination. ─── -->
-      <div class="site-search-bar" id="siteSearchBar" role="search">
-        <div class="site-search-inner" onclick="document.getElementById('siteSearchInput').focus()">
-          <svg class="site-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="text" id="siteSearchInput" aria-label="Search the site" class="site-search-input" placeholder="Search services, gallery, projects, FAQs…" autocomplete="off" aria-expanded="false" aria-controls="siteSearchResults" role="combobox" aria-autocomplete="list">
-          <button type="button" class="site-search-clear" id="siteSearchClear" aria-label="Clear search" hidden>✕</button>
-        </div>
-        <div class="site-search-results" id="siteSearchResults" role="listbox" hidden></div>
-      </div>
-
-      <button class="ham" id="hamBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobDrawer">
-        <span></span><span></span><span></span>
-      </button>
+    <div class="actions">
+      <button id="refreshBtn">Refresh</button>
+      <button id="logoutBtn">Log out</button>
     </div>
+  </header>
+
+  <div class="filters" id="filters">
+    <button data-filter="all" class="active">All <span class="count" id="count-all"></span></button>
+    <button data-filter="pending">Pending <span class="count" id="count-pending"></span></button>
+    <button data-filter="confirmed">Confirmed <span class="count" id="count-confirmed"></span></button>
+    <button data-filter="completed">Completed <span class="count" id="count-completed"></span></button>
+    <button data-filter="cancelled">Cancelled <span class="count" id="count-cancelled"></span></button>
   </div>
 
-  <div class="ticker-bar" aria-hidden="true">
-    <div class="ticker-inner">
-      <span>FEMIX PLUMBING SERVICES</span><span class="tsep">✦</span>
-      <span><span>PROFESSIONAL PLUMBING & WATER ENGINEERING</span><span class="tsep">✦</span>
-      <span>PRECISION. RELIABILITY. BUILT TO LAST.</span><span class="tsep">✦</span>
-      <span><span>RESIDENTIAL · COMMERCIAL · INDUSTRIAL</span><span class="tsep">✦</span>
-      <span>WATER SYSTEMS · BOREHOLES · PUMPS · DRAINAGE</span><span class="tsep">✦</span>
-      <span><span>INSTALLATION · REPAIRS · MAINTENANCE</span><span class="tsep">✦</span>
-      <span>ADVANCED LEAK DETECTION & DIAGNOSTICS</span><span class="tsep">✦</span>
-      <span>24/7 EMERGENCY PLUMBING RESPONSE</span><span class="tsep">✦</span>
-      <span>QUALITY WORKMANSHIP · PREMIUM MATERIALS</span><span class="tsep">✦</span>
-      <span>ILE-IFE · OSUN STATE · NIGERIA</span><span class="tsep">✦</span>
-      <span>FEMIX PLUMBING SERVICES</span><span class="tsep">✦</span>
-      <span>PROFESSIONAL PLUMBING & WATER ENGINEERING</span><span class="tsep">✦</span>
-      <span>PRECISION. RELIABILITY. BUILT TO LAST.</span><span class="tsep">✦</span>
-      <span>RESIDENTIAL · COMMERCIAL · INDUSTRIAL</span><span class="tsep">✦</span>
-      <span>WATER SYSTEMS · BOREHOLES · PUMPS · DRAINAGE</span><span class="tsep">✦</span>
-      <span>INSTALLATION · REPAIRS · MAINTENANCE</span><span class="tsep">✦</span>
-      <span>ADVANCED LEAK DETECTION & DIAGNOSTICS</span><span class="tsep">✦</span>
-      <span>24/7 EMERGENCY PLUMBING RESPONSE</span><span class="tsep">✦</span>
-      <span>QUALITY WORKMANSHIP · PREMIUM MATERIALS</span><span class="tsep">✦</span>
-      <span>ILE-IFE · OSUN STATE · NIGERIA</span><span class="tsep">✦</span>
-    </div>
-  </div>
-</header>
-
-<!-- ─── MOBILE DRAWER ─── -->
-<div class="mob-drawer" id="mobDrawer" role="dialog" aria-label="Navigation" aria-hidden="true">
-  <div class="mob-drawer-inner">
-    <div class="mob-drawer-top">
-      <div class="mob-drawer-brand">FE<em>MIX</em> PLUM<em>BING</em></div>
-      <button class="mob-drawer-close" id="closeDrawer" aria-label="Close menu">✕</button>
-    </div>
-    <div class="full-menu">
-      <button type="button" class="menu-item" data-view="home">
-        <span class="item-header">
-          <span class="menu-num">01</span>
-          <span class="menu-label">HOME</span>
-        </span>
-        <span class="menu-sub">Professional Plumbing &amp; Water Engineering Solutions</span>
-      </button>
-      <button type="button" class="menu-item" data-view="services">
-        <span class="item-header">
-          <span class="menu-num">02</span>
-          <span class="menu-label">SERVICES</span>
-        </span>
-        <span class="menu-sub">General plumbing, pipe fitting &amp; borehole installation</span>
-      </button>
-      <button type="button" class="menu-item" data-view="gallery">
-        <span class="item-header">
-          <span class="menu-num">03</span>
-          <span class="menu-label">GALLERY</span>
-        </span>
-        <span class="menu-sub">Browse our completed work &amp; request a quote</span>
-      </button>
-      <button type="button" class="menu-item" data-view="about">
-        <span class="item-header">
-          <span class="menu-num">04</span>
-          <span class="menu-label">ABOUT</span>
-        </span>
-        <span class="menu-sub">Certified technical excellence for home &amp; business</span>
-      </button>
-      <button type="button" class="menu-item" data-view="reviews">
-        <span class="item-header">
-          <span class="menu-num">05</span>
-          <span class="menu-label">REVIEWS</span>
-        </span>
-        <span class="menu-sub">⭐⭐⭐⭐⭐ "Best plumbing service in Osun State!"</span>
-      </button>
-      <button type="button" class="menu-item" id="drawerContactBtn" data-view="home">
-        <span class="item-header">
-          <span class="menu-num">06</span>
-          <span class="menu-label">CONTACT</span>
-        </span>
-        <span class="menu-sub">Phone, email, location &amp; working hours</span>
-      </button>
-    </div>
-    <div class="mob-drawer-actions">
-      <a href="tel:+2349060708332" class="mob-action-btn mob-action-call">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-        Call Now
-      </a>
-      <a href="https://wa.me/2349060708332" target="_blank" rel="noopener" class="mob-action-btn mob-action-wa">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp
-      </a>
-    </div>
-    <div class="mob-drawer-flyer">
+  <div id="status"></div>
+  <div class="hint-scroll" id="scrollHint">Scroll table →</div>
+  <div class="table-wrap" id="tableWrap" style="display:none;">
+    <div class="table-scroll">
+      <table class="bookings-table">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Schedule</th>
+            <th>Contact</th>
+            <th>Note</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
     </div>
   </div>
 </div>
 
-<div class="mob-overlay" id="mobOverlay" aria-hidden="true"></div>
-
-
-<!-- ══════════════════════════════════════
-     HOME VIEW
-════════════════════════════════════════ -->
-<div id="view-home" class="spa-view spa-view--home spa-view--active" data-view-id="home" role="main">
-
-  <!-- ══ FEMIX WEB DEV — endless promo slider ═══════════════════════════
-       Fills the band between the gallery strip and the hero (the space
-       that used to be empty). Styles: the ".wd-ads" block at the end of
-       style-dev.css. The 2nd set of cards is an aria-hidden duplicate
-       that makes the loop seamless — when you edit a card, edit both.
-       Destination URL: change WD_URL in the <script> just below.
-       To remove: delete this <aside> + its <script> + the CSS block. ══ -->
-  <aside class="wd-ads" id="wdAds" aria-label="Femix Web Dev — website design service" data-nosnippet>
-    <div class="wd-ads-viewport">
-      <div class="wd-ads-track">
-      <a class="wd-card wd-card--1" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">This site? <em>We built it.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--2" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">No website? <em>No trust.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--3" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Be on <em>Google</em>, not just WhatsApp.</span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--4" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Bookings &amp; quotes <em>on autopilot.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--2" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Your competitor has a site. <em>Do you?</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--3" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-label="Femix Web Dev — Get your website">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Shop, salon, school? <em>Get a website.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--1" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">This site? <em>We built it.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--2" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">No website? <em>No trust.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--3" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Be on <em>Google</em>, not just WhatsApp.</span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--4" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Bookings &amp; quotes <em>on autopilot.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--2" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Your competitor has a site. <em>Do you?</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      <a class="wd-card wd-card--3" href="https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business." target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-        <span class="wd-card-text">
-          <span class="wd-card-brand">Femix Web Dev</span>
-          <span class="wd-card-head">Shop, salon, school? <em>Get a website.</em></span>
-        </span>
-        <span class="wd-card-btn">Get Your Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </a>
-      </div>
-    </div>
-  </aside>
-  <script>
-    (function () {
-      var WD_URL = 'https://wa.me/2349060708332?text=Hello%20Femix%20Web%20Dev%2C%20I%20saw%20your%20work%20on%20femixplumbing.name.ng%20and%20I%20want%20a%20website%20for%20my%20business.'; /* ← CHANGE to your website-order page */
-      var ads = document.getElementById('wdAds');
-      if (!ads) return;
-      ads.querySelectorAll('.wd-card').forEach(function (a) { a.href = WD_URL; });
-      ads.addEventListener('click', function (e) {
-        if (e.target.closest('.wd-card') && window.gtag) gtag('event', 'website_ad_click', { link_url: WD_URL });
-      });
-    })();
-  </script>
-
-
-  <nav class="side-dots" aria-label="Page sections" id="sideDots">
-    <button class="sdot active" data-target="home"     aria-label="Home section"></button>
-    <button class="sdot"        data-target="services" aria-label="Services"></button>
-    <button class="sdot"        data-target="about"    aria-label="About"></button>
-    <button class="sdot"        data-target="reviews"  aria-label="Reviews"></button>
-    <button class="sdot"        data-target="contact"  aria-label="Contact"></button>
-  </nav>
-
-  <!-- ══ HERO ══ -->
-  <section id="hero" class="section hero-section">
-    <div class="hero-grid-bg" aria-hidden="true"></div>
-    <div class="orb orb-a" aria-hidden="true"></div>
-    <div class="orb orb-b" aria-hidden="true"></div>
-    <div class="orb orb-c" aria-hidden="true"></div>
-    <div class="hero-galaxy-stars" aria-hidden="true"></div>
-    <div class="hero-galaxy-glow" aria-hidden="true"></div>
-
-    <div class="hero-banner" aria-hidden="true">
-      <div class="hero-banner-slides">
-        <div class="hero-banner-slide"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="" loading="eager"></div>
-        <div class="hero-banner-slide"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="" loading="lazy"></div>
-        <div class="hero-banner-slide"><img src="images/gallery/femix-plumbing-luxury-terrazzo-bathroom-mep-engineering.webp" alt="" loading="lazy"></div>
-        <div class="hero-banner-slide"><img src="images/gallery/femix-plumbing-glass-shower-enclosure-modern-tower-panel.webp" alt="" loading="lazy"></div>
-        <div class="hero-banner-slide"><img src="images/gallery/femix-plumbing-double-vanity-sink-black-marble-bathroom.webp" alt="" loading="lazy"></div>
-      </div>
-      <div class="hero-banner-tint"></div>
-      <div class="hero-banner-curtain hero-banner-curtain--left"></div>
-      <div class="hero-banner-curtain hero-banner-curtain--right"></div>
-    </div>
-
-    <aside class="hero-metrics" aria-label="Key statistics">
-      <div class="metric-card glass">
-        <span class="mc-icon" aria-hidden="true">🚨</span>
-        <span class="mc-val">24/7</span>
-        <span class="mc-lbl">Emergency</span>
-      </div>
-      <div class="metric-card glass">
-        <span class="mc-icon" aria-hidden="true">⭐</span>
-        <span class="mc-val">4.9</span>
-        <span class="mc-lbl">Rating</span>
-      </div>
-      <div class="metric-card glass">
-        <span class="mc-icon" aria-hidden="true">✅</span>
-        <span class="mc-val">500+</span>
-        <span class="mc-lbl">Jobs Done</span>
-      </div>
-    </aside>
-
-    <div class="hero-body">
-      <div class="hero-badge reveal-fade">
-        <span class="badge-pulse" aria-hidden="true"></span>
-        <strong>Licensed & Certified</strong> · Est. 2019
-      </div>
-      <h1 class="hero-h1 reveal-fade d1">
-        <span class="h1-word">Plumbing</span>
-        <span class="h1-word h1-accent">Expert</span>
-        <span class="h1-word h1-muted">You Can <em>Trust</em></span>
-      </h1>
-      <p class="hero-desc reveal-fade d2">
-        <strong>Certified technicians</strong> delivering fast, reliable plumbing solutions
-        for homes and businesses — <strong>guaranteed satisfaction</strong> on every project.
-      </p>
-      <div class="hero-ctas reveal-fade d3">
-        <button class="btn-primary" id="heroQuoteBtn" aria-haspopup="dialog" data-view="services">
-          <span>Request a Quote</span>
-          <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <a href="#services" class="btn-ghost" data-view="services">
-          <span>View Services</span>
-        </a>
-      </div>
-      <div class="hero-stats reveal-fade d4" role="list">
-        <div class="hstat" role="listitem"><span class="hstat-val">8+</span><span class="hstat-lbl">Years Exp.</span></div>
-        <div class="hstat-sep" aria-hidden="true"></div>
-        <div class="hstat" role="listitem"><span class="hstat-val">100%</span><span class="hstat-lbl">Reliable</span></div>
-        <div class="hstat-sep" aria-hidden="true"></div>
-        <div class="hstat" role="listitem"><span class="hstat-val">4.9★</span><span class="hstat-lbl">Rated</span></div>
-        <div class="hstat-sep" aria-hidden="true"></div>
-        <div class="hstat" role="listitem"><span class="hstat-val">24/7</span><span class="hstat-lbl">Emergency</span></div>
-      </div>
-    </div>
-
-    <div class="scroll-cue" aria-hidden="true">
-      <div class="scroll-line"></div>
-      <span>Explore</span>
-    </div>
-  </section>
-
-  <!-- ── HOME: Instant Quote Estimator — pick a service + rough job
-       size, get an estimated price range immediately. No backend
-       needed: pure client-side lookup against PRICE_TABLE in
-       script.js. Clearly labeled as an estimate, with a one-tap
-       path into the real booking form once someone's ready. ── -->
-  <section class="section estimator-section" id="estimator">
-    <div class="container">
-      <header class="sec-head sec-head-center reveal">
-        <div class="sec-eyebrow">Free &amp; Instant</div>
-        <h2 class="sec-h2">Get Your <span class="g-gold">Plumbing Estimate</span><span class="g-gold"> Price</span> in Seconds</h2>
-        <p class="sec-lead">Select your plumbing service and project size for a quick estimate. Your final price is confirmed after a professional assessment of the job.</p>
-      </header>
-
-      <div class="estimator-card glass reveal">
-        <div class="estimator-row">
-          <div class="field">
-            <label id="estServiceLabel">Service</label>
-            <div class="custom-select est-select" id="estServiceSelect">
-              <button type="button" class="cs-trigger" id="estServiceTrigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="estServiceLabel">
-                <span class="cs-value cs-placeholder" id="estServiceValue">Choose a service</span>
-                <span class="cs-caret" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                </span>
-              </button>
-              <div class="cs-panel" id="estServiceList" role="listbox" aria-labelledby="estServiceLabel" hidden>
-                <div class="cs-group">
-                  <div class="cs-group-label">Residential</div>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Residential Plumbing Solution">Residential Plumbing Solution</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Bathroom & Kitchen Upgrades">Bathroom &amp; Kitchen Upgrades</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Pipe Installation & Repiping">Pipe Installation &amp; Repiping</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Toilet & Fixture Installation">Toilet &amp; Fixture Installation</button>
-                </div>
-                <div class="cs-group">
-                  <div class="cs-group-label">Commercial</div>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Commercial and Estate Plumbing Systems">Commercial and Estate Plumbing Systems</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water System, Borehole & Pump Solutions">Water System, Borehole &amp; Pump Solutions</button>
-                </div>
-                <div class="cs-group">
-                  <div class="cs-group-label">Specialist</div>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Leak Detection & Diagnostic Services">Leak Detection &amp; Diagnostic Services</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water Efficiency & Conservation Systems">Water Efficiency &amp; Conservation Systems</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Drain Cleaning & Unclogging">Drain Cleaning &amp; Unclogging</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water Heater Installation & Repair">Water Heater Installation &amp; Repair</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Gas Line Installation & Repair">Gas Line Installation &amp; Repair</button>
-                </div>
-                <div class="cs-group cs-group--urgent">
-                  <div class="cs-group-label">Urgent</div>
-                  <button type="button" class="cs-option cs-option--urgent" role="option" aria-selected="false" data-value="Emergency Call-Out (24/7)">Emergency Call-Out (24/7)</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label id="estSizeLabel">Job Size</label>
-            <div class="custom-select est-select" id="estSizeSelect">
-              <button type="button" class="cs-trigger" id="estSizeTrigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="estSizeLabel">
-                <span class="cs-value cs-placeholder" id="estSizeValue">Choose a size</span>
-                <span class="cs-caret" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                </span>
-              </button>
-              <div class="cs-panel" id="estSizeList" role="listbox" aria-labelledby="estSizeLabel" hidden>
-                <div class="cs-group">
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="small">Small — single fixture / minor repair</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="medium">Medium — full room / multiple fixtures</button>
-                  <button type="button" class="cs-option" role="option" aria-selected="false" data-value="large">Large — whole building / commercial</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button type="button" class="btn-primary btn-block" id="estCalcBtn">Get My Estimate</button>
-
-        <div class="estimator-result" id="estResult" hidden>
-          <span class="estimator-result-label">Estimated Range</span>
-          <span class="estimator-result-value" id="estResultValue">₦0 – ₦0</span>
-          <p class="estimator-result-note">This is a rough estimate based on typical jobs — your final price is confirmed after a free on-site or photo-based inspection.</p>
-          <button type="button" class="btn-primary btn-block" id="estBookBtn">Book This Service →</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── HOME: Quick-nav cards ── -->
-  <section class="section spa-quicknav-section">
-    <div class="container">
-      <div class="spa-quicknav-grid">
-        <button class="spa-qcard glass" data-view="services" aria-label="Go to Services">
-          <span class="spa-qcard-icon">🔧</span>
-          <span class="spa-qcard-title">Services</span>
-          <span class="spa-qcard-sub">Residential · Commercial · Emergency</span>
-          <span class="spa-qcard-arrow">→</span>
-        </button>
-        <button class="spa-qcard glass" data-view="about" aria-label="Go to About">
-          <span class="spa-qcard-icon">🏅</span>
-          <span class="spa-qcard-title">About Us</span>
-          <span class="spa-qcard-sub">Our story & craftsmanship</span>
-          <span class="spa-qcard-arrow">→</span>
-        </button>
-        <button class="spa-qcard glass" data-view="reviews" aria-label="Go to Reviews">
-          <span class="spa-qcard-icon">⭐</span>
-          <span class="spa-qcard-title">Reviews</span>
-          <span class="spa-qcard-sub">What clients say about us</span>
-          <span class="spa-qcard-arrow">→</span>
-        </button>
-
-        <!-- Single compact Contact card — collapsed by default (shows just
-             "Contact"); tapping it reveals the six contact methods, each
-             independently clickable. Purely informational: no booking
-             action anywhere in this card — booking stays exclusively in
-             the Services section. -->
-        <div class="spa-qcard spa-qcard--contact glass" id="contactCard">
-          <button type="button" class="qc-contact-toggle" id="contactToggle" aria-expanded="false" aria-controls="contactPanel">
-            <span class="spa-qcard-icon">💬</span>
-            <span class="spa-qcard-title">Contact</span>
-            <span class="qc-contact-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-            </span>
-          </button>
-          <div class="qc-contact-panel" id="contactPanel" role="region" aria-label="Contact options" hidden>
-            <div class="qc-contact-grid">
-              <a href="tel:+2349060708332" class="qc-contact-btn" aria-label="Call +234 906 0708 332">
-                <span class="qc-contact-icon" aria-hidden="true">📞</span>
-                <span class="qc-contact-lbl">Call</span>
-              </a>
-              <a href="mailto:femixplumbingservices931@gmail.com" class="qc-contact-btn" aria-label="Email femixplumbingservices931@gmail.com">
-                <span class="qc-contact-icon" aria-hidden="true">✉️</span>
-                <span class="qc-contact-lbl">Email</span>
-              </a>
-              <a href="https://femixplumbing.name.ng" target="_blank" rel="noopener" class="qc-contact-btn" aria-label="Visit femixplumbing.name.ng">
-                <span class="qc-contact-icon" aria-hidden="true">🌐</span>
-                <span class="qc-contact-lbl">Website</span>
-              </a>
-              <div class="qc-contact-btn qc-contact-btn--static" aria-label="Location: Ile Ife, Osun State, Nigeria">
-                <span class="qc-contact-icon" aria-hidden="true">📍</span>
-                <span class="qc-contact-lbl">Location</span>
-              </div>
-              <div class="qc-contact-btn qc-contact-btn--static" aria-label="Registration: CAC BN–9518216">
-                <span class="qc-contact-icon" aria-hidden="true">🏢</span>
-                <span class="qc-contact-lbl">Reg. No.</span>
-              </div>
-              <div class="qc-contact-btn qc-contact-btn--static" aria-label="Working hours: Monday to Saturday, 7am to 7pm, 24/7 emergency">
-                <span class="qc-contact-icon" aria-hidden="true">🕐</span>
-                <span class="qc-contact-lbl">Hours</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- ── HOME: Enlarged, full-width Gallery banner — a photo band with
-       a dark scrim and the title/CTA overlaid on top, matching the
-       look of the footer showcase band (same idea, but static — no
-       sliding animation — so it adds zero ongoing CPU/GPU cost).
-       The whole thing is a single button so tapping anywhere on
-       it opens the Gallery view. ── -->
-  <button type="button" class="gallery-banner" data-view="gallery" aria-label="Go to Gallery — see our work and request a quote">
-    <div class="gallery-banner-photos" aria-hidden="true">
-      <img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="" loading="lazy" decoding="async">
-      <img src="images/gallery/femix-plumbing-pedestal-basin-black-matte-shower-set.webp" alt="" loading="lazy" decoding="async">
-      <img src="images/gallery/femix-plumbing-concealed-shower-system-installation-lagos.webp" alt="" loading="lazy" decoding="async">
-      <img src="images/gallery/femix-plumbing-high-end-kitchen-water-infrastructure-design.webp" alt="" loading="lazy" decoding="async">
-    </div>
-    <div class="gallery-banner-scrim" aria-hidden="true"></div>
-    <div class="gallery-banner-caption">
-      <span class="gallery-banner-icon" aria-hidden="true">🖼️</span>
-      <span class="gallery-banner-title">Gallery</span>
-      <span class="gallery-banner-sub">See our completed work & request a quote based on a photo</span>
-      <span class="gallery-banner-cta">View Gallery <span class="gallery-banner-arrow" aria-hidden="true">→</span></span>
-    </div>
-  </button>
-
-  <!-- Footer lives inside home view -->
-  <footer class="site-footer">
-    <div class="container">
-      <!-- Sliding 3-row photo showcase with the wordmark overlaid on top -->
-      <div class="footer-showcase">
-        <div class="footer-showcase-row" aria-hidden="true">
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-jacuzzi-bathtub-shower-installation.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-marble-bathroom-sanitary-installation-lagos.webp" alt="" loading="lazy"></div>
-        </div>
-        <div class="footer-showcase-row footer-showcase-row--rev" aria-hidden="true">
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-luxury-freestanding-bathtub-leak-testing.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="" loading="lazy"></div>
-        </div>
-        <div class="footer-showcase-row" aria-hidden="true">
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-professional-plumber-nigeria.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-professional-plumber-nigeria.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-professional-plumber-nigeria.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-services-commercial-bathroom-plumbing-layout.webp" alt="" loading="lazy"></div>
-          <div class="fsg-tile"><img src="images/gallery/femix-plumbing-professional-plumber-nigeria.webp" alt="" loading="lazy"></div>
-        </div>
-        <div class="footer-showcase-scrim" aria-hidden="true"></div>
-
-        <div class="footer-showcase-caption">
-          <div class="footer-wordmark">FE<em>MIX</em> PLUM<em>BING</em> SER<em>VICES</em></div>
-          <div class="footer-tagline-wrap" aria-hidden="false">
-            <div class="footer-tagline-track">
-              <span>Professional Plumbing & Water Engineering Solutions · Est. 2019</span>
-              <span>Professional Plumbing & Water Engineering Solutions · Est. 2019</span>
-            </div>
-          </div>
-          <div class="footer-badges">
-            <span class="fbadge">Certified</span>
-            <span class="fbadge">Experienced</span>
-            <span class="fbadge">Registered</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Newsletter bar (kept per request) -->
-      <div class="ftr-newsletter-bar">
-        <form class="ftr-newsletter" id="footerNewsletterForm">
-          <label for="ftrNewsletterEmail" class="ftr-newsletter-label">Get plumbing tips &amp; offers</label>
-          <div class="ftr-newsletter-row">
-            <input type="email" id="ftrNewsletterEmail" class="ftr-newsletter-input" placeholder="Your email address" required>
-            <button type="submit" class="ftr-newsletter-btn" aria-label="Subscribe">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </button>
-          </div>
-          <p class="ftr-newsletter-note" id="ftrNewsletterNote" role="status" hidden></p>
-        </form>
-      </div>
-
-      <!-- Founder spotlight — compact premium card.
-           Keep the class "ftr-founder-spotlight": the site search ("Founder's Profile")
-           scrolls to it. Edit the .ftr-founder-note text to change the write-up. -->
-      <div class="ftr-founder-spotlight ftr-founder-spotlight--compact glass">
-        <div class="ftr-founder-frame">
-          <img src="images/founder/femix-plumbing-technician.webp" alt="Nuhn Wasiu Femi, Founder and Lead Plumbing Technician at Femix Plumbing Services" class="ftr-founder-spotlight-photo" width="64" height="96" loading="lazy" decoding="async">
-        </div>
-        <div class="ftr-founder-spotlight-text">
-          <p class="ftr-founder-spotlight-name">Nuhn Wasiu Femi</p>
-          <p class="ftr-founder-spotlight-role">Founder &amp; Lead Technician</p>
-          <p class="ftr-founder-note">Every job I do is <strong>planned, tested and handed over clean</strong> — for homes, estates and businesses across Ile-Ife and Osun State.</p>
-        </div>
-      </div>
-
-      <!-- Modern numbered nav row -->
-      <nav class="footer-nav-row" aria-label="Footer navigation">
-        <a href="#about" class="footer-nav-card glass" data-view="about">
-          <span class="fnc-num">01</span>
-          <span class="fnc-label">About</span>
-          <svg class="fnc-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#services" class="footer-nav-card glass" data-view="services">
-          <span class="fnc-num">02</span>
-          <span class="fnc-label">Services</span>
-          <svg class="fnc-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#reviews" class="footer-nav-card glass" data-view="reviews">
-          <span class="fnc-num">03</span>
-          <span class="fnc-label">Reviews</span>
-          <svg class="fnc-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#contactCard" class="footer-nav-card glass">
-          <span class="fnc-num">04</span>
-          <span class="fnc-label">Contact</span>
-          <svg class="fnc-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </nav>
-
-      <div class="footer-bottom">
-        <p class="footer-copy">© <span id="yr"></span> FEMIX PLUMBING SERVICES · All rights reserved</p>
-      </div>
-    </div>
-  </footer>
-
-</div><!-- /view-home -->
-
-<!-- ══════════════════════════════════════
-     SERVICES VIEW
-════════════════════════════════════════ -->
-<div id="view-services" class="spa-view spa-view--page" data-view-id="services" role="main" aria-hidden="true">
-  <div class="spa-view-inner">
-
-    <div class="spa-view-header">
-      <button class="spa-back-btn" data-view="home" aria-label="Back to Home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back
-      </button>
-      <div class="spa-view-title">Services</div>
-    </div>
-
-    <section class="section services-section">
-      <div class="container">
-        <header class="sec-head reveal">
-          <div class="sec-eyebrow">What We Do</div>
-          <h2 class="sec-h2">Professional Services<br><span class="g-gold">Crafted with <strong>Precision</strong></span></h2>
-          <p class="sec-lead"><strong>Combining technical expertise</strong> with proven workmanship, <strong>we design, install, maintain, and repair plumbing systems</strong> that meet the highest standards of <strong>safety, reliability, and efficiency.</strong></p>
-        </header>
-
-        <div class="svc-tabs" role="tablist" aria-label="Service categories" id="svcTabList">
-          <button class="svc-tab active" role="tab" aria-selected="true"  aria-controls="tab-residential" id="tb-residential" data-tab="residential"><span class="tab-icon" aria-hidden="true">🏠</span> Residential</button>
-          <button class="svc-tab"        role="tab" aria-selected="false" aria-controls="tab-commercial"  id="tb-commercial"  data-tab="commercial" ><span class="tab-icon" aria-hidden="true">🏢</span> Commercial</button>
-          <button class="svc-tab"        role="tab" aria-selected="false" aria-controls="tab-water"       id="tb-water"       data-tab="water"      ><span class="tab-icon" aria-hidden="true">💧</span> Water Systems</button>
-          <button class="svc-tab"        role="tab" aria-selected="false" aria-controls="tab-specialist"  id="tb-specialist"  data-tab="specialist" ><span class="tab-icon" aria-hidden="true">🔍</span> Specialist</button>
-          <button class="svc-tab tab-emergency" role="tab" aria-selected="false" aria-controls="tab-emergency" id="tb-emergency" data-tab="emergency"><span class="tab-icon" aria-hidden="true">🚨</span> Emergency</button>
-          <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
-        </div>
-
-        <div class="svc-panels">
-          <div class="svc-panel active" id="tab-residential" role="tabpanel" aria-labelledby="tb-residential">
-            <div class="panel-grid">
-              <div class="panel-card glass">
-                <div class="panel-icon" aria-hidden="true">🏠</div>
-                <h3>Residential Plumbing Solutions</h3>
-                <p>Complete plumbing care for your home — from quick fixes to full system installs, by certified professionals.</p>
-                <button class="panel-cta" data-service="Residential Plumbing Solution">Book a Service →</button>
-                <div class="svc-galaxy-wrap">
-                  <div class="svc-galaxy-bg" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars svc-galaxy-stars--far" aria-hidden="true"></div>
-                  <div class="svc-item-grid">
-                  <button class="svc-item-btn svc-item-btn--01" data-service="Leak Detection & Pipe Repairs">
-                    <span class="svc-item-icon" aria-hidden="true">💧</span>
-                    <span class="svc-item-text">Leak detection & pipe repairs</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--02" data-service="Toilet, Sink, Tap & Shower Installation">
-                    <span class="svc-item-icon" aria-hidden="true">🚿</span>
-                    <span class="svc-item-text">Toilet, sink, tap & shower installation</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--03" data-service="Full Bathroom Plumbing & Upgrades">
-                    <span class="svc-item-icon" aria-hidden="true">🛁</span>
-                    <span class="svc-item-text">Full bathroom plumbing & upgrades</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--04" data-service="Pipe Replacement & Water Line Installation">
-                    <span class="svc-item-icon" aria-hidden="true">🔧</span>
-                    <span class="svc-item-text">Pipe replacement & water line installation</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--05" data-service="Low Water Pressure Diagnosis & Correction">
-                    <span class="svc-item-icon" aria-hidden="true">📉</span>
-                    <span class="svc-item-text">Low water pressure diagnosis & correction</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--06" data-service="Drain, Sink & Toilet Blockage Removal">
-                    <span class="svc-item-icon" aria-hidden="true">🚽</span>
-                    <span class="svc-item-text">Drain, sink & toilet blockage removal</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--07" data-service="Water Heater Installation & Servicing">
-                    <span class="svc-item-icon" aria-hidden="true">🔥</span>
-                    <span class="svc-item-text">Water heater installation & servicing</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--08" data-service="Renovation Plumbing for Older Buildings">
-                    <span class="svc-item-icon" aria-hidden="true">🏚️</span>
-                    <span class="svc-item-text">Renovation plumbing for older buildings</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="svc-panel" id="tab-commercial" role="tabpanel" aria-labelledby="tb-commercial" hidden>
-            <div class="panel-grid">
-              <div class="panel-card glass">
-                <div class="panel-icon" aria-hidden="true">🏢</div>
-                <h3>Commercial & Estate Plumbing</h3>
-                <p>Large-scale systems built for hotels, schools, hospitals, offices and residential estates across Nigeria.</p>
-                <button class="panel-cta" data-service="Commercial and Estate Plumbing Systems">Book a Service →</button>
-                <div class="svc-galaxy-wrap">
-                  <div class="svc-galaxy-bg" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars svc-galaxy-stars--far" aria-hidden="true"></div>
-                  <div class="svc-item-grid">
-                  <button class="svc-item-btn svc-item-btn--01" data-service="Full Plumbing for New Commercial Buildings">
-                    <span class="svc-item-icon" aria-hidden="true">🏗️</span>
-                    <span class="svc-item-text">Full plumbing for new commercial buildings</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--02" data-service="Estate & Apartment Water System Setup">
-                    <span class="svc-item-icon" aria-hidden="true">🏘️</span>
-                    <span class="svc-item-text">Estate & apartment water system setup</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--03" data-service="Industrial Pipework & Distribution Networks">
-                    <span class="svc-item-icon" aria-hidden="true">🏭</span>
-                    <span class="svc-item-text">Industrial pipework & distribution networks</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--04" data-service="Public Restroom Plumbing & Upgrades">
-                    <span class="svc-item-icon" aria-hidden="true">🚻</span>
-                    <span class="svc-item-text">Public restroom plumbing & upgrades</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--05" data-service="Water System Balancing & Pressure Optimization">
-                    <span class="svc-item-icon" aria-hidden="true">⚖️</span>
-                    <span class="svc-item-text">Water system balancing & pressure optimization</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--06" data-service="Facility Maintenance Contracts">
-                    <span class="svc-item-icon" aria-hidden="true">📋</span>
-                    <span class="svc-item-text">Facility maintenance contracts</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--07" data-service="Drainage System Installation & Management">
-                    <span class="svc-item-icon" aria-hidden="true">🌊</span>
-                    <span class="svc-item-text">Drainage system installation & management</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--08" data-service="Plumbing Audits for Large Properties">
-                    <span class="svc-item-icon" aria-hidden="true">🔍</span>
-                    <span class="svc-item-text">Plumbing audits for large properties</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="svc-panel" id="tab-water" role="tabpanel" aria-labelledby="tb-water" hidden>
-            <div class="panel-grid">
-              <div class="panel-card glass">
-                <div class="panel-icon" aria-hidden="true">💧</div>
-                <h3>Water Systems & Borehole Solutions</h3>
-                <p>Complete water infrastructure — from borehole to every tap, designed and installed with precision.</p>
-                <button class="panel-cta" data-service="Water System, Borehole & Pump Solutions">Book a Service →</button>
-                <div class="svc-galaxy-wrap">
-                  <div class="svc-galaxy-bg" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars svc-galaxy-stars--far" aria-hidden="true"></div>
-                  <div class="svc-item-grid">
-                  <button class="svc-item-btn svc-item-btn--01" data-service="Borehole Plumbing, Reticulation & Distribution">
-                    <span class="svc-item-icon" aria-hidden="true">🕳️</span>
-                    <span class="svc-item-text">Borehole plumbing, reticulation & distribution</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--02" data-service="Overhead Tank Installation & Steel Towers">
-                    <span class="svc-item-icon" aria-hidden="true">🗼</span>
-                    <span class="svc-item-text">Overhead tank installation & steel towers</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--03" data-service="Submersible & Surface Pump Installation">
-                    <span class="svc-item-icon" aria-hidden="true">⚙️</span>
-                    <span class="svc-item-text">Submersible & surface pump installation</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--04" data-service="Booster & Pressure Pump Systems">
-                    <span class="svc-item-icon" aria-hidden="true">📈</span>
-                    <span class="svc-item-text">Booster & pressure pump systems</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--05" data-service="Hot & Cold Water Piping Systems">
-                    <span class="svc-item-icon" aria-hidden="true">🌡️</span>
-                    <span class="svc-item-text">Hot & cold water piping systems</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--06" data-service="Full Building Water Reticulation Design">
-                    <span class="svc-item-icon" aria-hidden="true">📐</span>
-                    <span class="svc-item-text">Full building water reticulation design</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--07" data-service="Water Filtration & Treatment Systems">
-                    <span class="svc-item-icon" aria-hidden="true">🧪</span>
-                    <span class="svc-item-text">Water filtration & treatment systems</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--08" data-service="Rainwater Harvesting Systems">
-                    <span class="svc-item-icon" aria-hidden="true">🌧️</span>
-                    <span class="svc-item-text">Rainwater harvesting systems</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="svc-panel" id="tab-specialist" role="tabpanel" aria-labelledby="tb-specialist" hidden>
-            <div class="panel-grid">
-              <div class="panel-card glass">
-                <div class="panel-icon" aria-hidden="true">🔍</div>
-                <h3>Specialist & Efficiency Services</h3>
-                <p>Advanced diagnostics and eco-solutions — we detect problems others miss and reduce your water costs.</p>
-                <button class="panel-cta" data-service="Leak Detection & Diagnostic Services">Book a Service →</button>
-                <div class="svc-galaxy-wrap">
-                  <div class="svc-galaxy-bg" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars" aria-hidden="true"></div>
-                  <div class="svc-galaxy-stars svc-galaxy-stars--far" aria-hidden="true"></div>
-                  <div class="svc-item-grid">
-                  <button class="svc-item-btn svc-item-btn--01" data-service="Non-invasive Hidden Leak Detection">
-                    <span class="svc-item-icon" aria-hidden="true">🔎</span>
-                    <span class="svc-item-text">Non-invasive hidden leak detection</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--02" data-service="Wall, Floor & Ceiling Moisture Tracing">
-                    <span class="svc-item-icon" aria-hidden="true">🧱</span>
-                    <span class="svc-item-text">Wall, floor & ceiling moisture tracing</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--03" data-service="Underground Pipe Leak Detection">
-                    <span class="svc-item-icon" aria-hidden="true">🕳️</span>
-                    <span class="svc-item-text">Underground pipe leak detection</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--04" data-service="Pressure Testing & Water Loss Analysis">
-                    <span class="svc-item-icon" aria-hidden="true">📊</span>
-                    <span class="svc-item-text">Pressure testing & water loss analysis</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--05" data-service="Preventive Plumbing Inspections">
-                    <span class="svc-item-icon" aria-hidden="true">✅</span>
-                    <span class="svc-item-text">Preventive plumbing inspections</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--06" data-service="Water-saving Fixture Installation">
-                    <span class="svc-item-icon" aria-hidden="true">💧</span>
-                    <span class="svc-item-text">Water-saving fixture installation</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--07" data-service="Dual-flush Toilet Upgrades">
-                    <span class="svc-item-icon" aria-hidden="true">🚽</span>
-                    <span class="svc-item-text">Dual-flush toilet upgrades</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  <button class="svc-item-btn svc-item-btn--08" data-service="Eco-friendly Plumbing Retrofits">
-                    <span class="svc-item-icon" aria-hidden="true">🌿</span>
-                    <span class="svc-item-text">Eco-friendly plumbing retrofits</span>
-                    <span class="svc-item-arrow" aria-hidden="true">→</span>
-                  </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="svc-panel" id="tab-emergency" role="tabpanel" aria-labelledby="tb-emergency" hidden>
-            <div class="emg-panel glass">
-              <div class="emg-top">
-                <span class="emg-icon" aria-hidden="true">🚨</span>
-                <div>
-                  <h3>24/7 Emergency Plumbing Response</h3>
-                  <p>Fast-response for urgent plumbing issues — <strong>any hour, any day</strong>, no delay.</p>
-                </div>
-              </div>
-              <ul class="emg-grid">
-                <li>Burst pipe emergency repairs</li>
-                <li>Severe leak containment & shutdown</li>
-                <li>Blocked toilets, drains & sewage</li>
-                <li>Water pump & system failure repairs</li>
-                <li>Flood and overflow control</li>
-                <li>Urgent on-site diagnostics</li>
-              </ul>
-              <div class="emg-actions">
-                <a href="tel:+2349060708332" class="btn-emg">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-                  Call Now — +234 906 0708 332
-                </a>
-                <a href="https://wa.me/2349060708332?text=EMERGENCY:%20I%20need%20urgent%20plumbing%20help!" target="_blank" rel="noopener" class="btn-emg-wa">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  WhatsApp Emergency
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div><!-- /view-services -->
-
-<!-- ══════════════════════════════════════
-     GALLERY VIEW — portfolio grid; each card
-     opens the booking wizard with the message
-     field pre-filled to reference that project,
-     so a client can request a quote based on a
-     specific photo instead of guessing a service
-     category. Reuses the same images already
-     shipped for the homepage gallery strip.
-════════════════════════════════════════ -->
-<div id="view-gallery" class="spa-view spa-view--page" data-view-id="gallery" role="main" aria-hidden="true">
-  <div class="spa-view-inner">
-
-    <div class="spa-view-header">
-      <button class="spa-back-btn" data-view="home" aria-label="Back to Home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back
-      </button>
-      <div class="spa-view-title">Gallery</div>
-    </div>
-
-    <section class="section gallery-view-section">
-      <div class="container">
-        <header class="sec-head sec-head-center reveal">
-          <div class="sec-eyebrow">Our Work</div>
-          <h2 class="sec-h2">Browse the Job,<br><span class="g-gold">Request a <strong>Quote</strong></span></h2>
-          <p class="sec-lead">See something close to what you need? Tap a photo to request a quote referencing that exact job — no need to guess which service category it falls under.</p>
-        </header>
-
-        <div class="gallery-grid">
-
-          <figure class="gallery-item reveal">
-            <img src="images/gallery/femix-plumbing-luxury-kitchen-piping-layout-design.webp" alt="Luxury kitchen piping layout design" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Kitchen Piping Layout Design</span>
-              <button type="button" class="gallery-quote-btn" data-project="Kitchen Piping Layout Design">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d1">
-            <img src="images/gallery/femix-plumbing-luxury-kitchen-water-line-piping-installation.webp" alt="Kitchen water line piping installation" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Kitchen Water Line Installation</span>
-              <button type="button" class="gallery-quote-btn" data-project="Kitchen Water Line Installation">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d2">
-            <img src="images/gallery/femix-plumbing-luxury-residential-estate-mep-contractor-nigeria.webp" alt="Residential estate MEP contracting" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Residential Estate MEP Contracting</span>
-              <button type="button" class="gallery-quote-btn" data-project="Residential Estate MEP Contracting">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d3">
-            <img src="images/gallery/femix-plumbing-modern-bathroom-design-vanity-nigeria.webp" alt="Modern bathroom vanity design" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Modern Bathroom Vanity Design</span>
-              <button type="button" class="gallery-quote-btn" data-project="Modern Bathroom Vanity Design">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal">
-            <img src="images/gallery/femix-plumbing-affordable-plumbing-services-osun.webp" alt="Affordable plumbing services Osun" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Affordable Plumbing — Osun</span>
-              <button type="button" class="gallery-quote-btn" data-project="Affordable Plumbing (Osun)">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d1">
-            <img src="images/gallery/femix-plumbing-commercial-mep-building-services-layout-design.webp" alt="Commercial MEP building services layout" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Commercial MEP Building Layout</span>
-              <button type="button" class="gallery-quote-btn" data-project="Commercial MEP Building Layout">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d2">
-            <img src="images/gallery/femix-plumbing-services-wall-hung-toilet-basin-installation.webp" alt="Wall-hung toilet and basin installation" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Wall-Hung Toilet & Basin Installation</span>
-              <button type="button" class="gallery-quote-btn" data-project="Wall-Hung Toilet & Basin Installation">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d3">
-            <img src="images/gallery/femix-plumbing-wall-hung-smart-toilet-installation-nigeria.webp" alt="Smart toilet installation" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Smart Toilet Installation</span>
-              <button type="button" class="gallery-quote-btn" data-project="Smart Toilet Installation">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal">
-            <img src="images/gallery/femix-plumbing-services-wall-hung-smart-toilet-installation-ikoyi.webp" alt="Smart toilet installation Ikoyi" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Smart Toilet Installation — Ikoyi</span>
-              <button type="button" class="gallery-quote-btn" data-project="Smart Toilet Installation (Ikoyi)">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-item reveal d1">
-            <img src="images/gallery/femix-plumbing-matte-black-sanitary-hardware-fittings.webp" alt="Matte black hardware fittings" width="360" height="270" loading="lazy" decoding="async">
-            <figcaption>
-              <span class="gallery-item-title">Matte Black Hardware Fittings</span>
-              <button type="button" class="gallery-quote-btn" data-project="Matte Black Hardware Fittings">Request a Quote for This →</button>
-            </figcaption>
-          </figure>
-
-        </div>
-      </div>
-    </section>
-  </div>
-</div><!-- /view-gallery -->
-
-
-<!-- ══════════════════════════════════════
-     ABOUT VIEW
-════════════════════════════════════════ -->
-<div id="view-about" class="spa-view spa-view--page" data-view-id="about" role="main" aria-hidden="true">
-  <div class="spa-view-inner">
-
-    <div class="spa-view-header">
-      <button class="spa-back-btn" data-view="home" aria-label="Back to Home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back
-      </button>
-      <div class="spa-view-title">About</div>
-    </div>
-
-    <section class="section about-section">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-left reveal-left">
-            <div class="sec-eyebrow">Our Story</div>
-            <h2 class="sec-h2">Redefining Standards<br><span class="g-gold">in <strong>Modern</strong> Plumbing</span></h2>
-            <div class="about-body">
-              <p>Built on a foundation of <strong>technical mastery</strong> and professional integrity, we deliver bespoke plumbing solutions tailored to both residential and commercial environments.</p>
-              <p>Every project is executed with <strong>precision engineering</strong> and meticulous attention to detail — ensuring not just functionality, but <em>long-term reliability and performance.</em></p>
-              <p>We don't just fix problems — <em><strong>we elevate entire systems.</strong></em></p>
-            </div>
-            <div class="cert-grid">
-              <div class="cert-card glass"><span aria-hidden="true">🏅</span><span>Certified Professional Craftsmanship</span></div>
-              <div class="cert-card glass"><span aria-hidden="true">💧</span><span>Sustainable Water Solutions</span></div>
-              <div class="cert-card glass"><span aria-hidden="true">🛡️</span><span>Licensed & Certified</span></div>
-              <div class="cert-card glass"><span aria-hidden="true">⭐</span><span>Guaranteed Excellence</span></div>
-            </div>
-          </div>
-          <div class="about-right reveal-right">
-            <div class="pillars">
-              <div class="pillar glass tilt-card">
-                <div class="pillar-num" aria-hidden="true">01</div>
-                <h3>Diagnostic <strong>Precision</strong></h3>
-                <p>We identify issues other plumbers miss. <strong>No guesswork</strong> — accurate solutions, first time.</p>
-              </div>
-              <div class="pillar glass tilt-card">
-                <div class="pillar-num" aria-hidden="true">02</div>
-                <h3>Premium <strong>Materials Only</strong></h3>
-                <p>Only <strong>certified, high-grade materials</strong> on every job — built to last years, not months.</p>
-              </div>
-              <div class="pillar glass tilt-card">
-                <div class="pillar-num" aria-hidden="true">03</div>
-                <h3>Guaranteed <strong>Satisfaction</strong></h3>
-                <p>We don't leave until the work is complete, clean, and you're <strong>100% satisfied</strong>.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div><!-- /view-about -->
-
-
-<!-- ══════════════════════════════════════
-     REVIEWS VIEW
-════════════════════════════════════════ -->
-<div id="view-reviews" class="spa-view spa-view--page" data-view-id="reviews" role="main" aria-hidden="true">
-  <div class="spa-view-inner">
-
-    <div class="spa-view-header">
-      <button class="spa-back-btn" data-view="home" aria-label="Back to Home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back
-      </button>
-      <div class="spa-view-title">Reviews</div>
-    </div>
-
-    <section class="section reviews-section">
-      <div class="container">
-        <header class="sec-head sec-head-center reveal">
-          <div class="sec-eyebrow">Client Reviews</div>
-          <h2 class="sec-h2">What Our Clients<br><span class="g-gold">Are <strong>Saying</strong></span></h2>
-          <p class="sec-lead">Real experiences from customers across Nigeria who <strong>trust FEMIX</strong> for all their plumbing needs.</p>
-        </header>
-
-        <div class="reviews-viewport" role="region" aria-label="Customer reviews">
-          <div class="reviews-track" id="reviewsTrack">
-            <article class="review-card glass" tabindex="0">
-              <header class="review-top">
-                <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-                <span class="verified-badge">✓ Verified</span>
-              </header>
-              <blockquote class="review-q">"Femix Plumbing saved me during a <strong>late night water emergency</strong> at my house in Ring Rd. They came quickly and fixed the burst pipe professionally. God bless them!"</blockquote>
-              <footer class="review-author">
-                <div class="av av-a" aria-hidden="true">AM</div>
-                <div><div class="av-name">Adebayo Mutiu</div><div class="av-loc">📍 Ibadan, Oyo State</div></div>
-              </footer>
-            </article>
-            <article class="review-card glass" tabindex="0">
-              <header class="review-top">
-                <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-                <span class="verified-badge">✓ Verified</span>
-              </header>
-              <blockquote class="review-q">"<strong>Very honest pricing</strong>, no wahala at all. They installed a water heater for my shop and explained everything clearly. I highly recommend them!"</blockquote>
-              <footer class="review-author">
-                <div class="av av-b" aria-hidden="true">CO</div>
-                <div><div class="av-name">Chioma Okafor</div><div class="av-loc">📍 Ikeja, Lagos State</div></div>
-              </footer>
-            </article>
-            <article class="review-card glass" tabindex="0">
-              <header class="review-top">
-                <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-                <span class="verified-badge">✓ Verified</span>
-              </header>
-              <blockquote class="review-q">"I manage an estate in Oni Layout and use FEMIX for <strong>all our plumbing work</strong>. Very reliable. They are now our <strong>permanent plumbers</strong>."</blockquote>
-              <footer class="review-author">
-                <div class="av av-c" aria-hidden="true">KA</div>
-                <div><div class="av-name">Kolade Abayomi</div><div class="av-loc">📍 Ile Ife, Osun State</div></div>
-              </footer>
-            </article>
-            <article class="review-card glass" tabindex="0">
-              <header class="review-top">
-                <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-                <span class="verified-badge">✓ Verified</span>
-              </header>
-              <blockquote class="review-q">"Their borehole installation was <strong>world class</strong>. Every pipe perfectly fitted, no leaks whatsoever. Professional team with great attitude. FEMIX is the real deal!"</blockquote>
-              <footer class="review-author">
-                <div class="av av-d" aria-hidden="true">TA</div>
-                <div><div class="av-name">Tokunbo Adeleke</div><div class="av-loc">📍 Ile Ife, Osun State</div></div>
-              </footer>
-            </article>
-          </div>
-        </div>
-
-        <div class="reviews-nav" aria-label="Review carousel controls">
-          <button class="rev-arrow" id="revPrev" aria-label="Previous review">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          </button>
-          <div class="rev-pips" id="revPips" aria-hidden="true"></div>
-          <button class="rev-arrow" id="revNext" aria-label="Next review">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </div>
-    </section>
-  </div>
-</div><!-- /view-reviews -->
-
-
-<!-- ══════════════════════════════════════
-     CONTACT / BOOKING FORM VIEW
-════════════════════════════════════════ -->
-<div id="view-contact" class="spa-view spa-view--page" data-view-id="contact" role="main" aria-hidden="true">
-  <div class="spa-view-inner">
-
-    <div class="spa-view-header">
-      <button class="spa-back-btn" data-view="home" aria-label="Back to Home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back
-      </button>
-      <div class="spa-view-title">Book a Service</div>
-    </div>
-
-    <section class="section contact-section">
-      <div class="container">
-        <div class="contact-grid">
-          <div class="contact-info">
-            <div class="sec-eyebrow">Secure Your Slot</div>
-            <h2 class="sec-h2">Schedule an <br><span class="g-gold"><strong>Expert</strong> Consultation</span></h2>
-            <p class="sec-lead">Select the service you need below to book an official site inspection. <strong>Service request confirmation within 30 minutes.</strong></p>
-            <div class="info-cards">
-              <a href="tel:+2349060708332" class="info-card glass">
-                <div class="info-icon" aria-hidden="true">📞</div>
-                <div class="info-text"><span class="info-lbl">Phone</span><span class="info-val">+234 906 0708 332</span></div>
-                <svg class="info-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-              <a href="mailto:femixplumbingservices931@gmail.com" class="info-card glass">
-                <div class="info-icon" aria-hidden="true">✉️</div>
-                <div class="info-text"><span class="info-lbl">Email</span><span class="info-val">femixplumbingservices931@gmail.com</span></div>
-                <svg class="info-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-              <div class="info-card glass">
-                <div class="info-icon" aria-hidden="true">📍</div>
-                <div class="info-text"><span class="info-lbl">Location</span><span class="info-val">Ile Ife, Osun State, Nigeria</span></div>
-              </div>
-              <div class="info-card glass">
-                <div class="info-icon" aria-hidden="true">🕐</div>
-                <div class="info-text"><span class="info-lbl">Working Hours</span><span class="info-val">Mon–Sat · 7am–7pm · 24/7 Emergency</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="contact-form-wrap">
-            <div class="form-shell glass booking-wizard">
-              <div class="form-shell-head">
-                <span class="form-shell-title">Booking and Payment</span>
-                <span class="form-shell-badge">Free Booking</span>
-              </div>
-
-              <!-- ── Step progress — click a step to jump back, or use Continue/Back.
-                   Jumping forward re-validates every step in between. ── -->
-              <div class="booking-stepper" id="bookingStepper" role="tablist" aria-label="Booking steps">
-                <button type="button" class="bstep active" data-step="1" role="tab" aria-selected="true" aria-controls="bstep-panel-1">
-                  <span class="bstep-num">1</span>
-                  <span class="bstep-label">Details</span>
-                </button>
-                <span class="bstep-line" aria-hidden="true"></span>
-                <button type="button" class="bstep" data-step="2" role="tab" aria-selected="false" aria-controls="bstep-panel-2">
-                  <span class="bstep-num">2</span>
-                  <span class="bstep-label">Service</span>
-                </button>
-                <span class="bstep-line" aria-hidden="true"></span>
-                <button type="button" class="bstep" data-step="3" role="tab" aria-selected="false" aria-controls="bstep-panel-3">
-                  <span class="bstep-num">3</span>
-                  <span class="bstep-label">Payment</span>
-                </button>
-                <span class="bstep-line" aria-hidden="true"></span>
-                <button type="button" class="bstep" data-step="4" role="tab" aria-selected="false" aria-controls="bstep-panel-4">
-                  <span class="bstep-num">4</span>
-                  <span class="bstep-label">Confirm</span>
-                </button>
-              </div>
-
-              <!-- novalidate: JS handles all validation -->
-              <form id="contactForm" novalidate>
-                <input type="hidden" name="_subject"  value="New Service Booking — FEMIX Plumbing" />
-                <input type="hidden" name="_replyto"  id="freplyto" value="" />
-                <input type="hidden" name="_language" value="en" />
-                <input type="hidden" name="payment_method" id="fpayment" value="Cash" />
-
-                <div class="booking-steps-wrap" id="bookingStepsWrap">
-
-                  <!-- STEP 1 — Contact details -->
-                  <div class="form-step form-step--active" data-step="1" id="bstep-panel-1" role="tabpanel" aria-labelledby="bstep-panel-1">
-                    <div class="form-row">
-                      <div class="field">
-                        <label for="fname">Full Name</label>
- <div class="field-input-wrap">
-                          <input id="fname" name="name" type="text" placeholder="Your full name" autocomplete="name" required />
-                          <span class="field-check" aria-hidden="true">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="field">
-                        <label for="femail">Email</label>
-                        <div class="field-input-wrap">
-                          <input id="femail" name="email" type="email" placeholder="you@email.com" autocomplete="email"
-                                 oninput="document.getElementById('freplyto').value=this.value" required />
-                          <span class="field-check" aria-hidden="true">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="fphone">Phone Number</label>
-                      <div class="field-input-wrap">
-                        <input id="fphone" name="phone" type="tel" placeholder="+234 000 000 0000" autocomplete="tel" required />
-                        <span class="field-check" aria-hidden="true">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="faddress">Site Address</label>
-                      <div class="field-input-wrap">
-                        <input id="faddress" name="address" type="text" placeholder="Street, area, Ile Ife — or nearest landmark" autocomplete="street-address" />
-                        <span class="field-check" aria-hidden="true">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="step-actions">
-                      <span class="step-actions-spacer" aria-hidden="true"></span>
-                      <button type="button" class="btn-step btn-step-next" data-step-next>
-                        <span>Continue</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- STEP 2 — Service & schedule -->
-                  <div class="form-step" data-step="2" id="bstep-panel-2" role="tabpanel" aria-labelledby="bstep-panel-2" hidden>
-                    <div class="field">
-                      <label id="fserviceLabel">Service Required</label>
-
-                      <!-- Custom dropdown: full control over color, grouping,
-                           and size — a native <select>'s open list is drawn
-                           by the OS on mobile and can't be restyled at all. -->
-                      <div class="custom-select" id="fserviceSelect">
-                        <button type="button" class="cs-trigger" id="fserviceTrigger"
-                                aria-haspopup="listbox" aria-expanded="false" aria-controls="fserviceList" aria-labelledby="fserviceLabel fserviceTrigger">
-                          <span class="cs-value cs-placeholder" id="fserviceValue">Select a service…</span>
-                          <svg class="cs-caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                        </button>
-
-                        <div class="cs-panel" id="fserviceList" role="listbox" aria-labelledby="fserviceLabel" hidden>
-                          <div class="cs-group">
-                            <div class="cs-group-label">Residential</div>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Residential Plumbing Solution">Residential Plumbing Solution</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Bathroom & Kitchen Upgrades">Bathroom &amp; Kitchen Upgrades</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Pipe Installation & Repiping">Pipe Installation &amp; Repiping</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Toilet & Fixture Installation">Toilet &amp; Fixture Installation</button>
-                          </div>
-                          <div class="cs-group">
-                            <div class="cs-group-label">Commercial</div>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Commercial and Estate Plumbing Systems">Commercial and Estate Plumbing Systems</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water System, Borehole & Pump Solutions">Water System, Borehole &amp; Pump Solutions</button>
-                          </div>
-                          <div class="cs-group">
-                            <div class="cs-group-label">Specialist</div>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Leak Detection & Diagnostic Services">Leak Detection &amp; Diagnostic Services</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water Efficiency & Conservation Systems">Water Efficiency &amp; Conservation Systems</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Drain Cleaning & Unclogging">Drain Cleaning &amp; Unclogging</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Water Heater Installation & Repair">Water Heater Installation &amp; Repair</button>
-                            <button type="button" class="cs-option" role="option" aria-selected="false" data-value="Gas Line Installation & Repair">Gas Line Installation &amp; Repair</button>
-                          </div>
-                          <div class="cs-group cs-group--urgent">
-                            <div class="cs-group-label">Urgent</div>
-                            <button type="button" class="cs-option cs-option--urgent" role="option" aria-selected="false" data-value="Emergency Call-Out (24/7)">Emergency Call-Out (24/7)</button>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Real select — kept for form submission + native
-                           required/validity checks, hidden from view and
-                           from assistive tech (the custom listbox above is
-                           the accessible control users actually interact with). -->
-                      <select id="fservice" name="service" required aria-hidden="true" tabindex="-1" class="cs-native">
-                        <option value="" disabled selected>Select a service…</option>
-                        <optgroup label="Residential">
-                          <option>Residential Plumbing Solution</option>
-                          <option>Bathroom & Kitchen Upgrades</option>
-                        </optgroup>
-                        <optgroup label="Commercial">
-                          <option>Commercial and Estate Plumbing Systems</option>
-                          <option>Water System, Borehole & Pump Solutions</option>
-                        </optgroup>
-                        <optgroup label="Specialist">
-                          <option>Leak Detection & Diagnostic Services</option>
-                          <option>Water Efficiency & Conservation Systems</option>
-                        </optgroup>
-                        <optgroup label="Urgent">
-                          <option>Emergency Call-Out (24/7)</option>
-                        </optgroup>
-                      </select>
-                    </div>
-
-                    <div class="form-row" id="dateTimeRow">
-                      <div class="field">
-                        <label for="fdate">Preferred Date</label>
-                        <input id="fdate" name="preferred_date" type="date" required />
-                      </div>
-                      <div class="field">
-                        <label for="ftime">Preferred Time</label>
-                        <input id="ftime" name="preferred_time" type="time" min="07:00" max="19:00" required />
-                      </div>
-                    </div>
-
-                    <div class="step-actions" id="step2Actions">
-                      <button type="button" class="btn-step btn-step-back" data-step-back>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <span>Back</span>
-                      </button>
-                      <button type="button" class="btn-step btn-step-next" data-step-next>
-                        <span>Continue</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- STEP 3 — Payment method -->
-                  <div class="form-step" data-step="3" id="bstep-panel-3" role="tabpanel" aria-labelledby="bstep-panel-3" hidden>
-                    <div class="payment-card">
-                      <div class="payment-card-head">
-                        <span class="payment-card-icon" aria-hidden="true">💳</span>
-                        <div class="payment-card-headtext">
-                          <span class="payment-card-title">Booking and Payment</span>
-                          <span class="payment-card-sub">Choose whatever works for you</span>
-                        </div>
-                        <span class="payment-card-badge">Pay on completion</span>
-                      </div>
-                      <div class="payment-methods" role="radiogroup" aria-label="Payment method">
-                        <button type="button" class="pay-method" data-method="Debit / Credit Card" role="radio" aria-checked="false">
-                          <span class="pay-icon" aria-hidden="true">💳</span>
-                          <span class="pay-label">Debit / Credit Card</span>
-                        </button>
-                        <button type="button" class="pay-method" data-method="Bank Transfer" role="radio" aria-checked="false">
-                          <span class="pay-icon" aria-hidden="true">🏦</span>
-                          <span class="pay-label">Bank Transfer</span>
-                        </button>
-                        <button type="button" class="pay-method" data-method="USSD" role="radio" aria-checked="false">
-                          <span class="pay-icon" aria-hidden="true">📱</span>
-                          <span class="pay-label">USSD</span>
-                        </button>
-                        <button type="button" class="pay-method selected" data-method="Cash" role="radio" aria-checked="true">
-                          <span class="pay-icon" aria-hidden="true">💵</span>
-                          <span class="pay-label">Cash</span>
-                        </button>
-                      </div>
-                      <p class="payment-note">🔒 No upfront payment required — settle securely, in person, only after the job is done to your satisfaction.</p>
-                    </div>
-
-                    <div class="step-actions">
-                      <button type="button" class="btn-step btn-step-back" data-step-back>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <span>Back</span>
-                      </button>
-                      <button type="button" class="btn-step btn-step-next" data-step-next>
-                        <span>Continue</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- STEP 4 — Message, review & send -->
-                  <div class="form-step" data-step="4" id="bstep-panel-4" role="tabpanel" aria-labelledby="bstep-panel-4" hidden>
-                    <div class="field">
-                      <label for="fmsg">Message</label>
-                      <textarea id="fmsg" name="message" placeholder="Describe the nature of your plumbing work here…" required></textarea>
-                    </div>
-
-                    <!-- ── Multimedia attachments — voice note, video, photos.
-                         All optional, all sent along with the booking.
-                         Collapsed into one expandable card so the form
-                         reads shorter by default; the three upload
-                         options reveal one after another once opened. ── -->
-                    <div class="field attach-field">
-                      <label>Show Us The Problem <span class="field-optional">(optional)</span></label>
-
-                      <div class="attach-collapse">
-                        <button type="button" class="attach-collapse-toggle" id="attachToggle" aria-expanded="false" aria-controls="attachPanel">
-                          <span class="attach-collapse-icon" aria-hidden="true">📎</span>
-                          <span class="attach-collapse-title">Add a Voice Note, Video, or Photos</span>
-                          <span class="attach-collapse-chevron" aria-hidden="true">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                          </span>
-                        </button>
-
-                        <div class="attach-collapse-panel" id="attachPanel" hidden>
-                          <div class="attach-block attach-stagger" id="voiceBlock" style="--stagger:0">
-                            <button type="button" class="attach-block-toggle" aria-expanded="false" aria-controls="voiceBlockBody">
-                              <span class="attach-icon" aria-hidden="true">🎙️</span>
-                              <span class="attach-block-title">Voice Note</span>
-                              <span class="attach-block-hint" id="voiceRecHint">Max 60s · 20MB</span>
-                              <span class="attach-block-chevron" aria-hidden="true">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                              </span>
-                            </button>
-                            <div class="attach-block-body" id="voiceBlockBody" hidden>
-                              <div class="voice-recorder" id="voiceRecorder">
-                                <button type="button" class="voice-rec-btn" id="voiceRecBtn" aria-label="Record voice note">
-                                  <span class="voice-rec-dot" aria-hidden="true"></span>
-                                </button>
-                                <span class="voice-rec-time" id="voiceRecTime">Tap to record</span>
-                              </div>
-                              <div class="attach-actions voice-upload-row" id="voiceUploadRow">
-                                <span class="or-inline">or</span>
-                                <label class="attach-pick-btn">
-                                  <input type="file" accept="audio/*" id="voiceUploadInput" hidden />
-                                  <span>⬆️ Upload Audio</span>
-                                </label>
-                              </div>
-                              <div class="voice-preview" id="voicePreview" hidden>
-                                <audio controls id="voiceAudioEl" preload="metadata"></audio>
-                                <button type="button" class="attach-remove" id="voiceRemoveBtn" aria-label="Remove voice note">✕</button>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="attach-block attach-stagger" id="videoBlock" style="--stagger:1">
-                            <button type="button" class="attach-block-toggle" aria-expanded="false" aria-controls="videoBlockBody">
-                              <span class="attach-icon" aria-hidden="true">🎥</span>
-                              <span class="attach-block-title">Video</span>
-                              <span class="attach-block-hint">Max 30MB</span>
-                              <span class="attach-block-chevron" aria-hidden="true">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                              </span>
-                            </button>
-                            <div class="attach-block-body" id="videoBlockBody" hidden>
-                              <div class="attach-actions" id="videoActions">
-                                <label class="attach-pick-btn">
-                                  <input type="file" accept="video/*" capture="environment" id="videoCaptureInput" hidden />
-                                  <span>📷 Record</span>
-                                </label>
-                                <label class="attach-pick-btn">
-                                  <input type="file" accept="video/*" id="videoUploadInput" hidden />
-                                  <span>⬆️ Upload</span>
-                                </label>
-                              </div>
-                              <div class="video-preview" id="videoPreview" hidden>
-                                <video id="videoPreviewEl" controls playsinline muted></video>
-                                <div class="attach-meta" id="videoMeta"></div>
-                                <button type="button" class="attach-remove" id="videoRemoveBtn" aria-label="Remove video">✕</button>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="attach-block attach-stagger" id="imagesBlock" style="--stagger:2">
-                            <button type="button" class="attach-block-toggle" aria-expanded="false" aria-controls="imagesBlockBody">
-                              <span class="attach-icon" aria-hidden="true">🖼️</span>
-                              <span class="attach-block-title">Photos</span>
-                              <span class="attach-block-hint">Up to 4 · 10MB each</span>
-                              <span class="attach-block-chevron" aria-hidden="true">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                              </span>
-                            </button>
-                            <div class="attach-block-body" id="imagesBlockBody" hidden>
-                              <div class="attach-actions">
-                                <label class="attach-pick-btn">
-                                  <input type="file" accept="image/*" capture="environment" id="imageCaptureInput" hidden />
-                                  <span>📷 Camera</span>
-                                </label>
-                                <label class="attach-pick-btn">
-                                  <input type="file" accept="image/*" multiple id="imageUploadInput" hidden />
-                                  <span>🖼️ Choose Photos</span>
-                                </label>
-                              </div>
-                              <div class="image-preview-grid" id="imagePreviewGrid"></div>
-                            </div>
-                          </div>
-
-                          <p class="attach-hint">Everything you attach is sent securely together with your booking request.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="step-actions step-actions--final">
-                      <button type="button" class="btn-step btn-step-back" data-step-back>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <span>Back</span>
-                      </button>
-                      <span class="step-actions-spacer" aria-hidden="true"></span>
-                    </div>
-
-                    <button type="submit" class="btn-primary btn-block" id="submitBtn">
-                      <span>Confirm & Schedule Dispatch</span>
-                      <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                    <div class="upload-progress" id="uploadProgress" hidden>
-                      <div class="upload-progress-fill" id="uploadProgressFill"></div>
-                    </div>
-
-                    <div class="or-divider"><span>or reach us directly</span></div>
-
-                    <a href="https://wa.me/2349060708332?text=Hello%20Femix%20Plumbing%20Service%20I%20would%20like%20to%20book%20a%20certified%20artisan%20for%20a%20professional%20site%20inspection."
-                       target="_blank" rel="noopener noreferrer" class="wa-btn">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                      Chat on WhatsApp
-                    </a>
-
-                    <p class="form-privacy">🔒 Your details are secure & strictly confidential.</p>
-                  </div>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div><!-- /view-contact -->
-
-
-<!-- ─── GALLERY LIGHTBOX ─── -->
-<div class="lightbox-overlay" id="galleryLightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
-  <span class="lightbox-counter" id="lightboxCounter" aria-hidden="true">1 / 10</span>
-  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-  <button type="button" class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>
-  </button>
-  <div class="lightbox-stage">
-    <div class="lightbox-img-wrap" id="lightboxImgWrap">
-      <img class="lightbox-img" id="lightboxImg" src="" alt="">
-    </div>
-  </div>
-  <button type="button" class="lightbox-next" id="lightboxNext" aria-label="Next photo">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>
-  </button>
-  <div class="lightbox-zoom-controls">
-    <button type="button" class="lightbox-zoom-btn" id="lightboxZoomOut" aria-label="Zoom out">−</button>
-    <button type="button" class="lightbox-zoom-btn" id="lightboxZoomReset" aria-label="Reset zoom">1:1</button>
-    <button type="button" class="lightbox-zoom-btn" id="lightboxZoomIn" aria-label="Zoom in">+</button>
-  </div>
-</div>
-
-<!-- ─── SUCCESS MODAL ─── -->
-<div class="modal-overlay" id="successModal"
-     role="dialog" aria-modal="true"
-     aria-labelledby="successTitle"
-     aria-hidden="true">
-  <div class="modal-card modal-card-sm glass">
-    <button class="modal-x" id="closeSuccessModal" aria-label="Close success modal">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
-    </button>
-    <div class="success-ring" aria-hidden="true">✓</div>
-    <h3 id="successTitle">Booking Confirmed!</h3>
-    <p>Thank you! The FEMIX team will review your booking and <strong>confirm your slot within 30 minutes</strong>.</p>
-    <button class="btn-primary" id="successDoneBtn">Done</button>
-  </div>
-</div>
-
-<!-- ─── FAB CLUSTER ─── -->
-<div class="fab-cluster" aria-label="Quick contact actions">
-  <a href="https://wa.me/2349060708332?text=Hello%20Femix%20Plumbing!%20I%20need%20a%20service"
-     target="_blank" rel="noopener noreferrer"
-     class="fab fab-wa" aria-label="Chat on WhatsApp" title="WhatsApp">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  </a>
-  <a href="tel:+2349060708332" class="fab fab-call" aria-label="Call us now" title="Call Now">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-  </a>
-</div>
-
-<!-- ─── THEME TOGGLE ─── -->
-<div class="theme-switch" role="group" aria-label="Toggle color theme">
-  <button data-theme="dark"  class="ts-btn active" aria-label="Dark mode"  aria-pressed="true" >🌙</button>
-  <button data-theme="light" class="ts-btn"        aria-label="Light mode" aria-pressed="false">☀️</button>
-</div>
-
-
-
-<!-- ────── BOTTOM TAB BAR ────── -->
-<nav class="tab-bar" aria-label="Main navigation">
-  <button type="button" class="tab-btn" data-view="home" aria-label="Home">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
-    <span>Home</span>
-  </button>
-  <button type="button" class="tab-btn" data-view="services" aria-label="Services">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>
-    <span>Services</span>
-  </button>
-  <button type="button" class="tab-btn" data-view="gallery" aria-label="Gallery">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-    <span>Gallery</span>
-  </button>
-  <button type="button" class="tab-btn" data-view="reviews" aria-label="Reviews">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    <span>Reviews</span>
-  </button>
-  <button type="button" class="tab-btn" data-view="contact" aria-label="Contact">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    <span>Contact</span>
-  </button>
-</nav>
-
-  
-<script src="script.js" defer></script>
 <script>
-/* Booking date: earliest selectable day is always TODAY (device's local date).
-   Re-checked when the tab becomes visible again, so a page left open past
-   midnight never offers yesterday. */
-(function () {
-  var d = document.getElementById('fdate');
-  if (!d) return;
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
-  function setMin() {
-    var t = new Date();
-    d.min = t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate());
+  // Now hosted on femixplumbing.name.ng, but the data still lives on the
+  // Render backend — every API call below is absolute, not relative.
+  const API_BASE = "https://femix-plumbing-backend.onrender.com";
+  const STORAGE_KEY = "femixAdminKey";
+  const ALLOWED_STATUSES = ["pending", "confirmed", "completed", "cancelled"];
+  let bookings = [];
+  let currentFilter = "all";
+
+  // In-memory fallback: used when "remember me" is NOT checked, so the key
+  // never touches localStorage and disappears on refresh/tab close.
+  let memoryKey = "";
+
+  const loginScreen = document.getElementById("loginScreen");
+  const app = document.getElementById("app");
+  const loginForm = document.getElementById("loginForm");
+  const loginError = document.getElementById("loginError");
+  const statusEl = document.getElementById("status");
+  const tableWrap = document.getElementById("tableWrap");
+  const tableBody = document.getElementById("tableBody");
+  const scrollHint = document.getElementById("scrollHint");
+  const rememberCheckbox = document.getElementById("rememberCheckbox");
+  const togglePasswordBtn = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("passwordInput");
+  const eyeIcon = document.getElementById("eyeIcon");
+
+  const EYE_OPEN = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+  const EYE_CLOSED = `<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.6 20.6 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+
+  togglePasswordBtn.addEventListener("click", () => {
+    const showing = passwordInput.type === "text";
+    passwordInput.type = showing ? "password" : "text";
+    eyeIcon.innerHTML = showing ? EYE_OPEN : EYE_CLOSED;
+    togglePasswordBtn.classList.toggle("on", !showing);
+    togglePasswordBtn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+  });
+
+  function getKey() {
+    return localStorage.getItem(STORAGE_KEY) || memoryKey || "";
   }
-  setMin();
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) setMin(); });
-})();
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch((err) => {
-        console.warn('Service worker registration failed:', err);
+
+  function setKey(key, remember) {
+    if (remember) {
+      localStorage.setItem(STORAGE_KEY, key);
+      memoryKey = "";
+    } else {
+      memoryKey = key;
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  function clearKey() {
+    memoryKey = "";
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  function showApp() {
+    loginScreen.style.display = "none";
+    app.style.display = "block";
+    loadBookings();
+  }
+
+  function showLogin(message) {
+    app.style.display = "none";
+    loginScreen.style.display = "flex";
+    if (message) loginError.textContent = message;
+  }
+
+  // Only auto-login if a key was persisted via "remember me".
+  // A memory-only key never survives a page load, so this is safe.
+  if (localStorage.getItem(STORAGE_KEY)) {
+    showApp();
+  }
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById("passwordInput").value;
+    const remember = rememberCheckbox.checked;
+    loginError.textContent = "";
+    setKey(pw, remember);
+
+    const ok = await loadBookings(true);
+    if (!ok) {
+      clearKey();
+      loginError.textContent = "Incorrect password.";
+    } else {
+      showApp();
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    clearKey();
+    showLogin();
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
+
+  document.getElementById("filters").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-filter]");
+    if (!btn) return;
+    currentFilter = btn.dataset.filter;
+    [...document.querySelectorAll("#filters button")].forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  });
+
+  async function loadBookings(silent) {
+    if (!silent) {
+      statusEl.textContent = "Loading…";
+      statusEl.style.display = "block";
+      tableWrap.style.display = "none";
+      scrollHint.style.display = "none";
+    }
+    try {
+      const res = await fetch(`${API_BASE}/admin/bookings`, {
+        headers: { "x-admin-key": getKey() }
       });
+
+      if (res.status === 401) {
+        if (!silent) showLogin("Session expired — please log in again.");
+        return false;
+      }
+
+      const data = await res.json();
+      if (!data.success) {
+        statusEl.textContent = data.message || "Something went wrong.";
+        return false;
+      }
+
+      bookings = data.bookings || [];
+      render();
+      return true;
+    } catch (err) {
+      statusEl.textContent = "Network error — check your connection and try again.";
+      statusEl.style.display = "block";
+      tableWrap.style.display = "none";
+      scrollHint.style.display = "none";
+      return false;
+    }
+  }
+
+  function updateCounts() {
+    const counts = { all: bookings.length, pending: 0, confirmed: 0, completed: 0, cancelled: 0 };
+    bookings.forEach(b => { if (counts[b.status] !== undefined) counts[b.status]++; });
+    Object.keys(counts).forEach(k => {
+      const el = document.getElementById(`count-${k}`);
+      if (el) el.textContent = counts[k];
     });
   }
+
+  function render() {
+    updateCounts();
+
+    const filtered = currentFilter === "all"
+      ? bookings
+      : bookings.filter(b => b.status === currentFilter);
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = "";
+      tableWrap.style.display = "none";
+      scrollHint.style.display = "none";
+      statusEl.textContent = "No bookings here yet.";
+      statusEl.style.display = "block";
+      return;
+    }
+    statusEl.style.display = "none";
+    tableWrap.style.display = "block";
+    scrollHint.style.display = "block";
+
+    tableBody.innerHTML = filtered.map(b => `
+      <tr data-id="${b.bookingId}">
+        <td class="col-customer">
+          <div class="customer-name">${escapeHtml(b.customerName)}</div>
+          <div class="customer-id">${b.bookingId}</div>
+        </td>
+        <td>${escapeHtml(b.serviceType)}</td>
+        <td class="cell-muted">${escapeHtml(b.bookingDate)}<br>${escapeHtml(b.bookingTime)}</td>
+        <td>
+          <a class="phone-link" href="tel:${b.phoneNumber}">${escapeHtml(b.phoneNumber)}</a>
+          ${b.address ? `<div class="cell-muted" style="margin-top:4px;font-size:0.8rem;">${escapeHtml(b.address)}</div>` : ""}
+        </td>
+        <td class="cell-note">${b.message ? escapeHtml(b.message) : "—"}</td>
+        <td>
+          <div class="update-cell">
+            <select class="status-pill-select s-${b.status}">
+              ${ALLOWED_STATUSES.map(s => `<option value="${s}" ${s === b.status ? "selected" : ""}>${capitalize(s)}</option>`).join("")}
+            </select>
+            <span class="saveIndicator"></span>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+
+    tableBody.querySelectorAll("tr").forEach(row => {
+      const select = row.querySelector(".status-pill-select");
+      const indicator = row.querySelector(".saveIndicator");
+      select.addEventListener("change", () => updateStatus(row.dataset.id, select.value, row, select, indicator));
+    });
+  }
+
+  async function updateStatus(bookingId, newStatus, rowEl, selectEl, indicator) {
+    indicator.textContent = "Saving…";
+    try {
+      const res = await fetch(`${API_BASE}/admin/bookings/${encodeURIComponent(bookingId)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": getKey()
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (res.status === 401) {
+        showLogin("Session expired — please log in again.");
+        return;
+      }
+
+      const data = await res.json();
+      if (!data.success) {
+        indicator.textContent = "Failed";
+        alert(data.message || "Could not update status.");
+        return;
+      }
+
+      // Update local cache + pill color
+      const b = bookings.find(x => x.bookingId === bookingId);
+      if (b) b.status = newStatus;
+      selectEl.className = `status-pill-select s-${newStatus}`;
+      indicator.textContent = "Saved ✓";
+      updateCounts();
+      setTimeout(() => { indicator.textContent = ""; }, 1500);
+
+      // If filtered view no longer includes this status, re-render after a beat
+      if (currentFilter !== "all" && currentFilter !== newStatus) {
+        setTimeout(render, 600);
+      }
+    } catch (err) {
+      indicator.textContent = "Failed";
+    }
+  }
+
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function escapeHtml(str) {
+    return String(str ?? "").replace(/[&<>"']/g, m => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[m]));
+  }
 </script>
-
-
-<script>
-function syncHeaderHeight(){
-  const header = document.getElementById('header');
-  document.documentElement.style.setProperty('--nav-total', header.offsetHeight + 'px');
-}
-window.addEventListener('load', syncHeaderHeight);
-window.addEventListener('resize', syncHeaderHeight);
-new ResizeObserver(syncHeaderHeight).observe(document.getElementById('header'));
-</script>      
 </body>
 </html>
