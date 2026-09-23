@@ -25,6 +25,7 @@
     --confirmed: #5B8DEF;
     --completed: #3FCF7F;
     --cancelled: #EF5B5B;
+    --danger: #EF5B5B;
   }
   * { box-sizing: border-box; }
   body {
@@ -37,7 +38,6 @@
   h1, h2 { font-family: 'Syne', 'Outfit', sans-serif; }
   .mono { font-family: 'Space Mono', monospace; }
 
-  /* Gold hairline that brands every screen */
   .topline {
     height: 3px;
     background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold-light) 50%, var(--gold) 80%, transparent);
@@ -91,10 +91,7 @@
     flex-direction: column;
     gap: 14px;
   }
-  .passwordRow {
-    position: relative;
-    width: 100%;
-  }
+  .passwordRow { position: relative; width: 100%; }
   .passwordRow input[type="password"],
   .passwordRow input[type="text"] {
     width: 100%;
@@ -146,25 +143,9 @@
     box-shadow: 0 8px 20px -8px rgba(231,200,110,0.5);
   }
   #loginForm button[type="submit"]:active { filter: brightness(0.95); }
-  #loginError {
-    color: #f87171;
-    font-size: 0.85rem;
-    min-height: 1.2em;
-    text-align: center;
-  }
-  .rememberRow {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 0.85rem;
-    padding: 2px 2px;
-  }
-  .rememberRow input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--gold);
-  }
+  #loginError { color: #f87171; font-size: 0.85rem; min-height: 1.2em; text-align: center; }
+  .rememberRow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.85rem; padding: 2px 2px; }
+  .rememberRow input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); }
 
   /* ---------- App screen ---------- */
   #app { display: none; padding-bottom: 40px; min-height: 100vh; background: var(--bg); }
@@ -180,12 +161,7 @@
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
   }
-  .header-title h1 {
-    font-size: 1.05rem;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: 0.03em;
-  }
+  .header-title h1 { font-size: 1.05rem; font-weight: 800; margin: 0; letter-spacing: 0.03em; }
   .header-title .eyebrow {
     display: block;
     font-family: 'Space Mono', monospace;
@@ -206,10 +182,7 @@
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
-  header button#refreshBtn:active, header button#logoutBtn:active {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
+  header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
   header .actions { display: flex; gap: 8px; }
 
   .filters {
@@ -235,114 +208,103 @@
     white-space: nowrap;
     transition: all 0.15s ease;
   }
-  .filters button .count {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: inherit;
-    opacity: 0.7;
-  }
-  .filters button.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #14161B;
-    font-weight: 600;
-  }
+  .filters button .count { font-family: 'Space Mono', monospace; font-size: 0.7rem; opacity: 0.7; }
+  .filters button.active { background: var(--gold); border-color: var(--gold); color: #14161B; font-weight: 600; }
+  .filters button.archive-tab.active { background: var(--slate); border-color: var(--slate); }
 
-  #status {
-    text-align: center;
-    color: var(--muted);
-    padding: 40px 24px;
-    font-size: 0.9rem;
-  }
+  #status { text-align: center; color: var(--muted); padding: 40px 24px; font-size: 0.9rem; }
 
-  /* ---------- Table ---------- */
-  .table-wrap {
-    margin: 16px;
-    border-radius: 16px;
+  /* ---------- Records list (table on wide screens, cards on mobile) ---------- */
+  .records-wrap { margin: 16px; }
+  .record-card {
+    background: var(--surface);
     border: 1px solid var(--border-strong);
-    background: var(--surface);
+    border-radius: 16px;
+    margin-bottom: 12px;
     overflow: hidden;
-    box-shadow: 0 20px 40px -24px rgba(0,0,0,0.6);
+    box-shadow: 0 16px 32px -22px rgba(0,0,0,0.65);
+    border-left: 3px solid var(--pending);
+    transition: border-color 0.2s ease;
   }
-  .table-scroll {
-    overflow-x: auto;
-  }
-  table.bookings-table {
-    width: 100%;
-    min-width: 780px;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-  .bookings-table thead th {
-    text-align: left;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--slate);
-    font-weight: 400;
-    padding: 14px 16px;
-    background: var(--bg-alt);
-    border-bottom: 1px solid var(--border-strong);
-    white-space: nowrap;
-  }
-  .bookings-table tbody td {
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    font-size: 0.88rem;
-    color: var(--ink);
-  }
-  .bookings-table tbody tr:last-child td { border-bottom: none; }
-  .bookings-table tbody tr {
-    transition: background 0.15s ease;
-  }
-  .bookings-table tbody tr:hover { background: rgba(231,200,110,0.03); }
+  .record-card.s-pending   { border-left-color: var(--pending); }
+  .record-card.s-confirmed { border-left-color: var(--confirmed); }
+  .record-card.s-completed { border-left-color: var(--completed); }
+  .record-card.s-cancelled { border-left-color: var(--cancelled); opacity: 0.75; }
+  .record-card.is-archived { opacity: 0.6; }
 
-  /* sticky customer column so identity stays visible while scrolling */
-  .col-customer {
-    position: sticky;
-    left: 0;
-    background: var(--surface);
-    box-shadow: 3px 0 8px -4px rgba(0,0,0,0.5);
-    min-width: 168px;
+  .record-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
   }
-  .bookings-table tbody tr:hover .col-customer { background: #14182a; }
-
-  .status-bar {
-    width: 4px;
-    align-self: stretch;
-  }
-  .customer-name { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
-  .customer-id {
+  .record-name { font-weight: 700; font-size: 1rem; color: var(--ink); }
+  .record-id {
     font-family: 'Space Mono', monospace;
     font-size: 0.68rem;
     color: var(--gold-light);
     letter-spacing: 0.03em;
     margin-top: 3px;
   }
-  .cell-muted { color: var(--muted); }
-  .cell-label { color: var(--slate); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 2px; }
-  .cell-note {
-    max-width: 220px;
-    color: var(--muted);
-    font-size: 0.82rem;
-    line-height: 1.4;
+  .record-actions { display: flex; gap: 6px; flex: none; }
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--slate);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
   }
-  td a.phone-link { color: var(--gold-light); text-decoration: none; }
-  td a.phone-link:active { color: var(--gold); }
+  .icon-btn svg { width: 15px; height: 15px; }
+  .icon-btn:active { transform: scale(0.95); }
+  .icon-btn.archive-btn:active, .icon-btn.archive-btn.hover-state { border-color: var(--gold); color: var(--gold); }
+  .icon-btn.delete-btn:active { border-color: var(--danger); color: var(--danger); background: rgba(239,91,91,0.08); }
 
+  .record-body {
+    padding: 0 16px 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .rf { display: flex; flex-direction: column; gap: 2px; }
+  .rf-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .rf-value { font-size: 0.88rem; color: var(--ink); line-height: 1.4; }
+  .rf-value.muted { color: var(--muted); }
+  .rf-value a { color: var(--gold-light); text-decoration: none; }
+
+  .record-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+  }
   .status-pill-select {
     appearance: none;
     -webkit-appearance: none;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    padding: 7px 30px 7px 12px;
+    padding: 8px 32px 8px 14px;
     border-radius: 999px;
     cursor: pointer;
     background-repeat: no-repeat;
-    background-position: right 10px center;
+    background-position: right 12px center;
     background-size: 12px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239098B5' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   }
@@ -351,22 +313,12 @@
   .status-pill-select.s-completed  { background-color: rgba(63,207,127,0.12);  color: var(--completed); border: 1px solid rgba(63,207,127,0.35); }
   .status-pill-select.s-cancelled  { background-color: rgba(239,91,91,0.12);   color: var(--cancelled); border: 1px solid rgba(239,91,91,0.35); }
   .status-pill-select option { background: var(--surface-2); color: var(--ink); }
+  .saveIndicator { font-family: 'Space Mono', monospace; font-size: 0.66rem; color: var(--gold); }
 
-  .update-cell { display: flex; align-items: center; gap: 8px; }
-  .saveIndicator {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--gold);
-    min-width: 44px;
-  }
-
-  .hint-scroll {
-    padding: 8px 16px 2px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    text-align: right;
+  /* Wider screens: lay record fields out in a grid instead of one column */
+  @media (min-width: 640px) {
+    .record-body { grid-template-columns: repeat(3, 1fr); }
+    .record-body .rf.rf-note { grid-column: 1 / -1; }
   }
 </style>
 </head>
@@ -422,40 +374,19 @@
     <button data-filter="confirmed">Confirmed <span class="count" id="count-confirmed"></span></button>
     <button data-filter="completed">Completed <span class="count" id="count-completed"></span></button>
     <button data-filter="cancelled">Cancelled <span class="count" id="count-cancelled"></span></button>
+    <button data-filter="archived" class="archive-tab">Archived <span class="count" id="count-archived"></span></button>
   </div>
 
   <div id="status"></div>
-  <div class="hint-scroll" id="scrollHint">Scroll table →</div>
-  <div class="table-wrap" id="tableWrap" style="display:none;">
-    <div class="table-scroll">
-      <table class="bookings-table">
-        <thead>
-          <tr>
-            <th>Customer</th>
-            <th>Service</th>
-            <th>Schedule</th>
-            <th>Contact</th>
-            <th>Note</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-  </div>
+  <div class="records-wrap" id="recordsWrap"></div>
 </div>
 
 <script>
-  // Now hosted on femixplumbing.name.ng, but the data still lives on the
-  // Render backend — every API call below is absolute, not relative.
   const API_BASE = "https://femix-plumbing-backend.onrender.com";
   const STORAGE_KEY = "femixAdminKey";
   const ALLOWED_STATUSES = ["pending", "confirmed", "completed", "cancelled"];
   let bookings = [];
   let currentFilter = "all";
-
-  // In-memory fallback: used when "remember me" is NOT checked, so the key
-  // never touches localStorage and disappears on refresh/tab close.
   let memoryKey = "";
 
   const loginScreen = document.getElementById("loginScreen");
@@ -463,9 +394,7 @@
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
   const statusEl = document.getElementById("status");
-  const tableWrap = document.getElementById("tableWrap");
-  const tableBody = document.getElementById("tableBody");
-  const scrollHint = document.getElementById("scrollHint");
+  const recordsWrap = document.getElementById("recordsWrap");
   const rememberCheckbox = document.getElementById("rememberCheckbox");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");
@@ -473,6 +402,9 @@
 
   const EYE_OPEN = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
   const EYE_CLOSED = `<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.6 20.6 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+  const ICON_ARCHIVE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"></rect><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"></path><line x1="10" y1="13" x2="14" y2="13"></line></svg>`;
+  const ICON_UNARCHIVE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"></rect><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"></path><path d="M9.5 15l2.5-2.5 2.5 2.5"></path><line x1="12" y1="12.5" x2="12" y2="17"></line></svg>`;
+  const ICON_TRASH = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>`;
 
   togglePasswordBtn.addEventListener("click", () => {
     const showing = passwordInput.type === "text";
@@ -482,42 +414,21 @@
     togglePasswordBtn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
   });
 
-  function getKey() {
-    return localStorage.getItem(STORAGE_KEY) || memoryKey || "";
-  }
-
+  function getKey() { return localStorage.getItem(STORAGE_KEY) || memoryKey || ""; }
   function setKey(key, remember) {
-    if (remember) {
-      localStorage.setItem(STORAGE_KEY, key);
-      memoryKey = "";
-    } else {
-      memoryKey = key;
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    if (remember) { localStorage.setItem(STORAGE_KEY, key); memoryKey = ""; }
+    else { memoryKey = key; localStorage.removeItem(STORAGE_KEY); }
   }
+  function clearKey() { memoryKey = ""; localStorage.removeItem(STORAGE_KEY); }
 
-  function clearKey() {
-    memoryKey = "";
-    localStorage.removeItem(STORAGE_KEY);
-  }
-
-  function showApp() {
-    loginScreen.style.display = "none";
-    app.style.display = "block";
-    loadBookings();
-  }
-
+  function showApp() { loginScreen.style.display = "none"; app.style.display = "block"; loadBookings(); }
   function showLogin(message) {
     app.style.display = "none";
     loginScreen.style.display = "flex";
     if (message) loginError.textContent = message;
   }
 
-  // Only auto-login if a key was persisted via "remember me".
-  // A memory-only key never survives a page load, so this is safe.
-  if (localStorage.getItem(STORAGE_KEY)) {
-    showApp();
-  }
+  if (localStorage.getItem(STORAGE_KEY)) showApp();
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -525,21 +436,12 @@
     const remember = rememberCheckbox.checked;
     loginError.textContent = "";
     setKey(pw, remember);
-
     const ok = await loadBookings(true);
-    if (!ok) {
-      clearKey();
-      loginError.textContent = "Incorrect password.";
-    } else {
-      showApp();
-    }
+    if (!ok) { clearKey(); loginError.textContent = "Incorrect password."; }
+    else { showApp(); }
   });
 
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    clearKey();
-    showLogin();
-  });
-
+  document.getElementById("logoutBtn").addEventListener("click", () => { clearKey(); showLogin(); });
   document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
 
   document.getElementById("filters").addEventListener("click", (e) => {
@@ -555,40 +457,31 @@
     if (!silent) {
       statusEl.textContent = "Loading…";
       statusEl.style.display = "block";
-      tableWrap.style.display = "none";
-      scrollHint.style.display = "none";
+      recordsWrap.innerHTML = "";
     }
     try {
-      const res = await fetch(`${API_BASE}/admin/bookings`, {
-        headers: { "x-admin-key": getKey() }
-      });
-
-      if (res.status === 401) {
-        if (!silent) showLogin("Session expired — please log in again.");
-        return false;
-      }
-
+      const res = await fetch(`${API_BASE}/admin/bookings`, { headers: { "x-admin-key": getKey() } });
+      if (res.status === 401) { if (!silent) showLogin("Session expired — please log in again."); return false; }
       const data = await res.json();
-      if (!data.success) {
-        statusEl.textContent = data.message || "Something went wrong.";
-        return false;
-      }
-
+      if (!data.success) { statusEl.textContent = data.message || "Something went wrong."; return false; }
       bookings = data.bookings || [];
       render();
       return true;
     } catch (err) {
       statusEl.textContent = "Network error — check your connection and try again.";
       statusEl.style.display = "block";
-      tableWrap.style.display = "none";
-      scrollHint.style.display = "none";
+      recordsWrap.innerHTML = "";
       return false;
     }
   }
 
   function updateCounts() {
-    const counts = { all: bookings.length, pending: 0, confirmed: 0, completed: 0, cancelled: 0 };
-    bookings.forEach(b => { if (counts[b.status] !== undefined) counts[b.status]++; });
+    const counts = { all: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0, archived: 0 };
+    bookings.forEach(b => {
+      if (b.archived) { counts.archived++; return; }
+      counts.all++;
+      if (counts[b.status] !== undefined) counts[b.status]++;
+    });
     Object.keys(counts).forEach(k => {
       const el = document.getElementById(`count-${k}`);
       if (el) el.textContent = counts[k];
@@ -598,91 +491,133 @@
   function render() {
     updateCounts();
 
-    const filtered = currentFilter === "all"
-      ? bookings
-      : bookings.filter(b => b.status === currentFilter);
+    let filtered;
+    if (currentFilter === "archived") {
+      filtered = bookings.filter(b => b.archived);
+    } else if (currentFilter === "all") {
+      filtered = bookings.filter(b => !b.archived);
+    } else {
+      filtered = bookings.filter(b => !b.archived && b.status === currentFilter);
+    }
 
     if (filtered.length === 0) {
-      tableBody.innerHTML = "";
-      tableWrap.style.display = "none";
-      scrollHint.style.display = "none";
-      statusEl.textContent = "No bookings here yet.";
+      recordsWrap.innerHTML = "";
+      statusEl.textContent = currentFilter === "archived" ? "No archived bookings." : "No bookings here yet.";
       statusEl.style.display = "block";
       return;
     }
     statusEl.style.display = "none";
-    tableWrap.style.display = "block";
-    scrollHint.style.display = "block";
 
-    tableBody.innerHTML = filtered.map(b => `
-      <tr data-id="${b.bookingId}">
-        <td class="col-customer">
-          <div class="customer-name">${escapeHtml(b.customerName)}</div>
-          <div class="customer-id">${b.bookingId}</div>
-        </td>
-        <td>${escapeHtml(b.serviceType)}</td>
-        <td class="cell-muted">${escapeHtml(b.bookingDate)}<br>${escapeHtml(b.bookingTime)}</td>
-        <td>
-          <a class="phone-link" href="tel:${b.phoneNumber}">${escapeHtml(b.phoneNumber)}</a>
-          ${b.address ? `<div class="cell-muted" style="margin-top:4px;font-size:0.8rem;">${escapeHtml(b.address)}</div>` : ""}
-        </td>
-        <td class="cell-note">${b.message ? escapeHtml(b.message) : "—"}</td>
-        <td>
-          <div class="update-cell">
-            <select class="status-pill-select s-${b.status}">
-              ${ALLOWED_STATUSES.map(s => `<option value="${s}" ${s === b.status ? "selected" : ""}>${capitalize(s)}</option>`).join("")}
-            </select>
-            <span class="saveIndicator"></span>
+    recordsWrap.innerHTML = filtered.map(b => `
+      <div class="record-card s-${b.status} ${b.archived ? "is-archived" : ""}" data-id="${b.bookingId}">
+        <div class="record-head">
+          <div>
+            <div class="record-name">${escapeHtml(b.customerName)}</div>
+            <div class="record-id">${b.bookingId}</div>
           </div>
-        </td>
-      </tr>
+          <div class="record-actions">
+            <button class="icon-btn archive-btn" title="${b.archived ? "Unarchive" : "Archive"}">${b.archived ? ICON_UNARCHIVE : ICON_ARCHIVE}</button>
+            <button class="icon-btn delete-btn" title="Delete permanently">${ICON_TRASH}</button>
+          </div>
+        </div>
+        <div class="record-body">
+          <div class="rf"><span class="rf-label">Service</span><span class="rf-value">${escapeHtml(b.serviceType)}</span></div>
+          <div class="rf"><span class="rf-label">Schedule</span><span class="rf-value">${escapeHtml(b.bookingDate)} · ${escapeHtml(b.bookingTime)}</span></div>
+          <div class="rf"><span class="rf-label">Contact</span><span class="rf-value"><a href="tel:${b.phoneNumber}">${escapeHtml(b.phoneNumber)}</a></span></div>
+          ${b.address ? `<div class="rf"><span class="rf-label">Address</span><span class="rf-value muted">${escapeHtml(b.address)}</span></div>` : ""}
+          ${b.message ? `<div class="rf rf-note"><span class="rf-label">Note</span><span class="rf-value muted">${escapeHtml(b.message)}</span></div>` : ""}
+        </div>
+        <div class="record-foot">
+          <select class="status-pill-select s-${b.status}">
+            ${ALLOWED_STATUSES.map(s => `<option value="${s}" ${s === b.status ? "selected" : ""}>${capitalize(s)}</option>`).join("")}
+          </select>
+          <span class="saveIndicator"></span>
+        </div>
+      </div>
     `).join("");
 
-    tableBody.querySelectorAll("tr").forEach(row => {
-      const select = row.querySelector(".status-pill-select");
-      const indicator = row.querySelector(".saveIndicator");
-      select.addEventListener("change", () => updateStatus(row.dataset.id, select.value, row, select, indicator));
+    recordsWrap.querySelectorAll(".record-card").forEach(card => {
+      const id = card.dataset.id;
+      const select = card.querySelector(".status-pill-select");
+      const indicator = card.querySelector(".saveIndicator");
+      const archiveBtn = card.querySelector(".archive-btn");
+      const deleteBtn = card.querySelector(".delete-btn");
+
+      select.addEventListener("change", () => updateStatus(id, select.value, card, select, indicator));
+      archiveBtn.addEventListener("click", () => toggleArchive(id, card));
+      deleteBtn.addEventListener("click", () => deleteBooking(id, card));
     });
   }
 
-  async function updateStatus(bookingId, newStatus, rowEl, selectEl, indicator) {
+  async function updateStatus(bookingId, newStatus, cardEl, selectEl, indicator) {
     indicator.textContent = "Saving…";
     try {
       const res = await fetch(`${API_BASE}/admin/bookings/${encodeURIComponent(bookingId)}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-key": getKey()
-        },
+        headers: { "Content-Type": "application/json", "x-admin-key": getKey() },
         body: JSON.stringify({ status: newStatus })
       });
-
-      if (res.status === 401) {
-        showLogin("Session expired — please log in again.");
-        return;
-      }
-
+      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
-      if (!data.success) {
-        indicator.textContent = "Failed";
-        alert(data.message || "Could not update status.");
-        return;
-      }
+      if (!data.success) { indicator.textContent = "Failed"; alert(data.message || "Could not update status."); return; }
 
-      // Update local cache + pill color
       const b = bookings.find(x => x.bookingId === bookingId);
       if (b) b.status = newStatus;
       selectEl.className = `status-pill-select s-${newStatus}`;
+      cardEl.className = `record-card s-${newStatus} ${b && b.archived ? "is-archived" : ""}`;
       indicator.textContent = "Saved ✓";
       updateCounts();
       setTimeout(() => { indicator.textContent = ""; }, 1500);
 
-      // If filtered view no longer includes this status, re-render after a beat
-      if (currentFilter !== "all" && currentFilter !== newStatus) {
+      if (currentFilter !== "all" && currentFilter !== "archived" && currentFilter !== newStatus) {
         setTimeout(render, 600);
       }
     } catch (err) {
       indicator.textContent = "Failed";
+    }
+  }
+
+  async function toggleArchive(bookingId, cardEl) {
+    const b = bookings.find(x => x.bookingId === bookingId);
+    if (!b) return;
+    const nextArchived = !b.archived;
+    try {
+      const res = await fetch(`${API_BASE}/admin/bookings/${encodeURIComponent(bookingId)}/archive`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-key": getKey() },
+        body: JSON.stringify({ archived: nextArchived })
+      });
+      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      const data = await res.json();
+      if (!data.success) { alert(data.message || "Could not update booking."); return; }
+
+      b.archived = nextArchived;
+      updateCounts();
+      // Leaving the current filtered view — fade out and re-render
+      setTimeout(render, 150);
+    } catch (err) {
+      alert("Network error — please try again.");
+    }
+  }
+
+  async function deleteBooking(bookingId, cardEl) {
+    const b = bookings.find(x => x.bookingId === bookingId);
+    const confirmed = confirm(`Permanently delete the booking for ${b ? b.customerName : bookingId}? This cannot be undone.`);
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/bookings/${encodeURIComponent(bookingId)}`, {
+        method: "DELETE",
+        headers: { "x-admin-key": getKey() }
+      });
+      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      const data = await res.json();
+      if (!data.success) { alert(data.message || "Could not delete booking."); return; }
+
+      bookings = bookings.filter(x => x.bookingId !== bookingId);
+      render();
+    } catch (err) {
+      alert("Network error — please try again.");
     }
   }
 
