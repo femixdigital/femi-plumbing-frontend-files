@@ -11,21 +11,21 @@
   :root {
     --gold: #E7C86E;
     --gold-dark: #C9A94E;
-    --gold-light: #F0DC9C;
-    --slate: #8891B0;
+    --gold-light: #F6E3A8;
+    --slate: #A6AFCC;
     --bg: #070915;
     --bg-alt: #0B0E1C;
     --surface: #10131F;
     --surface-2: #161A29;
-    --ink: #ECEEF2;
-    --muted: #9098B5;
-    --border: #1F222B;
-    --border-strong: #2A2E3D;
-    --pending: #E7C86E;
-    --confirmed: #5B8DEF;
-    --completed: #3FCF7F;
-    --cancelled: #EF5B5B;
-    --danger: #EF5B5B;
+    --ink: #FFFFFF;
+    --muted: #B9C0D8;
+    --border: #232735;
+    --border-strong: #343A52;
+    --pending: #F0D385;
+    --confirmed: #74A1F7;
+    --completed: #55DE93;
+    --cancelled: #FF7373;
+    --danger: #FF7373;
   }
   * { box-sizing: border-box; }
   body {
@@ -214,44 +214,45 @@
 
   #status { text-align: center; color: var(--muted); padding: 40px 24px; font-size: 0.9rem; }
 
-  /* ---------- Records list (table on wide screens, cards on mobile) ---------- */
-  .records-wrap { margin: 16px; }
+  /* ---------- Records list ---------- */
+  .records-wrap { margin: 12px; }
   .record-card {
     background: var(--surface);
     border: 1px solid var(--border-strong);
-    border-radius: 16px;
-    margin-bottom: 12px;
+    border-radius: 14px;
+    margin-bottom: 10px;
     overflow: hidden;
-    box-shadow: 0 16px 32px -22px rgba(0,0,0,0.65);
+    box-shadow: 0 14px 28px -20px rgba(0,0,0,0.7);
     border-left: 3px solid var(--pending);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
   }
   .record-card.s-pending   { border-left-color: var(--pending); }
   .record-card.s-confirmed { border-left-color: var(--confirmed); }
   .record-card.s-completed { border-left-color: var(--completed); }
-  .record-card.s-cancelled { border-left-color: var(--cancelled); opacity: 0.75; }
-  .record-card.is-archived { opacity: 0.6; }
+  .record-card.s-cancelled { border-left-color: var(--cancelled); opacity: 0.8; }
+  .record-card.is-archived { opacity: 0.55; }
 
   .record-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 14px 16px 10px;
+    padding: 12px 14px 8px;
+    gap: 8px;
   }
-  .record-name { font-weight: 700; font-size: 1rem; color: var(--ink); }
+  .record-name { font-weight: 700; font-size: 0.96rem; color: var(--ink); line-height: 1.25; }
   .record-id {
     font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     color: var(--gold-light);
     letter-spacing: 0.03em;
-    margin-top: 3px;
+    margin-top: 2px;
   }
   .record-actions { display: flex; gap: 6px; flex: none; }
   .icon-btn {
-    width: 32px;
-    height: 32px;
+    width: 29px;
+    height: 29px;
     border-radius: 8px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     background: var(--bg-alt);
     color: var(--slate);
     display: flex;
@@ -260,37 +261,37 @@
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
   }
-  .icon-btn svg { width: 15px; height: 15px; }
-  .icon-btn:active { transform: scale(0.95); }
-  .icon-btn.archive-btn:active, .icon-btn.archive-btn.hover-state { border-color: var(--gold); color: var(--gold); }
-  .icon-btn.delete-btn:active { border-color: var(--danger); color: var(--danger); background: rgba(239,91,91,0.08); }
+  .icon-btn svg { width: 14px; height: 14px; }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn.archive-btn:active { border-color: var(--gold); color: var(--gold); background: rgba(231,200,110,0.1); }
+  .icon-btn.delete-btn:active { border-color: var(--danger); color: var(--danger); background: rgba(255,115,115,0.1); }
 
   .record-body {
-    padding: 0 16px 14px;
+    padding: 9px 14px 11px;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px 12px;
     border-top: 1px solid var(--border);
-    padding-top: 12px;
   }
-  .rf { display: flex; flex-direction: column; gap: 2px; }
+  .rf.rf-service, .rf.rf-note { grid-column: 1 / -1; }
+  .rf { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
   .rf-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-size: 0.58rem;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--slate);
   }
-  .rf-value { font-size: 0.88rem; color: var(--ink); line-height: 1.4; }
+  .rf-value { font-size: 0.82rem; color: var(--ink); line-height: 1.35; }
   .rf-value.muted { color: var(--muted); }
-  .rf-value a { color: var(--gold-light); text-decoration: none; }
+  .rf-value a { color: var(--gold-light); text-decoration: none; font-weight: 600; }
 
   .record-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 12px 16px;
+    padding: 9px 14px;
     background: var(--bg-alt);
     border-top: 1px solid var(--border);
   }
@@ -298,7 +299,7 @@
     appearance: none;
     -webkit-appearance: none;
     font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     font-weight: 600;
     padding: 8px 32px 8px 14px;
     border-radius: 999px;
@@ -308,23 +309,59 @@
     background-size: 12px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239098B5' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   }
-  .status-pill-select.s-pending    { background-color: rgba(231,200,110,0.12); color: var(--pending);   border: 1px solid rgba(231,200,110,0.35); }
-  .status-pill-select.s-confirmed  { background-color: rgba(91,141,239,0.12);  color: var(--confirmed); border: 1px solid rgba(91,141,239,0.35); }
-  .status-pill-select.s-completed  { background-color: rgba(63,207,127,0.12);  color: var(--completed); border: 1px solid rgba(63,207,127,0.35); }
-  .status-pill-select.s-cancelled  { background-color: rgba(239,91,91,0.12);   color: var(--cancelled); border: 1px solid rgba(239,91,91,0.35); }
+  .status-pill-select.s-pending    { background-color: rgba(240,211,133,0.16); color: var(--pending);   border: 1px solid rgba(240,211,133,0.45); }
+  .status-pill-select.s-confirmed  { background-color: rgba(116,161,247,0.16); color: var(--confirmed); border: 1px solid rgba(116,161,247,0.45); }
+  .status-pill-select.s-completed  { background-color: rgba(85,222,147,0.16);  color: var(--completed); border: 1px solid rgba(85,222,147,0.45); }
+  .status-pill-select.s-cancelled  { background-color: rgba(255,115,115,0.16); color: var(--cancelled); border: 1px solid rgba(255,115,115,0.45); }
   .status-pill-select option { background: var(--surface-2); color: var(--ink); }
-  .saveIndicator { font-family: 'Space Mono', monospace; font-size: 0.66rem; color: var(--gold); }
+  .saveIndicator { font-family: 'Space Mono', monospace; font-size: 0.64rem; color: var(--gold); }
 
-  /* Wider screens: lay record fields out in a grid instead of one column */
+  /* Wider screens: fields get a bit more room, three per row */
   @media (min-width: 640px) {
-    .record-body { grid-template-columns: repeat(3, 1fr); }
+    .record-body { grid-template-columns: repeat(4, 1fr); }
+    .record-body .rf.rf-service { grid-column: span 2; }
     .record-body .rf.rf-note { grid-column: 1 / -1; }
   }
+
+  /* ---------- Toast notifications ---------- */
+  .toast-container {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: calc(100% - 32px);
+    max-width: 360px;
+    pointer-events: none;
+  }
+  .toast {
+    pointer-events: auto;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 14px 30px -10px rgba(0,0,0,0.6);
+    animation: toastIn 0.22s ease;
+    backdrop-filter: blur(6px);
+  }
+  .toast svg { width: 16px; height: 16px; flex: none; }
+  .toast.success { background: rgba(85,222,147,0.16); border: 1px solid rgba(85,222,147,0.5); color: #B4F5CE; }
+  .toast.error   { background: rgba(255,115,115,0.16); border: 1px solid rgba(255,115,115,0.5); color: #FFC2C2; }
+  .toast.hide { animation: toastOut 0.18s ease forwards; }
+  @keyframes toastIn  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(8px); } }
 </style>
 </head>
 <body>
 
 <div class="topline"></div>
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- ================= LOGIN ================= -->
 <div id="loginScreen">
@@ -405,6 +442,20 @@
   const ICON_ARCHIVE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"></rect><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"></path><line x1="10" y1="13" x2="14" y2="13"></line></svg>`;
   const ICON_UNARCHIVE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"></rect><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"></path><path d="M9.5 15l2.5-2.5 2.5 2.5"></path><line x1="12" y1="12.5" x2="12" y2="17"></line></svg>`;
   const ICON_TRASH = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>`;
+  const ICON_CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  const ICON_WARN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+
+  const toastContainer = document.getElementById("toastContainer");
+  function showToast(message, type) {
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.innerHTML = (type === "error" ? ICON_WARN : ICON_CHECK) + `<span>${escapeHtml(message)}</span>`;
+    toastContainer.appendChild(el);
+    setTimeout(() => {
+      el.classList.add("hide");
+      setTimeout(() => el.remove(), 200);
+    }, 2600);
+  }
 
   togglePasswordBtn.addEventListener("click", () => {
     const showing = passwordInput.type === "text";
@@ -521,7 +572,7 @@
           </div>
         </div>
         <div class="record-body">
-          <div class="rf"><span class="rf-label">Service</span><span class="rf-value">${escapeHtml(b.serviceType)}</span></div>
+          <div class="rf rf-service"><span class="rf-label">Service</span><span class="rf-value">${escapeHtml(b.serviceType)}</span></div>
           <div class="rf"><span class="rf-label">Schedule</span><span class="rf-value">${escapeHtml(b.bookingDate)} · ${escapeHtml(b.bookingTime)}</span></div>
           <div class="rf"><span class="rf-label">Contact</span><span class="rf-value"><a href="tel:${b.phoneNumber}">${escapeHtml(b.phoneNumber)}</a></span></div>
           ${b.address ? `<div class="rf"><span class="rf-label">Address</span><span class="rf-value muted">${escapeHtml(b.address)}</span></div>` : ""}
@@ -559,7 +610,7 @@
       });
       if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
-      if (!data.success) { indicator.textContent = "Failed"; alert(data.message || "Could not update status."); return; }
+      if (!data.success) { indicator.textContent = "Failed"; showToast(data.message || "Could not update status.", "error"); return; }
 
       const b = bookings.find(x => x.bookingId === bookingId);
       if (b) b.status = newStatus;
@@ -589,14 +640,15 @@
       });
       if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
-      if (!data.success) { alert(data.message || "Could not update booking."); return; }
+      if (!data.success) { showToast(data.message || "Could not update booking.", "error"); return; }
 
       b.archived = nextArchived;
       updateCounts();
+      showToast(nextArchived ? `${b.customerName} archived` : `${b.customerName} restored`, "success");
       // Leaving the current filtered view — fade out and re-render
       setTimeout(render, 150);
     } catch (err) {
-      alert("Network error — please try again.");
+      showToast("Network error — could not reach the server.", "error");
     }
   }
 
@@ -612,12 +664,13 @@
       });
       if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
-      if (!data.success) { alert(data.message || "Could not delete booking."); return; }
+      if (!data.success) { showToast(data.message || "Delete failed.", "error"); return; }
 
       bookings = bookings.filter(x => x.bookingId !== bookingId);
       render();
+      showToast(`${b ? b.customerName : "Booking"} deleted`, "success");
     } catch (err) {
-      alert("Network error — please try again.");
+      showToast("Network error — delete failed.", "error");
     }
   }
 
