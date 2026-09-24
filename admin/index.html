@@ -228,6 +228,47 @@
     justify-content: center;
   }
 
+  .date-range-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px 0;
+    background: var(--bg-alt);
+    flex-wrap: wrap;
+  }
+  .date-range-row label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .date-range-row input[type="date"] {
+    padding: 7px 9px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    color-scheme: dark;
+  }
+  .date-range-row input[type="date"]:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(231,200,110,0.15); }
+  #clearDateRangeBtn {
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    color: var(--muted);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 7px 10px;
+    cursor: pointer;
+    display: none;
+  }
+  #clearDateRangeBtn:active { border-color: var(--gold); color: var(--gold); }
+
   .filters {
     display: flex;
     gap: 8px;
@@ -453,6 +494,12 @@
     <button type="button" id="clearSearchBtn" aria-label="Clear search" style="display:none;">✕</button>
   </div>
 
+  <div class="date-range-row">
+    <label for="dateFromInput">From <input type="date" id="dateFromInput" /></label>
+    <label for="dateToInput">To <input type="date" id="dateToInput" /></label>
+    <button type="button" id="clearDateRangeBtn">Clear</button>
+  </div>
+
   <div class="filters" id="filters">
     <button data-filter="all" class="active">All <span class="count" id="count-all"></span></button>
     <button data-filter="pending">Pending <span class="count" id="count-pending"></span></button>
@@ -484,6 +531,9 @@
   const searchInput = document.getElementById("searchInput");
   const clearSearchBtn = document.getElementById("clearSearchBtn");
   let searchQuery = "";
+  const dateFromInput = document.getElementById("dateFromInput");
+  const dateToInput = document.getElementById("dateToInput");
+  const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
   const rememberCheckbox = document.getElementById("rememberCheckbox");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");
@@ -559,6 +609,18 @@
     render();
   });
 
+  function updateClearDateRangeVisibility() {
+    clearDateRangeBtn.style.display = (dateFromInput.value || dateToInput.value) ? "inline-flex" : "none";
+  }
+  dateFromInput.addEventListener("change", () => { updateClearDateRangeVisibility(); render(); });
+  dateToInput.addEventListener("change", () => { updateClearDateRangeVisibility(); render(); });
+  clearDateRangeBtn.addEventListener("click", () => {
+    dateFromInput.value = "";
+    dateToInput.value = "";
+    updateClearDateRangeVisibility();
+    render();
+  });
+
   document.getElementById("filters").addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-filter]");
     if (!btn) return;
@@ -608,6 +670,19 @@
     });
   }
 
+  // Bookings store bookingDate as YYYY-MM-DD (or "TBD"). A plain string
+  // comparison works fine for that format and avoids timezone issues
+  // that Date parsing would introduce.
+  function inDateRange(bookingDate) {
+    const from = dateFromInput.value;
+    const to = dateToInput.value;
+    if (!from && !to) return true;
+    if (!bookingDate || !/^\d{4}-\d{2}-\d{2}$/.test(bookingDate)) return false;
+    if (from && bookingDate < from) return false;
+    if (to && bookingDate > to) return false;
+    return true;
+  }
+
   function render() {
     updateCounts();
 
@@ -628,11 +703,18 @@
       );
     }
 
+    if (dateFromInput.value || dateToInput.value) {
+      filtered = filtered.filter(b => inDateRange(b.bookingDate));
+    }
+
     if (filtered.length === 0) {
       recordsWrap.innerHTML = "";
+      const hasDateRange = dateFromInput.value || dateToInput.value;
       statusEl.textContent = searchQuery
         ? `No bookings match "${searchInput.value.trim()}".`
-        : (currentFilter === "archived" ? "No archived bookings." : "No bookings here yet.");
+        : hasDateRange
+          ? "No bookings in that date range."
+          : (currentFilter === "archived" ? "No archived bookings." : "No bookings here yet.");
       statusEl.style.display = "block";
       return;
     }
