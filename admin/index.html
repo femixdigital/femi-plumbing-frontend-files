@@ -185,6 +185,49 @@
   header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
   header .actions { display: flex; gap: 8px; }
 
+  .search-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 14px 16px 0;
+    background: var(--bg-alt);
+  }
+  .search-icon {
+    position: absolute;
+    left: 30px;
+    width: 16px;
+    height: 16px;
+    color: var(--slate);
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 11px 38px 11px 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+  }
+  #searchInput::placeholder { color: var(--slate); }
+  #searchInput:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(231,200,110,0.15); }
+  #clearSearchBtn {
+    position: absolute;
+    right: 26px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: none;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .filters {
     display: flex;
     gap: 8px;
@@ -192,8 +235,7 @@
     overflow-x: auto;
     background: var(--bg-alt);
     border-bottom: 1px solid var(--border);
-  }
-  .filters button {
+  }  .filters button {
     flex: none;
     display: flex;
     align-items: center;
@@ -405,6 +447,12 @@
     </div>
   </header>
 
+  <div class="search-row">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="searchInput" placeholder="Search by name or phone…" autocomplete="off" />
+    <button type="button" id="clearSearchBtn" aria-label="Clear search" style="display:none;">✕</button>
+  </div>
+
   <div class="filters" id="filters">
     <button data-filter="all" class="active">All <span class="count" id="count-all"></span></button>
     <button data-filter="pending">Pending <span class="count" id="count-pending"></span></button>
@@ -425,6 +473,7 @@
   let bookings = [];
   let currentFilter = "all";
   let memoryKey = "";
+  let lastAuthError = "";
 
   const loginScreen = document.getElementById("loginScreen");
   const app = document.getElementById("app");
@@ -432,6 +481,9 @@
   const loginError = document.getElementById("loginError");
   const statusEl = document.getElementById("status");
   const recordsWrap = document.getElementById("recordsWrap");
+  const searchInput = document.getElementById("searchInput");
+  const clearSearchBtn = document.getElementById("clearSearchBtn");
+  let searchQuery = "";
   const rememberCheckbox = document.getElementById("rememberCheckbox");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");
@@ -488,12 +540,24 @@
     loginError.textContent = "";
     setKey(pw, remember);
     const ok = await loadBookings(true);
-    if (!ok) { clearKey(); loginError.textContent = "Incorrect password."; }
+    if (!ok) { clearKey(); loginError.textContent = lastAuthError || "Incorrect password."; }
     else { showApp(); }
   });
 
   document.getElementById("logoutBtn").addEventListener("click", () => { clearKey(); showLogin(); });
   document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
+
+  searchInput.addEventListener("input", () => {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    clearSearchBtn.style.display = searchQuery ? "flex" : "none";
+    render();
+  });
+  clearSearchBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    searchQuery = "";
+    clearSearchBtn.style.display = "none";
+    render();
+  });
 
   document.getElementById("filters").addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-filter]");
@@ -513,6 +577,11 @@
     try {
       const res = await fetch(`${API_BASE}/admin/bookings`, { headers: { "x-admin-key": getKey() } });
       if (res.status === 401) { if (!silent) showLogin("Session expired — please log in again."); return false; }
+      if (res.status === 429) {
+        const data = await res.json().catch(() => ({}));
+        lastAuthError = data.message || "Too many attempts — please wait and try again.";
+        return false;
+      }
       const data = await res.json();
       if (!data.success) { statusEl.textContent = data.message || "Something went wrong."; return false; }
       bookings = data.bookings || [];
@@ -551,9 +620,19 @@
       filtered = bookings.filter(b => !b.archived && b.status === currentFilter);
     }
 
+    if (searchQuery) {
+      filtered = filtered.filter(b =>
+        (b.customerName || "").toLowerCase().includes(searchQuery) ||
+        (b.phoneNumber || "").toLowerCase().includes(searchQuery) ||
+        (b.bookingId || "").toLowerCase().includes(searchQuery)
+      );
+    }
+
     if (filtered.length === 0) {
       recordsWrap.innerHTML = "";
-      statusEl.textContent = currentFilter === "archived" ? "No archived bookings." : "No bookings here yet.";
+      statusEl.textContent = searchQuery
+        ? `No bookings match "${searchInput.value.trim()}".`
+        : (currentFilter === "archived" ? "No archived bookings." : "No bookings here yet.");
       statusEl.style.display = "block";
       return;
     }
