@@ -130,6 +130,35 @@
   #togglePassword:active,
   #togglePassword.on { color: var(--gold); background: rgba(231,200,110,0.1); }
   #togglePassword svg { width: 19px; height: 19px; display: block; }
+
+  .totpRow input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: #fff;
+    font-size: 1.1rem;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.35em;
+    text-align: center;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .totpRow input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(231,200,110,0.15);
+  }
+  .totpRow label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+
   #loginForm button[type="submit"] {
     padding: 14px;
     border-radius: 10px;
@@ -143,6 +172,7 @@
     box-shadow: 0 8px 20px -8px rgba(231,200,110,0.5);
   }
   #loginForm button[type="submit"]:active { filter: brightness(0.95); }
+  #loginForm button[type="submit"]:disabled { opacity: 0.55; cursor: default; }
   #loginError { color: #f87171; font-size: 0.85rem; min-height: 1.2em; text-align: center; }
   .rememberRow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.85rem; padding: 2px 2px; }
   .rememberRow input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); }
@@ -574,7 +604,7 @@
     </svg>
   </div>
   <h1><span class="slate">FEMIX</span> <span class="gold">PLUMBING</span> <span class="slate">ADMIN</span></h1>
-  <p class="sub">Enter your admin password to view bookings</p>
+  <p class="sub">Enter your password and authenticator code to continue</p>
   <form id="loginForm">
     <div class="passwordRow">
       <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password" required />
@@ -585,11 +615,15 @@
         </svg>
       </button>
     </div>
+    <div class="totpRow">
+      <label for="totpInput">6-digit authenticator code</label>
+      <input type="text" id="totpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="000000" autocomplete="one-time-code" required />
+    </div>
     <label class="rememberRow">
       <input type="checkbox" id="rememberCheckbox" />
       Remember me on this device
     </label>
-    <button type="submit">Log In</button>
+    <button type="submit" id="loginSubmitBtn">Log In</button>
     <div id="loginError"></div>
   </form>
 </div>
@@ -674,7 +708,7 @@
 
 <script>
   const API_BASE = "https://femix-plumbing-backend.onrender.com";
-  const STORAGE_KEY = "femixAdminKey";
+  const STORAGE_KEY = "femixAdminSession"; // now stores a short-lived session token, never the password
   const ALLOWED_STATUSES = ["pending", "confirmed", "completed", "cancelled"];
   let bookings = [];
   let currentFilter = "all";
@@ -685,6 +719,7 @@
   const app = document.getElementById("app");
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
+  const loginSubmitBtn = document.getElementById("loginSubmitBtn");
   const statusEl = document.getElementById("status");
   const recordsWrap = document.getElementById("recordsWrap");
   const searchInput = document.getElementById("searchInput");
@@ -702,6 +737,7 @@
   const rememberCheckbox = document.getElementById("rememberCheckbox");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");
+  const totpInput = document.getElementById("totpInput");
   const eyeIcon = document.getElementById("eyeIcon");
 
   const EYE_OPEN = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
@@ -732,10 +768,15 @@
     togglePasswordBtn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
   });
 
+  // getKey()/setKey() now hold a session TOKEN issued by /admin/login,
+  // never the password itself. The token expires on its own server-side
+  // (see SESSION_TTL_MS in index.js), so "remember me" just means the
+  // token survives a tab close/reopen until it naturally expires — not
+  // that the password is stored anywhere.
   function getKey() { return localStorage.getItem(STORAGE_KEY) || memoryKey || ""; }
-  function setKey(key, remember) {
-    if (remember) { localStorage.setItem(STORAGE_KEY, key); memoryKey = ""; }
-    else { memoryKey = key; localStorage.removeItem(STORAGE_KEY); }
+  function setKey(token, remember) {
+    if (remember) { localStorage.setItem(STORAGE_KEY, token); memoryKey = ""; }
+    else { memoryKey = token; localStorage.removeItem(STORAGE_KEY); }
   }
   function clearKey() { memoryKey = ""; localStorage.removeItem(STORAGE_KEY); }
 
@@ -743,23 +784,64 @@
   function showLogin(message) {
     app.style.display = "none";
     loginScreen.style.display = "flex";
+    passwordInput.value = "";
+    totpInput.value = "";
     if (message) loginError.textContent = message;
   }
 
+  // A stored token might already be expired (session cookies are stateless
+  // here) — loadBookings() below will bounce to the login screen via its
+  // own 401 handling if so, so this is just an optimistic first paint.
   if (localStorage.getItem(STORAGE_KEY)) showApp();
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const pw = document.getElementById("passwordInput").value;
+    const pw = passwordInput.value;
+    const code = totpInput.value.trim();
     const remember = rememberCheckbox.checked;
     loginError.textContent = "";
-    setKey(pw, remember);
-    const ok = await loadBookings(true);
-    if (!ok) { clearKey(); loginError.textContent = lastAuthError || "Incorrect password."; }
-    else { showApp(); }
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.textContent = "Verifying…";
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pw, code })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 429) {
+        loginError.textContent = data.message || "Too many attempts — please wait and try again.";
+        return;
+      }
+      if (!res.ok || !data.success || !data.token) {
+        loginError.textContent = data.message || "Incorrect password or code.";
+        return;
+      }
+
+      setKey(data.token, remember);
+      showApp();
+    } catch (err) {
+      loginError.textContent = "Network error — could not reach the server.";
+    } finally {
+      loginSubmitBtn.disabled = false;
+      loginSubmitBtn.textContent = "Log In";
+    }
   });
 
-  document.getElementById("logoutBtn").addEventListener("click", () => { clearKey(); showLogin(); });
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    const token = getKey();
+    clearKey();
+    showLogin();
+    // Best-effort — invalidates the token server-side too, so a copy of
+    // it sitting in browser history/localStorage elsewhere stops working.
+    if (token) {
+      try {
+        await fetch(`${API_BASE}/admin/logout`, { method: "POST", headers: { "x-admin-key": token } });
+      } catch (err) { /* already logged out locally either way */ }
+    }
+  });
   document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
   document.getElementById("exportBtn").addEventListener("click", exportCsv);
   document.getElementById("analyticsBtn").addEventListener("click", toggleAnalytics);
@@ -812,7 +894,7 @@
     }
     try {
       const res = await fetch(`${API_BASE}/admin/bookings`, { headers: { "x-admin-key": getKey() } });
-      if (res.status === 401) { if (!silent) showLogin("Session expired — please log in again."); return false; }
+      if (res.status === 401) { clearKey(); showLogin("Session expired — please log in again."); return false; }
       if (res.status === 429) {
         const data = await res.json().catch(() => ({}));
         lastAuthError = data.message || "Too many attempts — please wait and try again.";
@@ -929,7 +1011,7 @@
         <div class="record-head">
           <div>
             <div class="record-name">${escapeHtml(b.customerName)}</div>
-            <div class="record-id">${b.bookingId}</div>
+            <div class="record-id">${escapeHtml(b.bookingId)}</div>
           </div>
           <div class="record-actions">
             <button class="icon-btn archive-btn" title="${b.archived ? "Unarchive" : "Archive"}">${b.archived ? ICON_UNARCHIVE : ICON_ARCHIVE}</button>
@@ -973,7 +1055,7 @@
         headers: { "Content-Type": "application/json", "x-admin-key": getKey() },
         body: JSON.stringify({ status: newStatus })
       });
-      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      if (res.status === 401) { clearKey(); showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
       if (!data.success) { indicator.textContent = "Failed"; showToast(data.message || "Could not update status.", "error"); return; }
 
@@ -1003,7 +1085,7 @@
         headers: { "Content-Type": "application/json", "x-admin-key": getKey() },
         body: JSON.stringify({ archived: nextArchived })
       });
-      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      if (res.status === 401) { clearKey(); showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
       if (!data.success) { showToast(data.message || "Could not update booking.", "error"); return; }
 
@@ -1027,7 +1109,7 @@
         method: "DELETE",
         headers: { "x-admin-key": getKey() }
       });
-      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      if (res.status === 401) { clearKey(); showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
       if (!data.success) { showToast(data.message || "Delete failed.", "error"); return; }
 
@@ -1124,7 +1206,7 @@
     document.getElementById("trendConversion").innerHTML = "";
     try {
       const res = await fetch(`${API_BASE}/admin/stats/history?days=30`, { headers: { "x-admin-key": getKey() } });
-      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      if (res.status === 401) { clearKey(); showLogin("Session expired — please log in again."); return; }
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Failed to load history.");
       renderTrendChart(data.history, data.totals, data.days);
