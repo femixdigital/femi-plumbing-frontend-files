@@ -172,7 +172,7 @@
   }
   header h1 .slate { color: var(--slate); }
   header h1 .gold { color: var(--gold); }
-  header button#refreshBtn, header button#logoutBtn {
+  header button#exportBtn, header button#refreshBtn, header button#logoutBtn {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--slate);
@@ -182,7 +182,7 @@
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
-  header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
+  header button#exportBtn:active, header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
   header .actions { display: flex; gap: 8px; }
 
   .search-row {
@@ -483,6 +483,7 @@
       <h1><span class="slate">BOOKINGS</span> <span class="gold">ADMIN</span></h1>
     </div>
     <div class="actions">
+      <button id="exportBtn">Export CSV</button>
       <button id="refreshBtn">Refresh</button>
       <button id="logoutBtn">Log out</button>
     </div>
@@ -596,6 +597,7 @@
 
   document.getElementById("logoutBtn").addEventListener("click", () => { clearKey(); showLogin(); });
   document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
 
   searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
@@ -683,9 +685,10 @@
     return true;
   }
 
-  function render() {
-    updateCounts();
-
+  // Applies the current status tab + search + date range to `bookings`.
+  // Shared by render() and exportCsv() so "export" always matches what's
+  // on screen.
+  function getFilteredBookings() {
     let filtered;
     if (currentFilter === "archived") {
       filtered = bookings.filter(b => b.archived);
@@ -706,6 +709,14 @@
     if (dateFromInput.value || dateToInput.value) {
       filtered = filtered.filter(b => inDateRange(b.bookingDate));
     }
+
+    return filtered;
+  }
+
+  function render() {
+    updateCounts();
+
+    const filtered = getFilteredBookings();
 
     if (filtered.length === 0) {
       recordsWrap.innerHTML = "";
@@ -833,6 +844,54 @@
     } catch (err) {
       showToast("Network error — delete failed.", "error");
     }
+  }
+
+  // Exports whatever is currently visible (status tab + search + date
+  // range all apply) as a CSV file, downloaded straight from the browser.
+  function csvEscape(val) {
+    const s = String(val ?? "");
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  }
+
+  function exportCsv() {
+    const rows = getFilteredBookings();
+    if (rows.length === 0) {
+      showToast("Nothing to export for the current view.", "error");
+      return;
+    }
+
+    const columns = [
+      ["bookingId",    "Booking ID"],
+      ["customerName", "Customer"],
+      ["phoneNumber",  "Phone"],
+      ["email",        "Email"],
+      ["serviceType",  "Service"],
+      ["bookingDate",  "Date"],
+      ["bookingTime",  "Time"],
+      ["address",      "Address"],
+      ["status",       "Status"],
+      ["archived",     "Archived"],
+      ["message",      "Note"],
+      ["createdAt",    "Created At"]
+    ];
+
+    const header = columns.map(([, label]) => csvEscape(label)).join(",");
+    const lines = rows.map(b =>
+      columns.map(([key]) => csvEscape(key === "archived" ? (b.archived ? "yes" : "no") : b[key])).join(",")
+    );
+    const csv = [header, ...lines].join("\r\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const stamp = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `femix-bookings-${currentFilter}-${stamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${rows.length} booking${rows.length === 1 ? "" : "s"}.`, "success");
   }
 
   function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
