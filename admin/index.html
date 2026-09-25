@@ -462,6 +462,29 @@
     border-radius: 999px;
     background: linear-gradient(90deg, var(--gold-dark), var(--gold));
   }
+  .trend-conversion {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .trend-conversion strong { color: var(--gold-light); font-family: 'Space Mono', monospace; }
+  .trend-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .trend-legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .trend-legend .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
   .analytics-note {
     font-size: 0.7rem;
     color: var(--slate);
@@ -609,8 +632,13 @@
       <h3>Popular services</h3>
       <div id="serviceBars"></div>
     </div>
+    <div class="analytics-section">
+      <h3>Visitors vs. bookings <span class="mono" id="trendRangeLabel" style="font-weight:400;color:var(--slate);font-size:0.68rem;"></span></h3>
+      <div id="trendChart"></div>
+      <div id="trendConversion" class="trend-conversion"></div>
+    </div>
     <div class="analytics-note">
-      Active visitors reflects people on the site right now (last 5 minutes) — the server doesn't keep a historical visit log yet, so this can't show visit-to-booking conversion over time.
+      Active visitors above reflects people on the site right now (last 5 minutes). The trend chart below uses a persistent daily log, so it survives restarts and builds up real history over time.
     </div>
   </div>
 
@@ -1091,6 +1119,56 @@
     } catch (err) {
       document.getElementById("statActiveVisitors").textContent = "–";
     }
+
+    document.getElementById("trendChart").innerHTML = `<div style="color:var(--muted);font-size:0.8rem;padding:8px 0;">Loading…</div>`;
+    document.getElementById("trendConversion").innerHTML = "";
+    try {
+      const res = await fetch(`${API_BASE}/admin/stats/history?days=30`, { headers: { "x-admin-key": getKey() } });
+      if (res.status === 401) { showLogin("Session expired — please log in again."); return; }
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || "Failed to load history.");
+      renderTrendChart(data.history, data.totals, data.days);
+    } catch (err) {
+      document.getElementById("trendChart").innerHTML = `<div style="color:var(--muted);font-size:0.8rem;padding:8px 0;">Couldn't load trend data.</div>`;
+    }
+  }
+
+  function renderTrendChart(history, totals, days) {
+    document.getElementById("trendRangeLabel").textContent = `last ${days} days`;
+
+    const width = 600, height = 140, padTop = 10, padBottom = 20, padX = 4;
+    const maxVal = Math.max(1, ...history.map(h => Math.max(h.visitors, h.bookings)));
+    const stepX = history.length > 1 ? (width - padX * 2) / (history.length - 1) : 0;
+    const yFor = v => height - padBottom - (v / maxVal) * (height - padTop - padBottom);
+    const xFor = i => padX + i * stepX;
+
+    const visitorsPath = history.map((h, i) => `${i === 0 ? "M" : "L"}${xFor(i).toFixed(1)},${yFor(h.visitors).toFixed(1)}`).join(" ");
+    const bookingsPath = history.map((h, i) => `${i === 0 ? "M" : "L"}${xFor(i).toFixed(1)},${yFor(h.bookings).toFixed(1)}`).join(" ");
+
+    const firstDate = history[0]?.date || "";
+    const lastDate = history[history.length - 1]?.date || "";
+
+    document.getElementById("trendChart").innerHTML = `
+      <div class="trend-legend">
+        <span><i class="swatch" style="background:var(--gold);"></i>Visitors</span>
+        <span><i class="swatch" style="background:var(--confirmed);"></i>Bookings</span>
+      </div>
+      <svg viewBox="0 0 ${width} ${height}" style="width:100%;height:auto;display:block;" preserveAspectRatio="none">
+        <path d="${visitorsPath}" fill="none" stroke="var(--gold)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+        <path d="${bookingsPath}" fill="none" stroke="var(--confirmed)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-size:0.66rem;color:var(--slate);margin-top:2px;">
+        <span>${escapeHtml(firstDate)}</span>
+        <span>${escapeHtml(lastDate)}</span>
+      </div>
+    `;
+
+    const conversion = totals.visitors > 0 ? ((totals.bookings / totals.visitors) * 100).toFixed(1) : "–";
+    document.getElementById("trendConversion").innerHTML = `
+      <span><strong>${totals.visitors}</strong> visitors</span>
+      <span><strong>${totals.bookings}</strong> bookings</span>
+      <span><strong>${conversion}${conversion === "–" ? "" : "%"}</strong> visit-to-booking conversion</span>
+    `;
   }
 
   function renderServiceBreakdown() {
