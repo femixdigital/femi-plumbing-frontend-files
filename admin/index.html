@@ -172,7 +172,7 @@
   }
   header h1 .slate { color: var(--slate); }
   header h1 .gold { color: var(--gold); }
-  header button#exportBtn, header button#refreshBtn, header button#logoutBtn {
+  header button#analyticsBtn, header button#exportBtn, header button#refreshBtn, header button#logoutBtn {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--slate);
@@ -182,7 +182,8 @@
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
-  header button#exportBtn:active, header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
+  header button#analyticsBtn:active, header button#exportBtn:active, header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
+  header button#analyticsBtn.active { border-color: var(--gold); color: var(--gold); background: rgba(231,200,110,0.1); }
   header .actions { display: flex; gap: 8px; }
 
   .search-row {
@@ -406,6 +407,72 @@
     .record-body .rf.rf-note { grid-column: 1 / -1; }
   }
 
+  /* ---------- Analytics panel ---------- */
+  .analytics-panel {
+    padding: 16px 16px 4px;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 0.74rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .analytics-section { margin-top: 18px; }
+  .analytics-section h3 {
+    font-size: 0.85rem;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .service-bar-row { margin-bottom: 9px; }
+  .service-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .service-bar-label .svc-count { font-family: 'Space Mono', monospace; color: var(--gold-light); }
+  .service-bar-track {
+    height: 7px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  .service-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  }
+  .analytics-note {
+    font-size: 0.7rem;
+    color: var(--slate);
+    line-height: 1.4;
+    padding: 14px 0 16px;
+  }
+
+  @media (min-width: 640px) {
+    .stat-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
   /* ---------- Pagination ---------- */
   .pagination-row {
     display: flex;
@@ -512,19 +579,48 @@
       <h1><span class="slate">BOOKINGS</span> <span class="gold">ADMIN</span></h1>
     </div>
     <div class="actions">
+      <button id="analyticsBtn">Analytics</button>
       <button id="exportBtn">Export CSV</button>
       <button id="refreshBtn">Refresh</button>
       <button id="logoutBtn">Log out</button>
     </div>
   </header>
 
-  <div class="search-row">
+  <div id="analyticsPanel" class="analytics-panel" style="display:none;">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="statActiveVisitors">–</div>
+        <div class="stat-label">Active visitors now</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statTotalBookings">–</div>
+        <div class="stat-label">Total bookings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statCompleted">–</div>
+        <div class="stat-label">Completed jobs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statPending">–</div>
+        <div class="stat-label">Awaiting action</div>
+      </div>
+    </div>
+    <div class="analytics-section">
+      <h3>Popular services</h3>
+      <div id="serviceBars"></div>
+    </div>
+    <div class="analytics-note">
+      Active visitors reflects people on the site right now (last 5 minutes) — the server doesn't keep a historical visit log yet, so this can't show visit-to-booking conversion over time.
+    </div>
+  </div>
+
+  <div class="search-row" id="searchRow">
     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
     <input type="text" id="searchInput" placeholder="Search by name or phone…" autocomplete="off" />
     <button type="button" id="clearSearchBtn" aria-label="Clear search" style="display:none;">✕</button>
   </div>
 
-  <div class="date-range-row">
+  <div class="date-range-row" id="dateRangeRow">
     <label for="dateFromInput">From <input type="date" id="dateFromInput" /></label>
     <label for="dateToInput">To <input type="date" id="dateToInput" /></label>
     <button type="button" id="clearDateRangeBtn">Clear</button>
@@ -638,6 +734,7 @@
   document.getElementById("logoutBtn").addEventListener("click", () => { clearKey(); showLogin(); });
   document.getElementById("refreshBtn").addEventListener("click", () => loadBookings());
   document.getElementById("exportBtn").addEventListener("click", exportCsv);
+  document.getElementById("analyticsBtn").addEventListener("click", toggleAnalytics);
 
   searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
@@ -762,6 +859,11 @@
 
   function render() {
     updateCounts();
+
+    if (analyticsOpen) {
+      renderServiceBreakdown();
+      return;
+    }
 
     const filtered = getFilteredBookings();
 
@@ -955,6 +1057,67 @@
     a.remove();
     URL.revokeObjectURL(url);
     showToast(`Exported ${rows.length} booking${rows.length === 1 ? "" : "s"}.`, "success");
+  }
+
+  const analyticsPanel = document.getElementById("analyticsPanel");
+  const analyticsBtn = document.getElementById("analyticsBtn");
+  const searchRow = document.getElementById("searchRow");
+  const dateRangeRow = document.getElementById("dateRangeRow");
+  const filtersRow = document.getElementById("filters");
+  let analyticsOpen = false;
+
+  function toggleAnalytics() {
+    analyticsOpen = !analyticsOpen;
+    analyticsPanel.style.display = analyticsOpen ? "block" : "none";
+    searchRow.style.display = analyticsOpen ? "none" : "flex";
+    dateRangeRow.style.display = analyticsOpen ? "none" : "flex";
+    filtersRow.style.display = analyticsOpen ? "none" : "flex";
+    recordsWrap.style.display = analyticsOpen ? "none" : "block";
+    statusEl.style.display = analyticsOpen ? "none" : statusEl.style.display;
+    paginationRow.style.display = analyticsOpen ? "none" : paginationRow.style.display;
+    analyticsBtn.classList.toggle("active", analyticsOpen);
+    analyticsBtn.textContent = analyticsOpen ? "Bookings" : "Analytics";
+    if (analyticsOpen) loadAnalytics();
+  }
+
+  async function loadAnalytics() {
+    document.getElementById("statActiveVisitors").textContent = "…";
+    renderServiceBreakdown(); // service mix + local counts render instantly, no fetch needed
+
+    try {
+      const res = await fetch(`${API_BASE}/api/stats`, { headers: { "x-admin-key": getKey() } });
+      const data = await res.json();
+      document.getElementById("statActiveVisitors").textContent = data.success ? data.activeVisitors : "–";
+    } catch (err) {
+      document.getElementById("statActiveVisitors").textContent = "–";
+    }
+  }
+
+  function renderServiceBreakdown() {
+    const active = bookings.filter(b => !b.archived);
+    document.getElementById("statTotalBookings").textContent = active.length;
+    document.getElementById("statCompleted").textContent = active.filter(b => b.status === "completed").length;
+    document.getElementById("statPending").textContent = active.filter(b => b.status === "pending").length;
+
+    const counts = {};
+    active.forEach(b => {
+      const svc = b.serviceType || "Unspecified";
+      counts[svc] = (counts[svc] || 0) + 1;
+    });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    const max = sorted.length ? sorted[0][1] : 1;
+
+    const container = document.getElementById("serviceBars");
+    if (!sorted.length) {
+      container.innerHTML = `<div style="color:var(--muted);font-size:0.82rem;">No bookings yet.</div>`;
+      return;
+    }
+    container.innerHTML = sorted.map(([svc, count]) => `
+      <div class="service-bar-row">
+        <div class="service-bar-label"><span>${escapeHtml(svc)}</span><span class="svc-count">${count}</span></div>
+        <div class="service-bar-track"><div class="service-bar-fill" style="width:${(count / max) * 100}%"></div></div>
+      </div>
+    `).join("");
   }
 
   function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
