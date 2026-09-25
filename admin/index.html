@@ -406,6 +406,35 @@
     .record-body .rf.rf-note { grid-column: 1 / -1; }
   }
 
+  /* ---------- Pagination ---------- */
+  .pagination-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 16px 28px;
+  }
+  .pagination-row button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .pagination-row button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .pagination-row button:not(:disabled):active { border-color: var(--gold); color: var(--gold); }
+  .pagination-row #pageIndicator {
+    font-size: 0.76rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
   /* ---------- Toast notifications ---------- */
   .toast-container {
     position: fixed;
@@ -512,6 +541,11 @@
 
   <div id="status"></div>
   <div class="records-wrap" id="recordsWrap"></div>
+  <div class="pagination-row" id="paginationRow" style="display:none;">
+    <button type="button" id="prevPageBtn">‹ Prev</button>
+    <span id="pageIndicator" class="mono"></span>
+    <button type="button" id="nextPageBtn">Next ›</button>
+  </div>
 </div>
 
 <script>
@@ -535,6 +569,12 @@
   const dateFromInput = document.getElementById("dateFromInput");
   const dateToInput = document.getElementById("dateToInput");
   const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
+  const PAGE_SIZE = 20;
+  let currentPage = 1;
+  const paginationRow = document.getElementById("paginationRow");
+  const prevPageBtn = document.getElementById("prevPageBtn");
+  const nextPageBtn = document.getElementById("nextPageBtn");
+  const pageIndicator = document.getElementById("pageIndicator");
   const rememberCheckbox = document.getElementById("rememberCheckbox");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");
@@ -602,24 +642,27 @@
   searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     clearSearchBtn.style.display = searchQuery ? "flex" : "none";
+    currentPage = 1;
     render();
   });
   clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
     searchQuery = "";
     clearSearchBtn.style.display = "none";
+    currentPage = 1;
     render();
   });
 
   function updateClearDateRangeVisibility() {
     clearDateRangeBtn.style.display = (dateFromInput.value || dateToInput.value) ? "inline-flex" : "none";
   }
-  dateFromInput.addEventListener("change", () => { updateClearDateRangeVisibility(); render(); });
-  dateToInput.addEventListener("change", () => { updateClearDateRangeVisibility(); render(); });
+  dateFromInput.addEventListener("change", () => { updateClearDateRangeVisibility(); currentPage = 1; render(); });
+  dateToInput.addEventListener("change", () => { updateClearDateRangeVisibility(); currentPage = 1; render(); });
   clearDateRangeBtn.addEventListener("click", () => {
     dateFromInput.value = "";
     dateToInput.value = "";
     updateClearDateRangeVisibility();
+    currentPage = 1;
     render();
   });
 
@@ -629,8 +672,12 @@
     currentFilter = btn.dataset.filter;
     [...document.querySelectorAll("#filters button")].forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
+    currentPage = 1;
     render();
   });
+
+  prevPageBtn.addEventListener("click", () => { currentPage--; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  nextPageBtn.addEventListener("click", () => { currentPage++; render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
 
   async function loadBookings(silent) {
     if (!silent) {
@@ -720,6 +767,7 @@
 
     if (filtered.length === 0) {
       recordsWrap.innerHTML = "";
+      paginationRow.style.display = "none";
       const hasDateRange = dateFromInput.value || dateToInput.value;
       statusEl.textContent = searchQuery
         ? `No bookings match "${searchInput.value.trim()}".`
@@ -731,7 +779,22 @@
     }
     statusEl.style.display = "none";
 
-    recordsWrap.innerHTML = filtered.map(b => `
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    const pageStart = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = filtered.slice(pageStart, pageStart + PAGE_SIZE);
+
+    if (filtered.length > PAGE_SIZE) {
+      paginationRow.style.display = "flex";
+      pageIndicator.textContent = `Page ${currentPage} of ${totalPages} · ${filtered.length} total`;
+      prevPageBtn.disabled = currentPage <= 1;
+      nextPageBtn.disabled = currentPage >= totalPages;
+    } else {
+      paginationRow.style.display = "none";
+    }
+
+    recordsWrap.innerHTML = pageItems.map(b => `
       <div class="record-card s-${b.status} ${b.archived ? "is-archived" : ""}" data-id="${b.bookingId}">
         <div class="record-head">
           <div>
