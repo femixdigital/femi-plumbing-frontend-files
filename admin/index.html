@@ -191,7 +191,8 @@
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
   }
-  .header-title h1 { font-size: 1.05rem; font-weight: 800; margin: 0; letter-spacing: 0.03em; }
+  .header-title { display: flex; align-items: center; gap: 10px; }
+  .header-title-text h1 { font-size: 1.05rem; font-weight: 800; margin: 0; letter-spacing: 0.03em; }
   .header-title .eyebrow {
     display: block;
     font-family: 'Space Mono', monospace;
@@ -215,6 +216,40 @@
   header button#analyticsBtn:active, header button#exportBtn:active, header button#refreshBtn:active, header button#logoutBtn:active { border-color: var(--gold); color: var(--gold); }
   header button#analyticsBtn.active { border-color: var(--gold); color: var(--gold); background: rgba(231,200,110,0.1); }
   header .actions { display: flex; gap: 8px; }
+
+  /* ---------- New-booking pill badge ---------- */
+  .new-badge {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold) 65%, var(--gold-dark));
+    color: #14161B;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 6px 16px -6px rgba(231,200,110,0.6);
+    animation: badgePop 0.28s ease;
+  }
+  .new-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #14161B;
+    animation: badgePulse 1.4s ease-in-out infinite;
+  }
+  @keyframes badgePop {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
 
   .search-row {
     position: relative;
@@ -345,6 +380,11 @@
   .record-card.s-completed { border-left-color: var(--completed); }
   .record-card.s-cancelled { border-left-color: var(--cancelled); opacity: 0.8; }
   .record-card.is-archived { opacity: 0.55; }
+  .record-card.is-new { animation: newCardGlow 2.2s ease; }
+  @keyframes newCardGlow {
+    0% { box-shadow: 0 0 0 2px rgba(231,200,110,0.7), 0 14px 28px -20px rgba(0,0,0,0.7); }
+    100% { box-shadow: 0 14px 28px -20px rgba(0,0,0,0.7); }
+  }
 
   .record-head {
     display: flex;
@@ -632,8 +672,13 @@
 <div id="app">
   <header>
     <div class="header-title">
-      <span class="eyebrow">FEMIX PLUMBING SERVICES</span>
-      <h1><span class="slate">BOOKINGS</span> <span class="gold">ADMIN</span></h1>
+      <div class="header-title-text">
+        <span class="eyebrow">FEMIX PLUMBING SERVICES</span>
+        <h1><span class="slate">BOOKINGS</span> <span class="gold">ADMIN</span></h1>
+      </div>
+      <button type="button" id="newBookingsBadge" class="new-badge">
+        <span class="dot"></span><span id="newBookingsCount">0</span> new
+      </button>
     </div>
     <div class="actions">
       <button id="analyticsBtn">Analytics</button>
@@ -709,11 +754,16 @@
 <script>
   const API_BASE = "https://femix-plumbing-backend.onrender.com";
   const STORAGE_KEY = "femixAdminSession"; // now stores a short-lived session token, never the password
+  const SEEN_IDS_KEY = "femixAdminSeenBookingIds";
   const ALLOWED_STATUSES = ["pending", "confirmed", "completed", "cancelled"];
+  const AUTO_REFRESH_MS = 30000;
   let bookings = [];
   let currentFilter = "all";
   let memoryKey = "";
   let lastAuthError = "";
+  let seenBookingIds = null; // Set, loaded lazily once we know which admin device this is
+  let newBookingIds = [];    // ids not yet acknowledged via the badge, in arrival order
+  let autoRefreshTimer = null;
 
   const loginScreen = document.getElementById("loginScreen");
   const app = document.getElementById("app");
@@ -739,6 +789,8 @@
   const passwordInput = document.getElementById("passwordInput");
   const totpInput = document.getElementById("totpInput");
   const eyeIcon = document.getElementById("eyeIcon");
+  const newBookingsBadge = document.getElementById("newBookingsBadge");
+  const newBookingsCount = document.getElementById("newBookingsCount");
 
   const EYE_OPEN = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
   const EYE_CLOSED = `<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.6 20.6 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
@@ -758,6 +810,31 @@
       el.classList.add("hide");
       setTimeout(() => el.remove(), 200);
     }, 2600);
+  }
+
+  // ---------- Accent chime: three-note ascending tone for new bookings ----------
+  function playAccentChime() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const notes = [523.25, 659.25, 783.99]; // C5 -> E5 -> G5, short ascending run
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const start = ctx.currentTime + i * 0.11;
+        gain.gain.setValueAtTime(0, start);
+        gain.gain.linearRampToValueAtTime(0.22, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.26);
+        osc.start(start);
+        osc.stop(start + 0.3);
+      });
+      setTimeout(() => ctx.close(), 700);
+    } catch (err) { /* audio not available — badge still shows silently */ }
   }
 
   togglePasswordBtn.addEventListener("click", () => {
@@ -780,13 +857,50 @@
   }
   function clearKey() { memoryKey = ""; localStorage.removeItem(STORAGE_KEY); }
 
-  function showApp() { loginScreen.style.display = "none"; app.style.display = "block"; loadBookings(); }
+  // Seen-booking-id set is per-device, persisted in localStorage so a
+  // page reload doesn't re-chime for bookings you've already noticed.
+  function loadSeenIds() {
+    if (seenBookingIds) return seenBookingIds;
+    try {
+      const raw = localStorage.getItem(SEEN_IDS_KEY);
+      seenBookingIds = new Set(raw ? JSON.parse(raw) : []);
+    } catch (err) {
+      seenBookingIds = new Set();
+    }
+    return seenBookingIds;
+  }
+  function persistSeenIds() {
+    try {
+      // Cap stored history so this doesn't grow forever.
+      const arr = [...seenBookingIds].slice(-500);
+      localStorage.setItem(SEEN_IDS_KEY, JSON.stringify(arr));
+    } catch (err) { /* storage full or unavailable — non-fatal */ }
+  }
+
+  function showApp() {
+    loginScreen.style.display = "none";
+    app.style.display = "block";
+    loadBookings().then(() => {
+      // First successful load on this device just establishes the
+      // baseline — no chime/badge for bookings that already existed.
+      startAutoRefresh();
+    });
+  }
   function showLogin(message) {
     app.style.display = "none";
     loginScreen.style.display = "flex";
     passwordInput.value = "";
     totpInput.value = "";
+    stopAutoRefresh();
     if (message) loginError.textContent = message;
+  }
+
+  function startAutoRefresh() {
+    stopAutoRefresh();
+    autoRefreshTimer = setInterval(() => loadBookings(true), AUTO_REFRESH_MS);
+  }
+  function stopAutoRefresh() {
+    if (autoRefreshTimer) { clearInterval(autoRefreshTimer); autoRefreshTimer = null; }
   }
 
   // A stored token might already be expired (session cookies are stateless
@@ -846,6 +960,20 @@
   document.getElementById("exportBtn").addEventListener("click", exportCsv);
   document.getElementById("analyticsBtn").addEventListener("click", toggleAnalytics);
 
+  newBookingsBadge.addEventListener("click", () => {
+    // Acknowledge: fold the "new" ids into "seen" so the badge clears and
+    // won't re-chime for them, then jump to Pending so they're easy to act on.
+    newBookingIds.forEach(id => loadSeenIds().add(id));
+    persistSeenIds();
+    newBookingIds = [];
+    newBookingsBadge.style.display = "none";
+    currentFilter = "pending";
+    [...document.querySelectorAll("#filters button")].forEach(b => b.classList.remove("active"));
+    document.querySelector('#filters button[data-filter="pending"]')?.classList.add("active");
+    currentPage = 1;
+    render();
+  });
+
   searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     clearSearchBtn.style.display = searchQuery ? "flex" : "none";
@@ -903,14 +1031,47 @@
       const data = await res.json();
       if (!data.success) { statusEl.textContent = data.message || "Something went wrong."; return false; }
       bookings = data.bookings || [];
+      detectNewBookings();
       render();
       return true;
     } catch (err) {
-      statusEl.textContent = "Network error — check your connection and try again.";
-      statusEl.style.display = "block";
-      recordsWrap.innerHTML = "";
+      if (!silent) {
+        statusEl.textContent = "Network error — check your connection and try again.";
+        statusEl.style.display = "block";
+        recordsWrap.innerHTML = "";
+      }
       return false;
     }
+  }
+
+  // Compares the freshly-loaded bookings against the seen-id set. Any
+  // booking id we haven't seen before on this device gets added to the
+  // pill badge; on the very first load (empty seen set) we just record
+  // everything as seen without alerting, so opening the dashboard for
+  // the first time — or on a fresh device — doesn't fire the chime for
+  // the whole existing backlog.
+  function detectNewBookings() {
+    const seen = loadSeenIds();
+    const isFirstLoad = seen.size === 0 && !localStorage.getItem(SEEN_IDS_KEY + "_init");
+    const freshIds = [];
+    bookings.forEach(b => {
+      if (!b.bookingId) return;
+      if (!seen.has(b.bookingId)) freshIds.push(b.bookingId);
+    });
+
+    if (isFirstLoad) {
+      bookings.forEach(b => { if (b.bookingId) seen.add(b.bookingId); });
+      persistSeenIds();
+      try { localStorage.setItem(SEEN_IDS_KEY + "_init", "1"); } catch (err) {}
+      return;
+    }
+
+    if (freshIds.length === 0) return;
+
+    newBookingIds = [...new Set([...newBookingIds, ...freshIds])];
+    newBookingsCount.textContent = newBookingIds.length;
+    newBookingsBadge.style.display = "flex";
+    playAccentChime();
   }
 
   function updateCounts() {
@@ -1007,7 +1168,7 @@
     }
 
     recordsWrap.innerHTML = pageItems.map(b => `
-      <div class="record-card s-${b.status} ${b.archived ? "is-archived" : ""}" data-id="${b.bookingId}">
+      <div class="record-card s-${b.status} ${b.archived ? "is-archived" : ""} ${newBookingIds.includes(b.bookingId) ? "is-new" : ""}" data-id="${b.bookingId}">
         <div class="record-head">
           <div>
             <div class="record-name">${escapeHtml(b.customerName)}</div>
