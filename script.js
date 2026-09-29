@@ -7,6 +7,24 @@
 /* ─── BACKEND URL ─── */
 const BACKEND_URL = 'https://femix-plumbing-backend.onrender.com/book';
 const SUBSCRIBE_URL = 'https://femix-plumbing-backend.onrender.com/subscribe';
+const PAYMENT_VERIFY_URL = 'https://femix-plumbing-backend.onrender.com/payment/verify';
+
+/* ── PAYMENT SETTINGS (edit these) ── all amounts are Nigerian Naira (₦) */
+const PAYMENT_CONFIG = {
+  bankName:      'YOUR BANK NAME',          // e.g. 'GTBank'
+  accountName:   'Femix Plumbing Services',
+  accountNumber: '0000000000',              // 10-digit NUBAN
+  paystackPublicKey: '',                    // 'pk_live_…' — leave '' to disable card popup
+  // USSD transfer strings (amount, account) — formats can vary by bank
+  ussd: [
+    { bank: 'GTBank',     code: (a, n) => `*737*2*${a}*${n}#` },
+    { bank: 'Access',     code: (a, n) => `*901*${a}*${n}#` },
+    { bank: 'Zenith',     code: (a, n) => `*966*${a}*${n}#` },
+    { bank: 'First Bank', code: (a, n) => `*894*${a}*${n}#` },
+    { bank: 'UBA',        code: (a, n) => `*919*3*${n}*${a}#` },
+    { bank: 'Fidelity',   code: (a, n) => `*770*${n}*${a}#` }
+  ]
+};
 
 /* ─── DOM HELPERS ─── */
 const $  = (s, ctx = document) => ctx.querySelector(s);
@@ -851,19 +869,67 @@ const BookingWizard = (function () {
 (function paymentSelector() {
   const buttons = $$('.pay-method');
   const hidden  = $('#fpayment');
+  const box     = $('#payDetails');
+  const amtWrap = $('#payAmountWrap');
+  const amt     = $('#fpayamount');
+  const status  = $('#fpaystatus');
   if (!buttons.length || !hidden) return;
+
+  const C = PAYMENT_CONFIG;
+  const naira = n => '₦' + Number(n).toLocaleString('en-NG');
+  const STATUS = { 'Cash': 'pay_on_completion', 'Bank Transfer': 'awaiting_transfer', 'USSD': 'awaiting_transfer', 'Debit / Credit Card': 'pending_card' };
+
+  function render() {
+    const m = hidden.value || 'Cash';
+    const a = Math.round(Number(amt?.value) || 0);
+    if (status) status.value = STATUS[m] || 'pay_on_completion';
+    if (amtWrap) amtWrap.hidden = (m === 'Cash');
+    if (!box) return;
+
+    if (m === 'Cash') {
+      box.innerHTML = '<p class="pay-msg">Pay in Naira (₦) in person once the job is done and you are satisfied.</p>';
+    } else if (m === 'Bank Transfer') {
+      box.innerHTML =
+        '<dl class="pay-bank">' +
+        `<div><dt>Bank</dt><dd>${C.bankName}</dd></div>` +
+        `<div><dt>Account name</dt><dd>${C.accountName}</dd></div>` +
+        `<div><dt>Account number</dt><dd>${C.accountNumber} <button type="button" class="pay-copy" data-copy="${C.accountNumber}">Copy</button></dd></div>` +
+        '</dl><p class="pay-msg">Transfer after your booking is confirmed and use your name as the reference.</p>';
+    } else if (m === 'USSD') {
+      const opts = C.ussd.map((u, i) => `<option value="${i}">${u.bank}</option>`).join('');
+      box.innerHTML = `<label class="pay-lbl" for="payBank">Your bank</label><select id="payBank" class="pay-select">${opts}</select><div id="payUssd"></div>`;
+      const sel = $('#payBank'), out = $('#payUssd');
+      const draw = () => {
+        if (!a) { out.innerHTML = '<p class="pay-msg">Enter the amount above to get your dial code.</p>'; return; }
+        const code = C.ussd[sel.value].code(a, C.accountNumber);
+        out.innerHTML = `<div class="pay-code"><code>${code}</code><a class="pay-dial" href="tel:${encodeURIComponent(code)}">Dial</a></div><p class="pay-msg">Pay ${naira(a)} to ${C.accountName}. Confirm the account name on your phone before you send.</p>`;
+      };
+      sel.addEventListener('change', draw); draw();
+    } else {
+      const ok = C.paystackPublicKey && a >= 100;
+      box.innerHTML = ok
+        ? `<p class="pay-msg">After you send this request, a secure Paystack window opens to pay <strong>${naira(a)}</strong> by card. Add your email in step 1 for the receipt.</p>`
+        : '<p class="pay-msg">We will send you a secure card payment link once your slot is confirmed.</p>';
+    }
+  }
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      buttons.forEach(b => {
-        b.classList.remove('selected');
-        b.setAttribute('aria-checked', 'false');
-      });
+      buttons.forEach(b => { b.classList.remove('selected'); b.setAttribute('aria-checked', 'false'); });
       btn.classList.add('selected');
       btn.setAttribute('aria-checked', 'true');
       hidden.value = btn.dataset.method || '';
+      render();
     });
   });
+  amt?.addEventListener('input', () => { render(); });
+  box?.addEventListener('click', e => {
+    const b = e.target.closest('[data-copy]');
+    if (!b) return;
+    navigator.clipboard?.writeText(b.dataset.copy).then(() => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1500); });
+  });
+  render();
+  window.FemixPay = { render };
 })();
 
 /* ════════════════════════════════════════════════════
@@ -2006,6 +2072,19 @@ const MediaAttachments = (function () {
     return attachments;
   }
 
+  /* Real File/Blob objects for multipart upload (no base64 bloat) */
+  function files() {
+    const out = [];
+    if (voiceBlob) {
+      const t = voiceBlob.type || '';
+      const ext = t.includes('mp4') ? 'm4a' : t.includes('ogg') ? 'ogg' : t.includes('mpeg') ? 'mp3' : 'webm';
+      out.push({ field: 'voice', file: voiceBlob, name: voiceBlob.name || ('voice-note.' + ext) });
+    }
+    if (videoFile) out.push({ field: 'video', file: videoFile, name: videoFile.name });
+    images.forEach(img => out.push({ field: 'photos', file: img.file, name: img.name || img.file.name }));
+    return out;
+  }
+
   function reset() {
     resetVoiceUI();
     videoFile = null;
@@ -2022,31 +2101,78 @@ const MediaAttachments = (function () {
     return !!voiceBlob || !!videoFile || images.length > 0;
   }
 
-  return { collect, reset, hasAttachments };
+  return { collect, files, reset, hasAttachments };
 })();
 
 /* ════════════════════════════════════════════════════
    16. FORM SUBMIT
 ════════════════════════════════════════════════════ */
-/* XHR wrapper (instead of fetch) purely so we can report real upload
-   progress — handy now that a booking can carry photos/video/audio. */
-function postJSONWithProgress(url, payload, onProgress) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.upload.onprogress = e => {
-      if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100));
-    };
-    xhr.onload = () => {
-      let body = null;
-      try { body = JSON.parse(xhr.responseText); } catch { /* non-JSON response */ }
-      resolve({ ok: xhr.status >= 200 && xhr.status < 300, status: xhr.status, body });
-    };
-    xhr.onerror = () => reject(new Error('Network error'));
-    xhr.send(JSON.stringify(payload));
-  });
+/* Network helpers: wake the (sleeping) backend, shrink big photos, and
+   upload as multipart with progress, timeout and a clear error reason. */
+const FemixNet = (() => {
+  const ORIGIN = new URL(BACKEND_URL).origin;
+  let last = 0;
+  async function warm(force, wait = 45000) {
+    if (!force && Date.now() - last < 240000) return;
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), wait);
+    try { await fetch(ORIGIN + '/health', { mode: 'no-cors', cache: 'no-store', signal: c.signal }); last = Date.now(); }
+    catch { /* still asleep or offline — the submit will report it */ }
+    finally { clearTimeout(t); }
+  }
+  async function shrinkImage(f) {
+    const file = f.file;
+    if (f.field !== 'photos' || !file.type.startsWith('image/') || file.size < 1.5 * 1024 * 1024) return file;
+    try {
+      const bmp = await createImageBitmap(file);
+      const k = Math.min(1, 1800 / Math.max(bmp.width, bmp.height));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.82));
+      if (blob) { f.name = f.name.replace(/\.\w+$/, '') + '.jpg'; return blob; }
+    } catch { /* keep the original */ }
+    return file;
+  }
+  function post(url, formData, onProgress, timeoutMs = 150000) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.timeout = timeoutMs;
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.upload.onprogress = e => { if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100)); };
+      xhr.onload = () => {
+        let body = null;
+        try { body = JSON.parse(xhr.responseText); } catch { /* non-JSON */ }
+        resolve({ ok: xhr.status >= 200 && xhr.status < 300, status: xhr.status, body });
+      };
+      xhr.onerror   = () => reject(new Error('network'));
+      xhr.ontimeout = () => reject(new Error('timeout'));
+      xhr.send(formData);
+    });
+  }
+  setTimeout(() => warm(false), 2500);
+  return { warm, shrinkImage, post };
+})();
+
+function launchPaystack({ email, amount, bookingId }) {
+  const key = PAYMENT_CONFIG.paystackPublicKey;
+  if (!key || !window.PaystackPop || !email || amount < 100) return false;
+  const ref = 'FMX-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
+  window.PaystackPop.setup({
+    key, email, amount: amount * 100, currency: 'NGN', ref,
+    metadata: { booking_id: bookingId || '' },
+    callback: function (res) {
+      fetch(PAYMENT_VERIFY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking_id: bookingId, reference: res.reference }) })
+        .then(r => r.json().catch(() => ({})))
+        .then(d => d.paid ? Toast.success('Payment received', 'Thank you — ₦' + amount.toLocaleString('en-NG') + ' paid.')
+                          : Toast.info('Payment pending', 'We are confirming your payment.'))
+        .catch(() => Toast.info('Payment pending', 'We are confirming your payment.'));
+    },
+    onClose: function () { Toast.info('Payment not completed', 'You can pay later — we will send a link.'); }
+  }).openIframe();
+  return true;
 }
 
 async function handleForm(form, btn) {
@@ -2083,24 +2209,36 @@ async function handleForm(form, btn) {
 
   try {
     const fd = new FormData(form);
-    const attachments = await MediaAttachments.collect();
-    const payload = {
-      name:    fd.get('name')           || '',
-      phone:   fd.get('phone')          || '',
-      address: fd.get('address')        || '',
-      issue:   fd.get('service')        || '',
-      date:    fd.get('preferred_date') || '',
-      time:    fd.get('preferred_time') || '',
-      email:   fd.get('email')          || '',
-      message: fd.get('message')        || '',
-      payment_method: fd.get('payment_method') || '',
-      attachments // [] when nothing was attached — existing bookings unaffected
-    };
+    const method    = fd.get('payment_method') || 'Cash';
+    const payAmount = Math.round(Number(fd.get('payment_amount')) || 0);
+    const payEmail  = String(fd.get('email') || '').trim();
 
-    // ── POST to backend (XHR so we can show real upload progress) ──
-    const r = await postJSONWithProgress(BACKEND_URL, payload, pct => {
-      if (progressFill) progressFill.style.width = pct + '%';
-    });
+    const body = new FormData();
+    [['name','name'],['phone','phone'],['address','address'],['issue','service'],['date','preferred_date'],
+     ['time','preferred_time'],['email','email'],['message','message'],['payment_method','payment_method'],
+     ['payment_amount','payment_amount'],['payment_status','payment_status']]
+      .forEach(([k, src]) => body.append(k, fd.get(src) || ''));
+    body.append('currency', 'NGN');
+    for (const f of MediaAttachments.files()) {
+      const blob = await FemixNet.shrinkImage(f);
+      body.append(f.field, blob, f.name);
+    }
+
+    btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Connecting…</span>';
+    await FemixNet.warm(false);
+    btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Sending…</span>';
+
+    let r;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        r = await FemixNet.post(BACKEND_URL, body, pct => { if (progressFill) progressFill.style.width = pct + '%'; });
+        break;
+      } catch (err) {
+        if (attempt === 2) throw err;
+        btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Retrying…</span>';
+        await FemixNet.warm(true, 60000);
+      }
+    }
 
     if (r.ok) {
       // ★ Reset form before showing success UI
@@ -2125,6 +2263,11 @@ async function handleForm(form, btn) {
         b.setAttribute('aria-checked', String(isCash));
       });
 
+      window.FemixPay?.render();
+
+      // ★ Card payment (Paystack) when configured
+      if (method === 'Debit / Credit Card') setTimeout(() => launchPaystack({ email: payEmail, amount: payAmount, bookingId: r.body?.bookingId || r.body?.id }), 900);
+
       // ★ Play chime (AudioContext already warmed by earlier user interaction)
       playChime();
 
@@ -2139,14 +2282,18 @@ async function handleForm(form, btn) {
 
     } else {
       // Server returned non-2xx
-      const serverMsg = r.body?.message || 'Please try again or call us directly.';
+      const serverMsg = r.status === 413 ? 'Your files are too large — remove the video or use smaller photos.'
+                      : (r.body?.message || 'Please try again or call us directly.');
       Toast.error('Send failed', serverMsg);
       if (progressWrap) progressWrap.hidden = true;
     }
 
   } catch (networkErr) {
-    console.error('Fetch error:', networkErr);
-    Toast.error('Network error', 'Please check your connection and try again.');
+    console.error('Booking error:', networkErr);
+    Toast.error(networkErr.message === 'timeout' ? 'Taking too long' : 'Could not reach our server',
+      networkErr.message === 'timeout'
+        ? 'The upload timed out. Try on a stronger connection or without the video.'
+        : 'Check your connection and try again. If it keeps failing, call or WhatsApp us.');
     if (progressWrap) progressWrap.hidden = true;
   } finally {
     btn.innerHTML = orig;

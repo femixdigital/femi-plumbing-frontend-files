@@ -142,7 +142,6 @@
   <link rel="apple-touch-icon" href="images/branding/femix-logo.webp">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="style-dev.css?v=20260919">
-  <link rel="stylesheet" href="services-premium.css?v=1">
 </head>
 <body>
 
@@ -1530,7 +1529,7 @@
                 <span class="bstep-line" aria-hidden="true"></span>
                 <button type="button" class="bstep" data-step="3" role="tab" aria-selected="false" aria-controls="bstep-panel-3">
                   <span class="bstep-num">3</span>
-                  <span class="bstep-label">Paymen</span>
+                   <span class="bstep-label">Paymen</span>
                 </button>
                 <span class="bstep-line" aria-hidden="true"></span>
                 <button type="button" class="bstep" data-step="4" role="tab" aria-selected="false" aria-controls="bstep-panel-4">
@@ -1545,6 +1544,7 @@
                 <input type="hidden" name="_replyto"  id="freplyto" value="" />
                 <input type="hidden" name="_language" value="en" />
                 <input type="hidden" name="payment_method" id="fpayment" value="Cash" />
+                <input type="hidden" name="payment_status" id="fpaystatus" value="pay_on_completion" />
 
                 <div class="booking-steps-wrap" id="bookingStepsWrap">
 
@@ -1716,10 +1716,15 @@
                           <span class="pay-label">USSD</span>
                         </button>
                         <button type="button" class="pay-method selected" data-method="Cash" role="radio" aria-checked="true">
-                          <span class="pay-icon" aria-hidden="true">💵</span>
+                          <span class="pay-icon pay-icon--naira" aria-hidden="true">₦</span>
                           <span class="pay-label">Cash</span>
                         </button>
                       </div>
+                      <div class="pay-amount" id="payAmountWrap" hidden>
+                        <label class="pay-lbl" for="fpayamount">Amount to pay (₦)</label>
+                        <input id="fpayamount" name="payment_amount" type="number" inputmode="numeric" min="0" step="100" placeholder="e.g. 25000" class="pay-amount-input" />
+                      </div>
+                      <div class="pay-details" id="payDetails" aria-live="polite"></div>
                       <p class="payment-note">🔒 No upfront payment required — settle securely, in person, only after the job is done to your satisfaction.</p>
                     </div>
 
@@ -1986,6 +1991,7 @@
 </nav>
 
   
+<script src="https://js.paystack.co/v1/inline.js" defer></script>
 <script src="script.js" defer></script>
 <script>
 /* Booking date: earliest selectable day is always TODAY (device's local date).

@@ -3802,3 +3802,27 @@ body.is-tab-hidden .wd-ads-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   #view-services * { transition: none !important; }
 }
+
+/* ── Payment step: Naira badge + method details ── */
+.pay-icon--naira { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.35rem; line-height: 1; color: var(--gold-lt); }
+.pay-amount { margin: 1rem 0 0; }
+.pay-lbl { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
+.pay-amount-input, .pay-select {
+  width: 100%; padding: 0.8rem 1rem; border-radius: 12px; font: inherit; font-size: 1rem;
+  color: var(--text-primary); background: var(--glass-bg); border: 1px solid var(--glass-border2);
+}
+.pay-amount-input:focus, .pay-select:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.pay-details { margin-top: 1rem; padding: 1rem 1.1rem; border-radius: 14px; border: 1px solid var(--glass-border); background: var(--glass-bg); }
+.pay-details:empty { display: none; }
+.pay-msg { font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary); margin: 0.6rem 0 0; }
+.pay-details > .pay-msg:first-child { margin-top: 0; }
+.pay-bank { margin: 0; display: grid; gap: 0.6rem; }
+.pay-bank div { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.pay-bank dt { font-size: 0.78rem; color: var(--text-muted); }
+.pay-bank dd { margin: 0; font-weight: 600; color: var(--text-primary); text-align: right; }
+.pay-copy, .pay-dial {
+  margin-left: 0.5rem; padding: 0.3rem 0.8rem; border-radius: 999px; cursor: pointer; text-decoration: none;
+  font-size: 0.75rem; font-weight: 700; color: var(--text-inverse); background: var(--grad-gold); border: 0;
+}
+.pay-code { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-top: 0.8rem; }
+.pay-code code { font-size: 1.05rem; font-weight: 700; color: var(--gold-lt); word-break: break-all; }
