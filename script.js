@@ -833,6 +833,7 @@ const BookingWizard = (function () {
     // and never the visually-hidden native <select> that backs the custom
     // service dropdown — its own trigger button is the visible control.
     requestAnimationFrame(() => {
+      if (!window.matchMedia('(pointer: fine)').matches) return; // touch: don't pop the keyboard open on every step
       const el = stepEl(current);
       const target = el?.querySelector('.cs-trigger') || el?.querySelector('input:not(.cs-native), select:not(.cs-native), textarea');
       target?.focus({ preventScroll: true });
@@ -2328,6 +2329,45 @@ setTimeout(() => {
     Toast.info('Stay Updated', 'Enable notifications for FEMIX service alerts.', 6000);
   }
 }, 16000);
+
+/* ════════════════════════════════════════════════════
+   17b. ON-SCREEN KEYBOARD AWARENESS
+   On phones the keyboard can sit on top of the field being typed in,
+   and the page then can't scroll far enough to lift it clear. This
+   (1) measures the keyboard, (2) adds matching space at the bottom of
+   the page so it CAN scroll, (3) hides the bottom tab bar while typing,
+   and (4) scrolls the focused field to the middle of what's visible.
+════════════════════════════════════════════════════ */
+(function keyboardAware() {
+  const vv = window.visualViewport;
+  const TYPING = /^(INPUT|TEXTAREA|SELECT)$/;
+  const NON_TEXT = ['checkbox', 'radio', 'button', 'submit', 'file', 'range', 'color'];
+  const isField = el => !!el && TYPING.test(el.tagName) && !NON_TEXT.includes(el.type);
+
+  function setKeyboard(px) {
+    document.documentElement.style.setProperty('--kb', px + 'px');
+    document.body.classList.toggle('kb-open', px > 120);
+  }
+  function measure() {
+    if (!vv) return;
+    setKeyboard(Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop)));
+  }
+  function reveal(el) {
+    setTimeout(() => {
+      if (document.activeElement === el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 320); // wait for the keyboard animation to finish
+  }
+
+  vv?.addEventListener('resize', () => {
+    measure();
+    if (isField(document.activeElement)) reveal(document.activeElement);
+  });
+  vv?.addEventListener('scroll', measure);
+  document.addEventListener('focusin', e => { if (isField(e.target)) reveal(e.target); });
+  document.addEventListener('focusout', () => {
+    setTimeout(() => { if (!isField(document.activeElement)) setKeyboard(0); }, 150);
+  });
+})();
 
 /* ════════════════════════════════════════════════════
    18. FOOTER YEAR

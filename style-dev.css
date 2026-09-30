@@ -3826,3 +3826,27 @@ body.is-tab-hidden .wd-ads-track { animation-play-state: paused; }
 }
 .pay-code { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-top: 0.8rem; }
 .pay-code code { font-size: 1.05rem; font-weight: 700; color: var(--gold-lt); word-break: break-all; }
+
+/* ── Mobile stability: stop the booking form from overflowing ──
+   The two-column rows (1fr 1fr) let inputs push the layout wider than the
+   screen, and the browser then zooms the page to compensate. minmax(0,1fr)
+   + min-width:0 keep every column inside the screen. Pinch-zoom stays
+   available — nothing here disables it. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html, body { max-width: 100%; overflow-x: hidden; }
+.form-shell, .booking-steps-wrap, .form-step, .form-row, .field-input-wrap { min-width: 0; max-width: 100%; }
+.form-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.field input, .field select, .field textarea { min-width: 0; max-width: 100%; font-size: 16px; }
+@media (max-width: 359px) { .form-row { grid-template-columns: minmax(0, 1fr); } }
+
+/* Step labels were clipped ("PAYMEN") */
+.bstep { flex: 0 0 auto; }
+.bstep-label { max-width: none; overflow: visible; text-overflow: clip; letter-spacing: 0.05em; }
+
+/* ── Keyboard open: leave room so the focused field can scroll into view ── */
+.spa-view--page {
+  padding-bottom: calc(var(--tabbar-total) + var(--kb, 0px));
+  scroll-padding-bottom: calc(var(--kb, 0px) + 96px);
+}
+body.kb-open .tab-bar,
+body.kb-open .fab-cluster { display: none; }
