@@ -11,9 +11,9 @@ const PAYMENT_VERIFY_URL = 'https://femix-plumbing-backend.onrender.com/payment/
 
 /* ── PAYMENT SETTINGS (edit these) ── all amounts are Nigerian Naira (₦) */
 const PAYMENT_CONFIG = {
-  bankName:      'YOUR BANK NAME',          // e.g. 'GTBank'
-  accountName:   'Femix Plumbing Services',
-  accountNumber: '0000000000',              // 10-digit NUBAN
+  bankName:      'OPay',
+  accountName:   'Nuhn Wasiu Femi',
+  accountNumber: '6115857333',
   paystackPublicKey: '',                    // 'pk_live_…' — leave '' to disable card popup
   // USSD transfer strings (amount, account) — formats can vary by bank
   ussd: [
@@ -22,7 +22,9 @@ const PAYMENT_CONFIG = {
     { bank: 'Zenith',     code: (a, n) => `*966*${a}*${n}#` },
     { bank: 'First Bank', code: (a, n) => `*894*${a}*${n}#` },
     { bank: 'UBA',        code: (a, n) => `*919*3*${n}*${a}#` },
-    { bank: 'Fidelity',   code: (a, n) => `*770*${n}*${a}#` }
+    { bank: 'Fidelity',   code: (a, n) => `*770*${n}*${a}#` },
+    // OPay's USSD is menu-driven: dial *955#, choose Transfer, then enter the details
+    { bank: 'OPay',       code: () => '*955#', hint: true }
   ]
 };
 
@@ -878,41 +880,89 @@ const BookingWizard = (function () {
 
   const C = PAYMENT_CONFIG;
   const naira = n => '₦' + Number(n).toLocaleString('en-NG');
-  const STATUS = { 'Cash': 'pay_on_completion', 'Bank Transfer': 'awaiting_transfer', 'USSD': 'awaiting_transfer', 'Debit / Credit Card': 'pending_card' };
+  const STATUS = { 'Cash': 'pay_before_work', 'Bank Transfer': 'awaiting_transfer', 'USSD': 'awaiting_transfer', 'Debit / Credit Card': 'pending_card' };
+
+  const WALLET = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="14" r="1.2"/></svg>';
+  const spaced = n => String(n).replace(/\s+/g, '').replace(/(\d{3})(?=\d)/g, '$1 ');
+  const head = (title, sub, icon) =>
+    `<div class="pay-card-head"><span class="pay-card-icon" aria-hidden="true">${icon || WALLET}</span><div><strong>${title}</strong><small>${sub}</small></div></div>`;
+  const row = (k, v) => `<div class="pay-row"><dt>${k}</dt><dd>${v}</dd></div>`;
+  const nextTitle = $('#payNextTitle'), nextText = $('#payNextText');
+  const setNext = (t, x) => { if (nextTitle) nextTitle.textContent = t; if (nextText) nextText.textContent = x; };
+
+  const receiptWrap = $('#payReceiptWrap');
+
+  const quick = (k, v, extra) =>
+    `<div class="pay-quick"><span class="pay-quick-k">${k}</span><span class="pay-quick-v">${v}</span>${extra || ''}</div>`;
 
   function render() {
     const m = hidden.value || 'Cash';
     const a = Math.round(Number(amt?.value) || 0);
-    if (status) status.value = STATUS[m] || 'pay_on_completion';
+    if (status) status.value = STATUS[m] || 'pay_before_work';
     if (amtWrap) amtWrap.hidden = (m === 'Cash');
+    if (receiptWrap) receiptWrap.hidden = !(m === 'Bank Transfer' || m === 'USSD');
     if (!box) return;
 
     if (m === 'Cash') {
-      box.innerHTML = '<p class="pay-msg">Pay in Naira (₦) in person once the job is done and you are satisfied.</p>';
+      box.innerHTML = head('Pay before work starts', 'Cash · in person', '₦') +
+        quick('Total', 'Quoted after inspection');
+      setNext('How cash payment works.', 'Workmanship and the full cost of materials must be paid before work can begin. We confirm your total after inspection, and you pay our technician in cash before work starts.');
     } else if (m === 'Bank Transfer') {
-      box.innerHTML =
-        '<dl class="pay-bank">' +
-        `<div><dt>Bank</dt><dd>${C.bankName}</dd></div>` +
-        `<div><dt>Account name</dt><dd>${C.accountName}</dd></div>` +
-        `<div><dt>Account number</dt><dd>${C.accountNumber} <button type="button" class="pay-copy" data-copy="${C.accountNumber}">Copy</button></dd></div>` +
-        '</dl><p class="pay-msg">Transfer after your booking is confirmed and use your name as the reference.</p>';
+      box.innerHTML = head(C.accountName, `${C.bankName} · Bank transfer`) +
+        quick('Account no.', spaced(C.accountNumber), `<button type="button" class="pay-copy" data-copy="${C.accountNumber}">Copy</button>`);
+      setNext('How bank transfer works.', 'Workmanship and the full cost of materials must be paid before work can start. Transfer the total to the account above, then attach your receipt here or send it on WhatsApp.');
     } else if (m === 'USSD') {
       const opts = C.ussd.map((u, i) => `<option value="${i}">${u.bank}</option>`).join('');
-      box.innerHTML = `<label class="pay-lbl" for="payBank">Your bank</label><select id="payBank" class="pay-select">${opts}</select><div id="payUssd"></div>`;
+      box.innerHTML = head('Pay by USSD', 'Any phone · no data needed') +
+        `<select id="payBank" class="pay-select" aria-label="Your bank">${opts}</select><div id="payUssd"></div>`;
       const sel = $('#payBank'), out = $('#payUssd');
       const draw = () => {
-        if (!a) { out.innerHTML = '<p class="pay-msg">Enter the amount above to get your dial code.</p>'; return; }
-        const code = C.ussd[sel.value].code(a, C.accountNumber);
-        out.innerHTML = `<div class="pay-code"><code>${code}</code><a class="pay-dial" href="tel:${encodeURIComponent(code)}">Dial</a></div><p class="pay-msg">Pay ${naira(a)} to ${C.accountName}. Confirm the account name on your phone before you send.</p>`;
+        const u = C.ussd[sel.value];
+        if (u.hint) {
+          out.innerHTML = quick('Dial', `<code>${u.code()}</code>`, `<a class="pay-dial" href="tel:${encodeURIComponent(u.code())}">Dial</a>`) +
+            `<p class="pay-msg">Choose Transfer, then ${C.bankName} account ${spaced(C.accountNumber)}${a ? ' · ' + naira(a) : ''}.</p>`;
+          return;
+        }
+        if (!a) { out.innerHTML = '<p class="pay-msg">Enter the quoted total below to get your dial code.</p>'; return; }
+        const code = u.code(a, C.accountNumber);
+        out.innerHTML = quick('Dial', `<code>${code}</code>`, `<a class="pay-dial" href="tel:${encodeURIComponent(code)}">Dial</a>`) +
+          `<p class="pay-msg">To ${C.accountName} · ${C.bankName}</p>`;
       };
       sel.addEventListener('change', draw); draw();
+      setNext('How USSD payment works.', 'Workmanship and the full cost of materials must be paid before work can start. Dial the code, check the account name before you send, then attach your receipt here or on WhatsApp.');
     } else {
       const ok = C.paystackPublicKey && a >= 100;
-      box.innerHTML = ok
-        ? `<p class="pay-msg">After you send this request, a secure Paystack window opens to pay <strong>${naira(a)}</strong> by card. Add your email in step 1 for the receipt.</p>`
-        : '<p class="pay-msg">We will send you a secure card payment link once your slot is confirmed.</p>';
+      box.innerHTML = head('Debit / credit card', ok ? 'Secure checkout · Paystack' : 'Secure payment link') +
+        quick('Total', a ? naira(a) : 'Enter the quoted total below');
+      setNext('How card payment works.', ok
+        ? 'Workmanship and the full cost of materials must be paid before work can start. After you send your booking, a secure Paystack window opens to pay in Naira. Add your email in step 1 for the receipt.'
+        : 'Workmanship and the full cost of materials must be paid before work can start. We will send you a secure card payment link once your slot is confirmed.');
     }
   }
+
+  /* Proof-of-payment upload (Bank Transfer / USSD) */
+  const rIn = $('#freceipt'), rName = $('#payReceiptName'), rPrev = $('#payReceiptPreview'),
+        rThumb = $('#payReceiptThumb'), rClear = $('#payReceiptClear');
+  function clearReceipt() {
+    if (!rIn) return;
+    rIn.value = '';
+    if (rThumb?.src) URL.revokeObjectURL(rThumb.src);
+    if (rThumb) { rThumb.removeAttribute('src'); rThumb.hidden = true; }
+    if (rPrev) rPrev.hidden = true;
+    if (rName) rName.textContent = 'Attach your transfer receipt (photo or PDF)';
+  }
+  rIn?.addEventListener('change', () => {
+    const f = rIn.files[0];
+    if (!f) return clearReceipt();
+    const isImg = f.type.startsWith('image/'), isPdf = f.type === 'application/pdf';
+    if (!isImg && !isPdf) { clearReceipt(); Toast.error('Unsupported file', 'Please attach a photo or a PDF.'); return; }
+    if (f.size > 10 * 1024 * 1024) { clearReceipt(); Toast.error('File too large', 'Receipt must be under 10MB.'); return; }
+    if (receiptWrap) receiptWrap.open = true;
+    if (rName) rName.textContent = f.name;
+    if (rPrev) rPrev.hidden = false;
+    if (rThumb) { if (isImg) { rThumb.src = URL.createObjectURL(f); rThumb.hidden = false; } else rThumb.hidden = true; }
+  });
+  rClear?.addEventListener('click', clearReceipt);
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -930,7 +980,7 @@ const BookingWizard = (function () {
     navigator.clipboard?.writeText(b.dataset.copy).then(() => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1500); });
   });
   render();
-  window.FemixPay = { render };
+  window.FemixPay = { render, clearReceipt };
 })();
 
 /* ════════════════════════════════════════════════════
@@ -2225,6 +2275,13 @@ async function handleForm(form, btn) {
       body.append(f.field, blob, f.name);
     }
 
+    const receiptFile = $('#freceipt')?.files[0];
+    if (receiptFile && (method === 'Bank Transfer' || method === 'USSD')) {
+      const rf = { field: 'photos', file: receiptFile, name: receiptFile.name };
+      const blob = await FemixNet.shrinkImage(rf);
+      body.append('receipt', blob, rf.name);
+    }
+
     btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Connecting…</span>';
     await FemixNet.warm(false);
     btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Sending…</span>';
@@ -2264,6 +2321,7 @@ async function handleForm(form, btn) {
         b.setAttribute('aria-checked', String(isCash));
       });
 
+      window.FemixPay?.clearReceipt();
       window.FemixPay?.render();
 
       // ★ Card payment (Paystack) when configured
@@ -2431,3 +2489,90 @@ window.addEventListener('load', () => {
   setTimeout(() => positionIndicator($('.svc-tab.active')), 200);
   if (location.hash === '#reviews') setTimeout(initCarousel, 200);
 });
+
+/* ════════════════════════════════════════════════════
+   21. SERVICES MOTION
+   Word-by-word intro animation (replays every time the page opens),
+   scroll-triggered staggered reveal for the service rows, and a soft
+   gold spotlight that follows the finger/cursor. Skipped entirely when
+   the device asks for reduced motion.
+════════════════════════════════════════════════════ */
+(function servicesMotion() {
+  const view = $('#view-services');
+  if (!view || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function split(root, mode) {
+    let i = 0;
+    (function walk(node) {
+      [...node.childNodes].forEach(c => {
+        if (c.nodeType === 1) { if (c.tagName !== 'BR') walk(c); return; }
+        if (c.nodeType !== 3) return;
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(p => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { frag.append(p); return; }
+          const s = document.createElement('span');
+          s.style.setProperty('--d', i++);
+          s.textContent = p;
+          if (mode === 'mask') {
+            const w = document.createElement('span');
+            w.className = 'w'; s.className = 'wi';
+            w.append(s); frag.append(w);
+          } else {
+            s.className = 'lw'; frag.append(s);
+          }
+        });
+        c.replaceWith(frag);
+      });
+    })(root);
+  }
+
+  const h = $('.sec-h2', view), lead = $('.sec-lead', view);
+  if (h) split(h, 'mask');
+  if (lead) split(lead, 'fade');
+  view.classList.add('txt-anim');
+
+  const playIntro = () => { void view.offsetWidth; view.classList.add('intro-play'); };
+  let wasOn = view.classList.contains('spa-view--active');
+  new MutationObserver(() => {
+    const on = view.classList.contains('spa-view--active');
+    if (on && !wasOn) {                       // just opened: reset, then play after the slide-in
+      view.classList.remove('intro-play');
+      setTimeout(playIntro, 250);
+    }
+    wasOn = on;
+  }).observe(view, { attributes: true, attributeFilter: ['class'] });
+  if (wasOn) setTimeout(playIntro, 300);
+
+  /* Rows reveal as they scroll into view, staggered within each batch */
+  if ('IntersectionObserver' in window) {
+    view.classList.add('svc-anim');
+    const io = new IntersectionObserver(entries => {
+      let n = 0;
+      entries.filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        .forEach(e => {
+          const el = e.target;
+          el.style.transitionDelay = (n++ * 70) + 'ms';
+          el.classList.add('in');
+          io.unobserve(el);
+          setTimeout(() => { el.style.transitionDelay = ''; }, 1000 + n * 70);
+        });
+    }, { threshold: 0.15 });
+    $$('.svc-item-btn', view).forEach(b => io.observe(b));
+  }
+
+  /* Spotlight follows the pointer / finger */
+  const track = e => {
+    const b = e.target.closest?.('.svc-item-btn');
+    if (!b) return null;
+    const r = b.getBoundingClientRect();
+    b.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    return b;
+  };
+  view.addEventListener('pointermove', track);
+  view.addEventListener('pointerdown', e => track(e)?.classList.add('is-lit'));
+  ['pointerup', 'pointercancel'].forEach(t =>
+    view.addEventListener(t, () => setTimeout(() => $$('.svc-item-btn.is-lit', view).forEach(b => b.classList.remove('is-lit')), 350)));
+})();

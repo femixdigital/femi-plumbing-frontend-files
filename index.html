@@ -141,7 +141,7 @@
   <link rel="icon" type="image/webp" href="images/branding/femix-logo.webp">
   <link rel="apple-touch-icon" href="images/branding/femix-logo.webp">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" href="style-dev.css?v=20260930c">
+  <link rel="stylesheet" href="style-dev.css?v=20260930g">
 </head>
 <body>
 
@@ -1529,7 +1529,7 @@
                 <span class="bstep-line" aria-hidden="true"></span>
                 <button type="button" class="bstep" data-step="3" role="tab" aria-selected="false" aria-controls="bstep-panel-3">
                   <span class="bstep-num">3</span>
-  <span class="bstep-label">Paymen</span>
+             <span class="bstep-label">Payment</span>
                 </button>
                 <span class="bstep-line" aria-hidden="true"></span>
                 <button type="button" class="bstep" data-step="4" role="tab" aria-selected="false" aria-controls="bstep-panel-4">
@@ -1544,7 +1544,7 @@
                 <input type="hidden" name="_replyto"  id="freplyto" value="" />
                 <input type="hidden" name="_language" value="en" />
                 <input type="hidden" name="payment_method" id="fpayment" value="Cash" />
-                <input type="hidden" name="payment_status" id="fpaystatus" value="pay_on_completion" />
+                <input type="hidden" name="payment_status" id="fpaystatus" value="pay_before_work" />
 
                 <div class="booking-steps-wrap" id="bookingStepsWrap">
 
@@ -1693,19 +1693,18 @@
 
                   <!-- STEP 3 — Payment method -->
                   <div class="form-step" data-step="3" id="bstep-panel-3" role="tabpanel" aria-labelledby="bstep-panel-3" hidden>
-                    <div class="payment-card">
-                      <div class="payment-card-head">
-                        <span class="payment-card-icon" aria-hidden="true">💳</span>
-                        <div class="payment-card-headtext">
-                          <span class="payment-card-title">Booking and Payment</span>
-                          <span class="payment-card-sub">Choose whatever works for you</span>
-                        </div>
-                        <span class="payment-card-badge">Pay on completion</span>
+                    <div class="pay-step pay-step--compact">
+                      <span class="pay-eyebrow">FEMIX / PAYMENT</span>
+                      <h3 class="pay-title">Payment details.</h3>
+                      <div class="pay-policy">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+                        <span>Workmanship and the <strong>full cost of materials</strong> are paid <strong>before work starts</strong>.</span>
                       </div>
+
                       <div class="payment-methods" role="radiogroup" aria-label="Payment method">
                         <button type="button" class="pay-method" data-method="Debit / Credit Card" role="radio" aria-checked="false">
                           <span class="pay-icon" aria-hidden="true">💳</span>
-                          <span class="pay-label">Debit / Credit Card</span>
+                          <span class="pay-label">Card</span>
                         </button>
                         <button type="button" class="pay-method" data-method="Bank Transfer" role="radio" aria-checked="false">
                           <span class="pay-icon" aria-hidden="true">🏦</span>
@@ -1720,23 +1719,48 @@
                           <span class="pay-label">Cash</span>
                         </button>
                       </div>
-                      <div class="pay-amount" id="payAmountWrap" hidden>
-                        <label class="pay-lbl" for="fpayamount">Amount to pay (₦)</label>
-                        <input id="fpayamount" name="payment_amount" type="number" inputmode="numeric" min="0" step="100" placeholder="e.g. 25000" class="pay-amount-input" />
-                      </div>
-                      <div class="pay-details" id="payDetails" aria-live="polite"></div>
-                      <p class="payment-note">🔒 No upfront payment required — settle securely, in person, only after the job is done to your satisfaction.</p>
-                    </div>
 
-                    <div class="step-actions">
-                      <button type="button" class="btn-step btn-step-back" data-step-back>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        <span>Back</span>
-                      </button>
-                      <button type="button" class="btn-step btn-step-next" data-step-next>
-                        <span>Continue</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                      </button>
+                      <div class="pay-stack">
+                        <div class="pay-card" id="payDetails" aria-live="polite"></div>
+
+                        <div class="pay-amount" id="payAmountWrap" hidden>
+                          <label class="pay-lbl" for="fpayamount">Quoted total (₦)</label>
+                          <input id="fpayamount" name="payment_amount" type="number" inputmode="numeric" min="0" step="100" placeholder="Workmanship + materials" class="pay-amount-input" />
+                        </div>
+
+                        <details class="pay-acc" id="payReceiptWrap" hidden>
+                          <summary><span>📎 Attach proof of payment <em>optional</em></span></summary>
+                          <div class="pay-acc-body">
+                            <label class="pay-receipt-drop" for="freceipt">
+                              <span class="pay-receipt-ic" aria-hidden="true">⬆</span>
+                              <span class="pay-receipt-txt" id="payReceiptName">Attach your transfer receipt (photo or PDF)</span>
+                            </label>
+                            <input id="freceipt" type="file" accept="image/*,application/pdf" hidden />
+                            <div class="pay-receipt-preview" id="payReceiptPreview" hidden>
+                              <img id="payReceiptThumb" alt="Receipt preview" hidden />
+                              <button type="button" class="pay-receipt-clear" id="payReceiptClear">Remove</button>
+                            </div>
+                            <p class="pay-msg">Goes straight to our email and admin dashboard. You can also send it later on WhatsApp.</p>
+                          </div>
+                        </details>
+
+                        <details class="pay-acc">
+                          <summary><span id="payNextTitle">Pay before work starts.</span></summary>
+                          <div class="pay-acc-body"><p class="pay-msg" id="payNextText"></p></div>
+                        </details>
+                      </div>
+
+                      <div class="step-actions">
+                        <button type="button" class="btn-step btn-step-back" data-step-back>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                          <span>Back</span>
+                        </button>
+                        <button type="button" class="btn-step btn-step-next" data-step-next>
+                          <span>Continue</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                      </div>
+                      <a class="pay-help" href="https://wa.me/2349060708332?text=Hello%20Femix%20Plumbing%2C%20I%20need%20help%20with%20payment%20for%20my%20booking." target="_blank" rel="noopener">Need help with payment? <strong>Contact Femix</strong></a>
                     </div>
                   </div>
 
@@ -1992,7 +2016,7 @@
 
   
 <script src="https://js.paystack.co/v1/inline.js" defer></script>
-<script src="script.js?v=20260930c" defer></script>
+<script src="script.js?v=20260930g" defer></script>
 <script>
 /* Booking date: earliest selectable day is always TODAY (device's local date).
    Re-checked when the tab becomes visible again, so a page left open past
@@ -2031,4 +2055,3 @@ new ResizeObserver(syncHeaderHeight).observe(document.getElementById('header'));
 </script>      
 </body>
 </html>
-           
