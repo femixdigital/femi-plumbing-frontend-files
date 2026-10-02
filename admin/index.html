@@ -641,22 +641,41 @@
     const amt = b.paymentAmount ?? b.payment_amount;
     const st = b.paymentStatus || b.payment_status || "";
     const label = st === "paid" ? "Paid"
+      : st === "receipt_submitted" ? "Receipt submitted"
       : st === "awaiting_transfer" ? "Awaiting transfer"
       : st === "pending_card" ? "Card pending"
-      : "Pay on completion";
+      : "Pay before work";
     return `<div class="rf"><span class="rf-label">Payment</span><span class="rf-value">${escapeHtml(method)}${amt ? " · " + naira(amt) : ""} <span class="pay-chip ${st === "paid" ? "paid" : ""}">${label}</span></span></div>`;
   }
 
   function attachmentsHtml(b) {
-    const list = (b.attachments || []).filter(a => safeUrl(a.url));
-    if (!list.length) return "";
-    const items = list.map(a => {
-      const u = escapeHtml(safeUrl(a.url));
-      if (a.kind === "voice") return `<audio controls preload="none" src="${u}"></audio>`;
-      if (a.kind === "video") return `<video controls preload="none" playsinline src="${u}"></video>`;
-      return `<a href="${u}" target="_blank" rel="noopener"><img loading="lazy" src="${u}" alt="${escapeHtml(a.name)}"></a>`;
-    }).join("");
-    return `<div class="rf rf-media"><span class="rf-label">Attachments · <span class="file-count">${list.length}</span></span><div class="media-row">${items}</div></div>`;
+    const all = (b.attachments || []).filter(a => safeUrl(a.url));
+    if (!all.length) return "";
+    const receipts = all.filter(a => a.kind === "receipt");
+    const media = all.filter(a => a.kind !== "receipt");
+    let html = "";
+
+    if (receipts.length) {
+      const items = receipts.map(a => {
+        const u = escapeHtml(safeUrl(a.url));
+        const isPdf = (a.type === "application/pdf") || /\.pdf($|\?)/i.test(a.url);
+        return isPdf
+          ? `<a class="pay-chip" href="${u}" target="_blank" rel="noopener">Open PDF receipt</a>`
+          : `<a href="${u}" target="_blank" rel="noopener"><img loading="lazy" src="${u}" alt="Payment receipt"></a>`;
+      }).join("");
+      html += `<div class="rf rf-media"><span class="rf-label">Payment receipt</span><div class="media-row">${items}</div></div>`;
+    }
+
+    if (media.length) {
+      const items = media.map(a => {
+        const u = escapeHtml(safeUrl(a.url));
+        if (a.kind === "voice") return `<audio controls preload="none" src="${u}"></audio>`;
+        if (a.kind === "video") return `<video controls preload="none" playsinline src="${u}"></video>`;
+        return `<a href="${u}" target="_blank" rel="noopener"><img loading="lazy" src="${u}" alt="${escapeHtml(a.name)}"></a>`;
+      }).join("");
+      html += `<div class="rf rf-media"><span class="rf-label">Attachments · <span class="file-count">${media.length}</span></span><div class="media-row">${items}</div></div>`;
+    }
+    return html;
   }
 
   function render() {
