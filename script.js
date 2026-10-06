@@ -2163,13 +2163,34 @@ const MediaAttachments = (function () {
 const FemixNet = (() => {
   const ORIGIN = new URL(BACKEND_URL).origin;
   let last = 0;
-  async function warm(force, wait = 45000) {
-    if (!force && Date.now() - last < 240000) return;
-    const c = new AbortController();
-    const t = setTimeout(() => c.abort(), wait);
-    try { await fetch(ORIGIN + '/health', { mode: 'no-cors', cache: 'no-store', signal: c.signal }); last = Date.now(); }
-    catch { /* still asleep or offline — the submit will report it */ }
-    finally { clearTimeout(t); }
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  /* Polls /health until the server really answers (Render sends 502/503 while it
+     is waking up or redeploying). Resolves true once it is up, false if it never is. */
+  async function warm(force, maxWait = 75000, onWait) {
+    if (!force && Date.now() - last < 240000) return true;
+    const end = Date.now() + maxWait;
+    while (Date.now() < end) {
+      const c = new AbortController();
+      const t = setTimeout(() => c.abort(), 8000);
+      try {
+        const r = await fetch(ORIGIN + '/health', { cache: 'no-store', signal: c.signal });
+        if (r.status < 500) { clearTimeout(t); last = Date.now(); return true; }
+      } catch { /* asleep, restarting, offline, or blocked */ }
+      clearTimeout(t);
+      if (onWait) onWait();
+      await sleep(3000);
+    }
+    return false;
+  }
+  /* After a failure: why? 'up' | 'down' (starting/5xx) | 'blocked' (this site address is not allowed) | 'offline' */
+  async function diagnose() {
+    try {
+      const r = await fetch(ORIGIN + '/health', { cache: 'no-store' });
+      return r.status < 500 ? 'up' : 'down';
+    } catch {
+      try { await fetch(ORIGIN + '/health', { mode: 'no-cors', cache: 'no-store' }); return 'blocked'; }
+      catch { return 'offline'; }
+    }
   }
   async function shrinkImage(f) {
     const file = f.file;
@@ -2191,6 +2212,8 @@ const FemixNet = (() => {
       xhr.open('POST', url);
       xhr.timeout = timeoutMs;
       xhr.setRequestHeader('Accept', 'application/json');
+      const isForm = typeof FormData !== 'undefined' && formData instanceof FormData;
+      if (!isForm) xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.upload.onprogress = e => { if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 100)); };
       xhr.onload = () => {
         let body = null;
@@ -2199,11 +2222,20 @@ const FemixNet = (() => {
       };
       xhr.onerror   = () => reject(new Error('network'));
       xhr.ontimeout = () => reject(new Error('timeout'));
-      xhr.send(formData);
+      xhr.send(isForm ? formData : JSON.stringify(formData));
     });
   }
-  setTimeout(() => warm(false), 2500);
-  return { warm, shrinkImage, post };
+  function toDataUrl(blob) {
+    return new Promise((resolve, reject) => {
+      const clean = new Blob([blob], { type: (blob.type || '').split(';')[0] }); // drop ";codecs=..."
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(clean);
+    });
+  }
+  setTimeout(() => warm(false, 20000), 2500);
+  return { warm, diagnose, shrinkImage, post, toDataUrl };
 })();
 
 function launchPaystack({ email, amount, bookingId }) {
@@ -2264,37 +2296,52 @@ async function handleForm(form, btn) {
     const payAmount = Math.round(Number(fd.get('payment_amount')) || 0);
     const payEmail  = String(fd.get('email') || '').trim();
 
-    const body = new FormData();
-    [['name','name'],['phone','phone'],['address','address'],['issue','service'],['date','preferred_date'],
-     ['time','preferred_time'],['email','email'],['message','message'],['payment_method','payment_method'],
-     ['payment_amount','payment_amount'],['payment_status','payment_status']]
-      .forEach(([k, src]) => body.append(k, fd.get(src) || ''));
-    body.append('currency', 'NGN');
-    for (const f of MediaAttachments.files()) {
-      const blob = await FemixNet.shrinkImage(f);
-      body.append(f.field, blob, f.name);
-    }
+    const FIELD_MAP = [['name','name'],['phone','phone'],['address','address'],['issue','service'],['date','preferred_date'],
+      ['time','preferred_time'],['email','email'],['message','message'],['payment_method','payment_method'],
+      ['payment_amount','payment_amount'],['payment_status','payment_status']];
+    const fields = { currency: 'NGN' };
+    FIELD_MAP.forEach(([k, src]) => { fields[k] = fd.get(src) || ''; });
 
+    const filesToSend = [];
+    for (const f of MediaAttachments.files()) {
+      filesToSend.push({ field: f.field, blob: await FemixNet.shrinkImage(f), name: f.name });
+    }
     const receiptFile = $('#freceipt')?.files[0];
     if (receiptFile && (method === 'Bank Transfer' || method === 'USSD')) {
       const rf = { field: 'photos', file: receiptFile, name: receiptFile.name };
-      const blob = await FemixNet.shrinkImage(rf);
-      body.append('receipt', blob, rf.name);
+      filesToSend.push({ field: 'receipt', blob: await FemixNet.shrinkImage(rf), name: rf.name });
     }
 
-    btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Connecting…</span>';
-    await FemixNet.warm(false);
-    btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Sending…</span>';
+    // One format for every case: JSON (files travel as base64). It needs no extra
+    // server packages, so it works with every backend version.
+    const toLegacyJson = async () => {
+      const attachments = [];
+      for (const x of filesToSend) {
+        const kind = x.field === 'voice' ? 'voice' : x.field === 'video' ? 'video' : x.field === 'receipt' ? 'receipt' : 'image';
+        attachments.push({ kind, name: x.name, data: await FemixNet.toDataUrl(x.blob) });
+      }
+      return { ...fields, attachments };
+    };
+    const onProgress = pct => { if (progressFill) progressFill.style.width = pct + '%'; };
+
+    const label = t => { btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>' + t + '</span>'; };
+    label('Connecting…');
+    const awake = await FemixNet.warm(false, 75000, () => label('Waking our server… up to 1 min'));
+    if (!awake) { const e = new Error('down'); e.reason = 'down'; throw e; }
+    if (filesToSend.length) label('Preparing files…');
+    const payload = await toLegacyJson();
+    label('Sending…');
 
     let r;
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
-        r = await FemixNet.post(BACKEND_URL, body, pct => { if (progressFill) progressFill.style.width = pct + '%'; });
+        r = await FemixNet.post(BACKEND_URL, payload, onProgress);
         break;
       } catch (err) {
-        if (attempt === 2) throw err;
-        btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span>Retrying…</span>';
-        await FemixNet.warm(true, 60000);
+        const why = await FemixNet.diagnose();
+        if (attempt === 2 || why === 'blocked' || why === 'offline') { err.reason = why === 'up' ? 'upload' : why; throw err; }
+        label('Retrying…');
+        if (why === 'down') await FemixNet.warm(true, 75000, () => label('Waking our server… up to 1 min'));
       }
     }
 
@@ -2343,17 +2390,21 @@ async function handleForm(form, btn) {
       // Server returned non-2xx
       const serverMsg = r.status === 413 ? 'Your files are too large — remove the video or use smaller photos.'
                       : (r.body?.message || 'Please try again or call us directly.');
-      Toast.error('Send failed', serverMsg);
+      Toast.error('Send failed', serverMsg + ' (' + r.status + ')');
       if (progressWrap) progressWrap.hidden = true;
     }
 
   } catch (networkErr) {
-    console.error('Booking error:', networkErr);
-    Toast.error(networkErr.message === 'timeout' ? 'Taking too long' : 'Could not reach our server',
-      networkErr.message === 'timeout'
-        ? 'The upload timed out. Try on a stronger connection or without the video.'
-        : 'Check your connection and try again. If it keeps failing, call or WhatsApp us.');
-    if (progressWrap) progressWrap.hidden = true;
+    console.error('Booking error:', networkErr, 'origin:', location.origin);
+    const MSG = {
+      timeout: ['Taking too long', 'The upload timed out. Try a stronger connection, or send without the video.'],
+      down:    ['Our server is starting up', 'Please wait a minute and press send again.'],
+      offline: ['No connection', 'Check your internet connection and try again.'],
+      blocked: ['Server refused this site address', 'The server is online but does not accept requests from ' + location.origin + '. Add it to EXTRA_ORIGINS on the backend.'],
+      upload:  ['Upload failed', 'The server is online but the upload did not go through. Try again, or remove the video or large files.']
+    };
+    const m = MSG[networkErr.message === 'timeout' ? 'timeout' : (networkErr.reason || 'upload')];
+    Toast.error(m[0], m[1]);
   } finally {
     btn.innerHTML = orig;
     btn.disabled  = false;
