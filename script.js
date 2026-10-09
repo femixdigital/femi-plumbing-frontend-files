@@ -2493,7 +2493,7 @@ if (yr) yr.textContent = new Date().getFullYear();
   document.head.appendChild(style);
 
   document.addEventListener('click', e => {
-    const btn = e.target.closest('.btn-primary, .panel-cta, .btn-emg, .nav-cta, .spa-qcard, .svc-item-btn, .pay-method, .btn-step, .bstep');
+    const btn = e.target.closest('.btn-primary, .panel-cta, .btn-emg, .nav-cta, .spa-qcard, .pay-method, .btn-step, .bstep');
     if (!btn) return;
     const r   = btn.getBoundingClientRect();
     const dot = document.createElement('span');
