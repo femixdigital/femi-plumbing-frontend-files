@@ -6,6 +6,8 @@
 <meta name="description" content="Femix Plumbing Services delivers professional residential and commercial building plumbing and water engineering services in Ile-Ife, Osun State. Leak detection, borehole pumps, installations and maintenance." />
   <meta name="theme-color" content="#070A14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FPS" />
+  <meta name="application-name" content="FPS" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="canonical" href="https://femixplumbing.name.ng/" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -141,7 +143,7 @@
   <link rel="icon" type="image/webp" href="images/branding/femix-logo.webp">
   <link rel="apple-touch-icon" href="images/branding/femix-logo.webp">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" href="style-dev.css?v=20261008b">
+  <link rel="stylesheet" href="style-dev.css?v=20261010a">
 </head>
 <body>
 
@@ -1557,7 +1559,7 @@
                           <input id="fname" name="name" type="text" placeholder="Your full name" autocomplete="name" required />
                           <span class="field-check" aria-hidden="true">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                      </span>
+                          </span>
                         </div>
                       </div>
                       <div class="field">
@@ -1951,7 +1953,13 @@
     </button>
     <div class="success-ring" aria-hidden="true">✓</div>
     <h3 id="successTitle">Booking Confirmed!</h3>
-    <p>Thank you! The FEMIX team will review your booking and <strong>confirm your slot within 30 minutes</strong>.</p>
+    <p>Thank you! The FEMIX team will review your booking and <strong>confirm your slot within 30 minutes</strong>. Save your receipt below.</p>
+    <div class="receipt-card" id="receiptCard" hidden>
+      <span class="receipt-ic" aria-hidden="true">PDF</span>
+      <div class="receipt-meta"><strong id="receiptName">FPS-Receipt.pdf</strong><small id="receiptSub">Booking receipt</small></div>
+    </div>
+    <button class="btn-primary receipt-dl" id="receiptDownloadBtn" type="button" hidden>Download receipt (PDF)</button>
+    <button class="receipt-share" id="receiptShareBtn" type="button" hidden>Share receipt</button>
     <button class="btn-primary" id="successDoneBtn">Done</button>
   </div>
 </div>
@@ -2016,7 +2024,7 @@
 
   
 <script src="https://js.paystack.co/v1/inline.js" defer></script>
-<script src="script.js?v=20261008b" defer></script>
+<script src="script.js?v=20261010a" defer></script>
 <script>
 /* Booking date: earliest selectable day is always TODAY (device's local date).
    Re-checked when the tab becomes visible again, so a page left open past

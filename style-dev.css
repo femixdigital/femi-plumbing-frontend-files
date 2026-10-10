@@ -4069,3 +4069,14 @@ body.kb-open .fab-cluster { display: none; }
   #view-services .svc-item-btn::before { left: -42px; }
 }
 @media (prefers-reduced-motion: reduce) { #view-services .svc-panel.active .svc-item-grid::before { animation: none; } }
+
+/* ══════════ Receipt popup (PDF) ══════════ */
+.receipt-card[hidden], .receipt-dl[hidden], .receipt-share[hidden] { display: none !important; }
+.receipt-card { display: flex; align-items: center; gap: .85rem; margin: 1rem 0 .8rem; padding: .8rem 1rem; border-radius: 14px; text-align: left; background: var(--bg-input); border: 1px solid var(--glass-border2); }
+.receipt-ic { flex: none; width: 42px; height: 50px; display: grid; place-items: center; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: .72rem; font-weight: 700; color: #2a1f03; background: var(--gold); }
+.receipt-meta { min-width: 0; }
+.receipt-meta strong { display: block; font-size: .86rem; color: var(--text-primary); word-break: break-all; }
+.receipt-meta small { display: block; margin-top: 2px; font-size: .74rem; color: var(--text-muted); }
+.receipt-dl { width: 100%; margin-bottom: .55rem; }
+.receipt-share { width: 100%; margin-bottom: .55rem; padding: .85rem 1rem; border-radius: var(--radius-pill, 999px); font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer; color: var(--text-primary); background: var(--bg-input); border: 1px solid var(--glass-border2); }
+.receipt-share:hover { border-color: var(--gold); color: var(--gold-lt); }

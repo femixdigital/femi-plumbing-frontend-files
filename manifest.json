@@ -1,51 +1,14 @@
 {
-  "id": "/",
-  "name": "FEMIX PLUMBING SERVICES",
-  "short_name": "Femix",
-  "description": "Premium plumbing services in Ile Ife, Osun State, Nigeria. Licensed & certified since 2019.",
-  "lang": "en-NG",
-  "start_url": "/index.html?source=pwa",
+  "name": "Femix Plumbing Services",
+  "short_name": "FPS",
+  "description": "Professional plumbing & water engineering in Ile-Ife, Osun State, Nigeria.",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#070A14",
   "theme_color": "#070A14",
-  "orientation": "portrait",
   "icons": [
-    {
-      "src": "images/branding/femix-plumbing-logo.webp",
-      "sizes": "192x192",
-      "type": "image/webp",
-      "purpose": "any"
-    },
-    {
-      "src": "images/branding/femix-plumbing-logo.webp",
-      "sizes": "512x512",
-      "type": "image/webp",
-      "purpose": "any"
-    }
-  ],
-  "categories": [
-    "business",
-    "utilities"
-  ],
-  "shortcuts": [
-    {
-      "name": "Request a Quote",
-      "short_name": "Quote",
-      "url": "/index.html?source=shortcut#contact",
-      "description": "Book a plumber or request a quote"
-    },
-    {
-      "name": "Our Services",
-      "short_name": "Services",
-      "url": "/index.html?source=shortcut#services",
-      "description": "See what Femix Plumbing does"
-    },
-    {
-      "name": "Our Work",
-      "short_name": "Gallery",
-      "url": "/index.html?source=shortcut#gallery",
-      "description": "Browse completed projects"
-    }
+    { "src": "images/branding/femix-logo.webp", "sizes": "192x192", "type": "image/webp", "purpose": "any" },
+    { "src": "images/branding/femix-logo.webp", "sizes": "512x512", "type": "image/webp", "purpose": "any" }
   ]
 }

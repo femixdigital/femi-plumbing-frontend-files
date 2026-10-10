@@ -32,6 +32,155 @@ const PAYMENT_CONFIG = {
 const $  = (s, ctx = document) => ctx.querySelector(s);
 const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 
+/* ── FemixPDF: tiny dependency-free PDF receipt writer (works in browsers and Node) ── */
+const FemixPDF = (function () {
+  // Helvetica / Helvetica-Bold character widths for ASCII 32..126 (1/1000 em)
+  const HW = [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,
+    667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,
+    556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+  const BW = [278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,
+    722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,
+    556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+
+  const STATUS = {
+    paid:              ['PAID', '#1B8A55'],
+    receipt_submitted: ['RECEIPT SUBMITTED - AWAITING CONFIRMATION', '#B7791F'],
+    awaiting_transfer: ['AWAITING TRANSFER', '#B7791F'],
+    pending_card:      ['CARD PAYMENT PENDING', '#B7791F'],
+    pay_before_work:   ['PAY BEFORE WORK STARTS', '#B7791F']
+  };
+
+  const clean = s => String(s == null ? '' : s)
+    .replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-')
+    .replace(/\u20A6/g, 'NGN ').replace(/\u2026/g, '...').replace(/[\r\n\t]+/g, ' ')
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, '').replace(/\s+/g, ' ').trim();
+  const esc = s => s.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+  const money = n => 'NGN ' + String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  function width(s, size, bold) {
+    const W = bold ? BW : HW; let w = 0;
+    for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); w += (c >= 32 && c <= 126) ? W[c - 32] : 556; }
+    return w * size / 1000;
+  }
+  function wrap(s, size, bold, max) {
+    const lines = []; let cur = '';
+    clean(s).split(' ').forEach(word => {
+      while (width(word, size, bold) > max) {            // break very long words
+        let cut = word.length; while (cut > 1 && width(word.slice(0, cut), size, bold) > max) cut--;
+        if (cur) { lines.push(cur); cur = ''; }
+        lines.push(word.slice(0, cut)); word = word.slice(cut);
+      }
+      const t = cur ? cur + ' ' + word : word;
+      if (!cur || width(t, size, bold) <= max) cur = t; else { lines.push(cur); cur = word; }
+    });
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [''];
+  }
+  const rgb = h => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => (v / 255).toFixed(3)).join(' '); };
+  const dateText = v => { const d = v ? new Date(v) : new Date(); return isNaN(d) ? '' : d.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); };
+
+  function build(d) {
+    const W = 595, H = 842, M = 40, ops = [];
+    const NAVY = '#0B1020', GOLD = '#E7C86E', GOLD_D = '#9A7B1F', GRAY = '#6B7390', INK = '#161B2E';
+    const rect = (x, y, w, h, c) => ops.push(`${rgb(c)} rg ${x} ${y} ${w} ${h} re f`);
+    const hline = (y, c, lw) => ops.push(`${rgb(c)} RG ${lw || 0.6} w ${M} ${y} m ${W - M} ${y} l S`);
+    const text = (x, y, s, size, bold, c, right) => {
+      s = clean(s); const xx = right ? x - width(s, size, bold) : x;
+      ops.push(`BT /${bold ? 'F2' : 'F1'} ${size} Tf ${rgb(c)} rg ${xx.toFixed(2)} ${y} Td (${esc(s)}) Tj ET`);
+    };
+
+    // header band
+    rect(0, H - 130, W, 130, NAVY); rect(0, H - 134, W, 4, GOLD);
+    rect(M, H - 100, 56, 56, GOLD); text(M + 8.5, H - 78, 'FPS', 20, true, NAVY);
+    text(M + 74, H - 66, 'FEMIX PLUMBING SERVICES', 17, true, '#FFFFFF');
+    text(M + 74, H - 84, 'Professional plumbing & water engineering solutions', 8.5, false, '#B9C0D8');
+    text(M + 74, H - 96, 'Ile-Ife, Osun State, Nigeria', 8.5, false, '#B9C0D8');
+    text(W - M, H - 66, 'BOOKING RECEIPT', 11, true, GOLD, true);
+    text(W - M, H - 82, 'Issued ' + dateText(d.createdAt), 8.5, false, '#B9C0D8', true);
+
+    // booking id + status pill
+    text(M, H - 164, 'BOOKING ID', 8, true, GRAY);
+    text(M, H - 192, d.id || '-', 26, true, NAVY);
+    const st = STATUS[d.status] || STATUS.pay_before_work;
+    const pw = width(st[0], 8.5, true) + 22;
+    rect(W - M - pw, H - 196, pw, 22, st[1]); text(W - M - pw + 11, H - 189, st[0], 8.5, true, '#FFFFFF');
+
+    let y = H - 228;
+    const section = (title, rows) => {
+      text(M, y, title.toUpperCase(), 9.5, true, GOLD_D); y -= 7; hline(y, GOLD, 1); y -= 17;
+      rows.forEach(([k, v]) => {
+        if (v == null || v === '') v = '-';
+        const lines = wrap(v, 10.5, false, W - 2 * M - 132).slice(0, 5);
+        text(M, y, k, 9, false, GRAY);
+        lines.forEach((ln, i) => text(M + 132, y - i * 13.5, ln, 10.5, i === 0 && k !== 'Message', INK));
+        y -= Math.max(1, lines.length) * 13.5 + 6;
+      });
+      y -= 10;
+    };
+
+    section('Customer', [['Name', d.name], ['Phone', d.phone], ['Email', d.email], ['Site address', d.address]]);
+    section('Service request', [['Service', d.service], ['Preferred date', d.date], ['Preferred time', d.time], ['Message', d.message]]);
+    section('Payment', [
+      ['Method', d.method || 'Cash'],
+      ['Quoted total', Number(d.amount) > 0 ? money(d.amount) : 'To be quoted after inspection'],
+      ['Status', st[0]]
+    ]);
+
+    // notice box
+    const notice = ['Payment policy: workmanship and the full cost of materials must be paid before work can start.'];
+    let acc = d.account && (d.method === 'Bank Transfer' || d.method === 'USSD') ? d.account : null;
+    const boxH = acc ? 78 : 40;
+    rect(M, y - boxH + 12, W - 2 * M, boxH, '#FFF6DC');
+    rect(M, y - boxH + 12, 4, boxH, GOLD);
+    let ty = y - 4;
+    wrap(notice[0], 9.5, true, W - 2 * M - 28).forEach(ln => { text(M + 16, ty, ln, 9.5, true, INK); ty -= 13; });
+    if (acc) {
+      ty -= 4;
+      text(M + 16, ty, 'Pay to:  ' + clean(acc.bank) + '   |   ' + clean(acc.name), 9.5, false, INK); ty -= 13;
+      text(M + 16, ty, 'Account number:  ' + clean(acc.number) + '   (use ' + (d.id || 'your Booking ID') + ' as the reference)', 9.5, true, INK);
+    }
+
+    // footer
+    hline(78, '#D9DDEA', 0.6);
+    text(M, 62, 'This receipt confirms your booking request. The final cost is confirmed after inspection. Keep it and quote your Booking ID when you contact us.', 7.5, false, GRAY);
+    text(M, 50, 'Femix Plumbing Services  |  +234 803 425 7016  |  femixplumbing.name.ng', 8.5, true, INK);
+    if (d.trackUrl) text(M, 38, 'Track your booking: ' + d.trackUrl, 7.5, false, GRAY);
+
+    // assemble PDF file
+    const content = ops.join('\n');
+    const objs = [
+      '<< /Type /Catalog /Pages 2 0 R >>',
+      '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>`,
+      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>',
+      `<< /Length ${content.length} >>\nstream\n${content}\nendstream`
+    ];
+    let out = '%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'; const offs = [];
+    objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+    const xref = out.length;
+    out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + offs.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('') +
+           `trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    const bytes = new Uint8Array(out.length);
+    for (let i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+
+  const filename = d => 'FPS-Receipt-' + String(d.id || 'booking').replace(/[^\w-]/g, '') + '.pdf';
+  const toFile = d => new File([build(d)], filename(d), { type: 'application/pdf' });
+  function download(d) {
+    const url = URL.createObjectURL(new Blob([build(d)], { type: 'application/pdf' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = filename(d); document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+  const canShare = () => { try { return !!(navigator.canShare && navigator.canShare({ files: [new File(['x'], 'x.pdf', { type: 'application/pdf' })] })); } catch { return false; } };
+  async function share(d) {
+    try { await navigator.share({ files: [toFile(d)], title: 'FPS booking receipt ' + (d.id || '') }); }
+    catch (e) { if (e && e.name !== 'AbortError') download(d); }
+  }
+  return { build, filename, download, share, canShare };
+})();
+
 /* ─── SHARED FIELD VALIDITY RULES ───
    Used by BOTH the green-checkmark indicator AND the booking
    wizard's step-advance gate, so they can never disagree — a
@@ -2238,7 +2387,26 @@ const FemixNet = (() => {
   return { warm, diagnose, shrinkImage, post, toDataUrl };
 })();
 
-function launchPaystack({ email, amount, bookingId }) {
+/* ── Receipt popup: PDF download / share inside the success modal ── */
+let currentReceipt = null;
+const RECEIPT_STATUS_TEXT = {
+  paid: 'Payment received', receipt_submitted: 'Receipt submitted, awaiting confirmation',
+  awaiting_transfer: 'Awaiting your transfer', pending_card: 'Card payment pending', pay_before_work: 'Pay before work starts'
+};
+function showReceipt(d) {
+  const card = $('#receiptCard'), dl = $('#receiptDownloadBtn'), sh = $('#receiptShareBtn');
+  if (!card || !dl || !d || !d.id) return;
+  currentReceipt = d;
+  $('#receiptName').textContent = FemixPDF.filename(d);
+  $('#receiptSub').textContent = 'Booking receipt · ' + (RECEIPT_STATUS_TEXT[d.status] || 'Booked');
+  card.hidden = false; dl.hidden = false; sh.hidden = !FemixPDF.canShare();
+  const title = $('#successTitle');
+  if (title) title.textContent = d.status === 'paid' ? 'Payment received!' : 'Booking Confirmed!';
+}
+$('#receiptDownloadBtn')?.addEventListener('click', () => { if (currentReceipt) FemixPDF.download(currentReceipt); });
+$('#receiptShareBtn')?.addEventListener('click', () => { if (currentReceipt) FemixPDF.share(currentReceipt); });
+
+function launchPaystack({ email, amount, bookingId, onPaid }) {
   const key = PAYMENT_CONFIG.paystackPublicKey;
   if (!key || !window.PaystackPop || !email || amount < 100) return false;
   const ref = 'FMX-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
@@ -2249,8 +2417,10 @@ function launchPaystack({ email, amount, bookingId }) {
       fetch(PAYMENT_VERIFY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ booking_id: bookingId, reference: res.reference }) })
         .then(r => r.json().catch(() => ({})))
-        .then(d => d.paid ? Toast.success('Payment received', 'Thank you — ₦' + amount.toLocaleString('en-NG') + ' paid.')
-                          : Toast.info('Payment pending', 'We are confirming your payment.'))
+        .then(d => {
+          if (d.paid) { Toast.success('Payment received', 'Thank you — ₦' + amount.toLocaleString('en-NG') + ' paid.'); if (onPaid) onPaid(); }
+          else Toast.info('Payment pending', 'We are confirming your payment.');
+        })
         .catch(() => Toast.info('Payment pending', 'We are confirming your payment.'));
     },
     onClose: function () { Toast.info('Payment not completed', 'You can pay later — we will send a link.'); }
@@ -2346,6 +2516,19 @@ async function handleForm(form, btn) {
     }
 
     if (r.ok) {
+      // ★ Receipt data for the PDF (captured before the form is cleared)
+      const bookingId = r.body?.bookingId || r.body?.id;
+      const hadReceipt = filesToSend.some(x => x.field === 'receipt');
+      const receiptData = {
+        id: bookingId, name: fields.name, phone: fields.phone, email: fields.email, address: fields.address,
+        service: fields.issue, date: fields.date, time: fields.time, message: fields.message,
+        method, amount: method === 'Cash' ? 0 : payAmount,
+        status: r.body?.paymentStatus || ({ 'Cash': 'pay_before_work', 'Debit / Credit Card': 'pending_card' }[method] || (hadReceipt ? 'receipt_submitted' : 'awaiting_transfer')),
+        createdAt: new Date(),
+        account: { bank: PAYMENT_CONFIG.bankName, name: PAYMENT_CONFIG.accountName, number: PAYMENT_CONFIG.accountNumber },
+        trackUrl: 'https://femix-plumbing-backend.onrender.com/booking-status.html?id=' + encodeURIComponent(bookingId || '')
+      };
+
       // ★ Reset form before showing success UI
       form.reset();
 
@@ -2372,10 +2555,12 @@ async function handleForm(form, btn) {
       window.FemixPay?.render();
 
       // ★ Card payment (Paystack) when configured
-      if (method === 'Debit / Credit Card') setTimeout(() => launchPaystack({ email: payEmail, amount: payAmount, bookingId: r.body?.bookingId || r.body?.id }), 900);
+      if (method === 'Debit / Credit Card') setTimeout(() => launchPaystack({ email: payEmail, amount: payAmount, bookingId, onPaid: () => { receiptData.status = 'paid'; showReceipt(receiptData); openModal('successModal'); } }), 900);
 
       // ★ Play chime (AudioContext already warmed by earlier user interaction)
       playChime();
+
+      showReceipt(receiptData);
 
       // ★ Open success modal via openModal() so .open class is added correctly
       setTimeout(() => openModal('successModal'), 80);
