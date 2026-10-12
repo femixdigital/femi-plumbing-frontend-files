@@ -9,8 +9,8 @@ self.addEventListener('push', event => {
   event.waitUntil((async () => {
     await self.registration.showNotification(d.title || 'New booking', {
       body: d.body || 'Open the dashboard to review it.',
-      icon: 'https://femixplumbing.name.ng/images/branding/femix-logo.webp',
-      badge: 'https://femixplumbing.name.ng/images/branding/femix-logo.webp',
+      icon: 'https://femixplumbing.name.ng/icons/fps-192.png',
+      badge: 'https://femixplumbing.name.ng/icons/badge-72.png',
       tag: d.id || undefined,
       data: { url: self.registration.scope }
     });
