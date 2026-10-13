@@ -1,1 +1,75 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPS install check</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#070a14;color:#fff;padding:20px;max-width:560px;margin:0 auto;line-height:1.5}
+  h1{font-size:1.3rem;margin:.2rem 0 1rem} li{margin:.55rem 0;list-style:none} ul{padding:0}
+  .ok{color:#55de93}.bad{color:#ff7373}.warn{color:#f0d385}
+  code{background:#161a29;padding:2px 6px;border-radius:6px;word-break:break-all;font-size:.82rem}
+  p{color:#b9c0d8;font-size:.9rem}
+</style></head><body>
+<h1>FPS install check</h1>
+<p>Open this page on the phone that is not offering the install. Every line should start with a green tick.</p>
+<ul id="out"></ul>
+<script>
+const out = document.getElementById('out');
+const add = (cls, html) => { const li = document.createElement('li'); li.className = cls; li.innerHTML = (cls === 'ok' ? '✓ ' : cls === 'bad' ? '✗ ' : '• ') + html; out.appendChild(li); };
+let promptSeen = false;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); promptSeen = true; });
+
+(async () => {
+  add(location.protocol === 'https:' ? 'ok' : 'bad', 'Secure connection (https)');
+  if (matchMedia('(display-mode: standalone)').matches) add('warn', 'You are already inside the installed app, so no install is offered here.');
+
+  try {
+    const home = await (await fetch('index.html?' + Date.now(), { cache: 'no-store' })).text();
+    const mm = home.match(/<link[^>]+rel="manifest"[^>]*href="([^"]+)"/);
+    add(mm ? 'ok' : 'bad', mm ? 'index.html links to the manifest: <code>' + mm[1] + '</code>' : 'index.html has no manifest link');
+  } catch (e) { add('warn', 'Could not read index.html'); }
+
+  let m, murl;
+  try {
+    murl = new URL('manifest.json?' + Date.now(), location.href);
+    const r = await fetch(murl, { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    m = await r.json();
+    add('ok', 'manifest.json loads and is valid JSON');
+  } catch (e) { add('bad', 'manifest.json problem: ' + e.message + ' (upload the new manifest.json to the site root)'); }
+
+  if (m) {
+    add(m.short_name === 'FPS' ? 'ok' : 'warn', 'short_name is <code>' + (m.short_name || 'missing') + '</code>' + (m.short_name === 'FPS' ? '' : ' (this is the old manifest)'));
+    add(m.start_url ? 'ok' : 'bad', 'start_url: <code>' + (m.start_url || 'missing') + '</code>');
+    add(['standalone', 'fullscreen', 'minimal-ui'].includes(m.display) ? 'ok' : 'bad', 'display: <code>' + (m.display || 'missing') + '</code>');
+    const icons = m.icons || [];
+    if (!icons.length) add('bad', 'No icons listed in the manifest');
+    let has192 = false, has512 = false;
+    await Promise.all(icons.map(ic => new Promise(res => {
+      const url = new URL(ic.src, murl), img = new Image();
+      img.onload = () => {
+        const w = img.naturalWidth;
+        if (w >= 192) has192 = true; if (w >= 512) has512 = true;
+        add('ok', 'Icon <code>' + ic.src + '</code> (' + (ic.purpose || 'any') + ') loads, ' + w + '×' + img.naturalHeight); res();
+      };
+      img.onerror = () => { add('bad', 'Icon <code>' + ic.src + '</code> does NOT load. Upload the <code>icons</code> folder to the site root.'); res(); };
+      img.src = url + '?' + Date.now();
+    })));
+    add(has192 ? 'ok' : 'bad', 'An icon of at least 192×192 is available');
+    add(has512 ? 'ok' : 'bad', 'An icon of at least 512×512 is available');
+  }
+
+  try {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    add(regs.length ? 'ok' : 'warn', regs.length ? 'Service worker registered: <code>' + regs.map(r => r.scope).join(', ') + '</code>' : 'No service worker registered yet (open the main site once, then retry)');
+    const sw = await (await fetch('sw.js?' + Date.now(), { cache: 'no-store' })).text();
+    add(/addEventListener\(\s*['"]fetch['"]/.test(sw) ? 'ok' : 'warn', /addEventListener\(\s*['"]fetch['"]/.test(sw) ? 'sw.js handles fetch events' : 'sw.js has no fetch handler (some browsers need one before offering install)');
+  } catch (e) { add('warn', 'Could not check the service worker'); }
+
+  await new Promise(r => setTimeout(r, 2500));
+  add(promptSeen ? 'ok' : 'warn', promptSeen
+    ? 'This browser says the site CAN be installed right now.'
+    : 'This browser has not offered the install. Reasons: a red line above, the app is already installed (remove it first), or you dismissed the offer recently (try the browser menu → Install app, or clear the site data).');
+})();
+</script>
+</body></html>
 
