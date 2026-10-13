@@ -2663,6 +2663,87 @@ setTimeout(() => {
   });
 })();
 
+
+/* ════════════════════════════════════════════════════
+   17c. INSTALL BUTTON ("Install FPS app")
+   Browsers decide for themselves when to offer installation and can stay
+   quiet for months after a dismissal. This button asks the browser to show
+   its install dialog on tap, and explains the manual way when it can't.
+════════════════════════════════════════════════════ */
+(function installApp() {
+  const btn = $('#installAppBtn');
+  if (!btn) return;
+  if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) return; // already the app
+  let deferred = null;
+  btn.hidden = false;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; });
+  window.addEventListener('appinstalled', () => {
+    btn.hidden = true; deferred = null;
+    Toast.success('FPS installed', 'Find it on your home screen.');
+  });
+  btn.addEventListener('click', async () => {
+    closeDrawer();
+    if (deferred) {
+      deferred.prompt();
+      try { await deferred.userChoice; } catch { /* dismissed */ }
+      deferred = null;
+      return;
+    }
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    Toast.info('Install FPS app',
+      ios ? 'Tap the Share button, then "Add to Home Screen".'
+          : 'Open your browser menu (⋮) and tap "Install app" or "Add to Home screen".', 8000);
+  });
+})();
+
+/* ════════════════════════════════════════════════════
+   17c. INSTALL THE APP
+   Chrome / Samsung Internet no longer show their own install banner reliably,
+   so the site offers its own "Install FPS app" bar as soon as the browser says
+   the site can be installed. iPhones get a short how-to instead.
+════════════════════════════════════════════════════ */
+(function installPrompt() {
+  const KEY = 'fps-install-dismissed';
+  const standalone = matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (standalone) return;
+  const recentlyDismissed = () => Date.now() - Number(localStorage.getItem(KEY) || 0) < 7 * 864e5;
+  let deferred = null, bar = null;
+
+  function build(html, onGo) {
+    if (bar || recentlyDismissed()) return;
+    bar = document.createElement('div');
+    bar.className = 'install-bar';
+    bar.setAttribute('role', 'dialog');
+    bar.setAttribute('aria-label', 'Install the FPS app');
+    bar.innerHTML = '<img src="icons/fps-192.png" alt="" width="40" height="40">' + html +
+      (onGo ? '<button type="button" class="install-go">Install</button>' : '') +
+      '<button type="button" class="install-x" aria-label="Dismiss">✕</button>';
+    document.body.appendChild(bar);
+    requestAnimationFrame(() => bar.classList.add('show'));
+    bar.querySelector('.install-x').addEventListener('click', () => { localStorage.setItem(KEY, Date.now()); hide(); });
+    if (onGo) bar.querySelector('.install-go').addEventListener('click', onGo);
+  }
+  function hide() { if (!bar) return; bar.classList.remove('show'); const b = bar; bar = null; setTimeout(() => b.remove(), 300); }
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferred = e;
+    setTimeout(() => build('<div><strong>Install the FPS app</strong><small>One tap from your home screen</small></div>', async () => {
+      if (!deferred) return;
+      deferred.prompt();
+      const choice = await deferred.userChoice.catch(() => ({}));
+      deferred = null; hide();
+      if (choice.outcome === 'dismissed') localStorage.setItem(KEY, Date.now());
+    }), 6000);
+  });
+  window.addEventListener('appinstalled', () => { hide(); Toast.success('FPS installed', 'Open it from your home screen.'); });
+
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS/.test(ua)) {
+    setTimeout(() => build('<div><strong>Install the FPS app</strong><small>Tap Share, then “Add to Home Screen”</small></div>', null), 8000);
+  }
+})();
+
 /* ════════════════════════════════════════════════════
    18. FOOTER YEAR
 ════════════════════════════════════════════════════ */
